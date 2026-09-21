@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function RotatePdfPage() {
-  return <ToolPageShell tool={tool} />;
+  return <ToolPageShell slug={tool.slug} />;
 }

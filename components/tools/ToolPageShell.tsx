@@ -3,14 +3,16 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { CloudUpload, FileText, X, Lock } from "lucide-react";
-import type { Tool } from "@/lib/tools";
-import { tools } from "@/lib/tools";
+import { tools, getToolBySlug } from "@/lib/tools";
 import { Faq } from "@/components/ui/Faq";
 
-export function ToolPageShell({ tool }: { tool: Tool }) {
+export function ToolPageShell({ slug }: { slug: string }) {
+  const tool = getToolBySlug(slug);
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  if (!tool) return null;
 
   const related = tools.filter((t) => t.slug !== tool.slug).slice(0, 3);
 

@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function ExtractPdfPagesPage() {
-  return <ToolPageShell tool={tool} />;
+  return <ToolPageShell slug={tool.slug} />;
 }
