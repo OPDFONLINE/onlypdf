@@ -1,4 +1,4 @@
-import { Lock, WifiOff, UserX } from "lucide-react";
+import { Lock, WifiOff, UserX, Scissors, RotateCw, Combine, ListOrdered } from "lucide-react";
 
 const trustPoints = [
   { icon: UserX, label: "No sign-up" },
@@ -10,7 +10,10 @@ export function Hero() {
   return (
     <section className="container-page grid items-center gap-12 pb-20 pt-14 md:grid-cols-[1.1fr_0.9fr] md:pb-28 md:pt-20">
       <div>
-        <h1 className="max-w-xl text-4xl leading-[1.1] tracking-tight sm:text-5xl md:text-[3.25rem]">
+        <span className="inline-flex items-center gap-1.5 rounded-pill bg-accent-soft px-3 py-1 text-xs font-bold text-accent-dark">
+          Six free tools, zero sign-up
+        </span>
+        <h1 className="mt-5 max-w-xl text-4xl leading-[1.08] tracking-tight sm:text-5xl md:text-[3.4rem]">
           Simple PDF tools that work right in your browser.
         </h1>
         <p className="mt-5 max-w-md text-lg leading-relaxed text-ink-muted">
@@ -20,7 +23,7 @@ export function Hero() {
 
         <ul className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-7 sm:gap-y-3">
           {trustPoints.map(({ icon: Icon, label }) => (
-            <li key={label} className="flex items-center gap-2 text-sm text-ink-muted">
+            <li key={label} className="flex items-center gap-2 text-sm font-medium text-ink-muted">
               <Icon size={16} className="text-accent" aria-hidden="true" />
               {label}
             </li>
@@ -29,56 +32,47 @@ export function Hero() {
       </div>
 
       <div className="relative mx-auto hidden aspect-square w-full max-w-sm md:block">
-        <HeroIllustration />
+        {/* Blurred color blobs */}
+        <div className="absolute -left-6 top-4 h-40 w-40 rounded-full bg-sky-soft blur-2xl" aria-hidden="true" />
+        <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-pink-soft blur-2xl" aria-hidden="true" />
+        <div className="absolute bottom-0 left-8 h-44 w-44 rounded-full bg-amber-soft blur-2xl" aria-hidden="true" />
+
+        {/* Document card */}
+        <div className="absolute left-1/2 top-1/2 w-56 -translate-x-1/2 -translate-y-1/2 rotate-[-6deg] rounded-card border-2 border-border bg-surface p-5 shadow-lift">
+          <div className="h-2.5 w-16 rounded-full bg-accent" />
+          <div className="mt-4 h-2 w-full rounded-full bg-paper" />
+          <div className="mt-2.5 h-2 w-5/6 rounded-full bg-paper" />
+          <div className="mt-2.5 h-2 w-4/6 rounded-full bg-paper" />
+          <div className="mt-2.5 h-2 w-full rounded-full bg-paper" />
+          <div className="mt-2.5 h-2 w-3/6 rounded-full bg-paper" />
+        </div>
+
+        {/* Floating icon badges */}
+        <div
+          className="absolute left-2 top-10 flex h-14 w-14 rotate-[-10deg] items-center justify-center rounded-2xl bg-coral text-white shadow-lift"
+          aria-hidden="true"
+        >
+          <Scissors size={24} strokeWidth={2.25} />
+        </div>
+        <div
+          className="absolute right-1 top-16 flex h-12 w-12 rotate-[8deg] items-center justify-center rounded-2xl bg-sky text-white shadow-lift"
+          aria-hidden="true"
+        >
+          <RotateCw size={20} strokeWidth={2.25} />
+        </div>
+        <div
+          className="absolute bottom-14 right-0 flex h-14 w-14 rotate-[10deg] items-center justify-center rounded-2xl bg-accent text-white shadow-lift"
+          aria-hidden="true"
+        >
+          <Combine size={24} strokeWidth={2.25} />
+        </div>
+        <div
+          className="absolute bottom-4 left-0 flex h-12 w-12 rotate-[-8deg] items-center justify-center rounded-2xl bg-pink text-white shadow-lift"
+          aria-hidden="true"
+        >
+          <ListOrdered size={20} strokeWidth={2.25} />
+        </div>
       </div>
     </section>
-  );
-}
-
-function HeroIllustration() {
-  return (
-    <svg
-      viewBox="0 0 360 360"
-      className="h-full w-full"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <rect
-        x="70"
-        y="60"
-        width="170"
-        height="220"
-        rx="10"
-        fill="#FFFFFF"
-        stroke="#E1E3DC"
-        transform="rotate(-8 155 170)"
-      />
-      <rect
-        x="95"
-        y="80"
-        width="170"
-        height="220"
-        rx="10"
-        fill="#FFFFFF"
-        stroke="#E1E3DC"
-        transform="rotate(5 180 190)"
-      />
-      <rect x="120" y="100" width="170" height="220" rx="10" fill="#FFFFFF" stroke="#2B5F5C" strokeWidth="2" />
-      <g transform="translate(120 100)">
-        <rect x="24" y="34" width="96" height="10" rx="5" fill="#E1ECEA" />
-        <rect x="24" y="56" width="122" height="10" rx="5" fill="#F3F4EF" />
-        <rect x="24" y="78" width="122" height="10" rx="5" fill="#F3F4EF" />
-        <rect x="24" y="100" width="80" height="10" rx="5" fill="#F3F4EF" />
-        <circle cx="72" cy="168" r="34" fill="#2B5F5C" />
-        <path
-          d="M56 168l11 11 21-24"
-          fill="none"
-          stroke="#FFFFFF"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
-    </svg>
   );
 }

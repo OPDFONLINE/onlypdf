@@ -1,6 +1,7 @@
 import { Hero } from "@/components/home/Hero";
 import { ToolGrid } from "@/components/home/ToolGrid";
 import { PrivacySection } from "@/components/home/PrivacySection";
+import { CtaBand } from "@/components/home/CtaBand";
 import { Faq } from "@/components/ui/Faq";
 
 const homeFaq = [
@@ -35,6 +36,7 @@ export default function HomePage() {
       <section className="container-page py-20 md:py-28">
         <Faq items={homeFaq} />
       </section>
+      <CtaBand />
     </>
   );
 }

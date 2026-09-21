@@ -8,6 +8,8 @@ import {
   RotateCw,
 } from "lucide-react";
 
+export type ToolColor = "accent" | "coral" | "amber" | "teal" | "pink" | "sky";
+
 export type Tool = {
   slug: string;
   name: string;
@@ -16,6 +18,8 @@ export type Tool = {
   /** Slightly longer description, used for meta descriptions and card subtext. */
   description: string;
   icon: LucideIcon;
+  /** Accent color used for this tool's icon badge and illustrations. */
+  color: ToolColor;
   /** Short line explaining what the tool needs from the user's file. */
   fileHint: string;
   instructions: string[];
@@ -29,6 +33,7 @@ export const tools: Tool[] = [
     oneLiner: "Combine multiple PDF files into a single PDF.",
     description: "Combine PDFs into one file, in exactly the order you choose.",
     icon: Combine,
+    color: "accent",
     fileHint: "Select two or more PDF files to combine.",
     instructions: [
       "Add the PDF files you want to combine.",
@@ -55,6 +60,7 @@ export const tools: Tool[] = [
     oneLiner: "Split one PDF into separate PDF files.",
     description: "Break a PDF into separate files or individual pages.",
     icon: Scissors,
+    color: "coral",
     fileHint: "Select one PDF file to split.",
     instructions: [
       "Upload the PDF you want to split.",
@@ -81,6 +87,7 @@ export const tools: Tool[] = [
     oneLiner: "Remove selected pages from a PDF.",
     description: "Remove the pages you don't need and keep the rest.",
     icon: Trash2,
+    color: "teal",
     fileHint: "Select one PDF file to edit.",
     instructions: [
       "Upload your PDF.",
@@ -106,6 +113,7 @@ export const tools: Tool[] = [
     oneLiner: "Create a new PDF from selected pages.",
     description: "Pull specific pages out into a brand-new PDF.",
     icon: FileOutput,
+    color: "amber",
     fileHint: "Select one PDF file to extract pages from.",
     instructions: [
       "Upload your PDF.",
@@ -131,6 +139,7 @@ export const tools: Tool[] = [
     oneLiner: "Change the order of pages in a PDF.",
     description: "Drag pages into the order that makes sense.",
     icon: ListOrdered,
+    color: "pink",
     fileHint: "Select one PDF file to reorder.",
     instructions: [
       "Upload your PDF.",
@@ -156,6 +165,7 @@ export const tools: Tool[] = [
     oneLiner: "Rotate one or more PDF pages.",
     description: "Fix sideways or upside-down pages in seconds.",
     icon: RotateCw,
+    color: "sky",
     fileHint: "Select one PDF file to rotate.",
     instructions: [
       "Upload your PDF.",

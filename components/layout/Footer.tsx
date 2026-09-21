@@ -8,10 +8,10 @@ export function Footer() {
     <footer className="border-t border-border bg-surface">
       <div className="container-page grid gap-10 py-14 sm:grid-cols-2 md:grid-cols-4">
         <div className="sm:col-span-2 md:col-span-1">
-          <Link href="/" className="flex items-center gap-2 font-display text-lg font-medium text-ink">
+          <Link href="/" className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-ink">
             <span
               aria-hidden="true"
-              className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-accent text-xs font-semibold text-white"
+              className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-pink text-xs font-extrabold text-white"
             >
               P
             </span>
@@ -24,7 +24,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-sm font-medium text-ink">PDF Tools</h2>
+          <h2 className="text-sm font-bold text-ink">PDF Tools</h2>
           <ul className="mt-4 space-y-3">
             {tools.map((tool) => (
               <li key={tool.slug}>
@@ -40,7 +40,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-sm font-medium text-ink">Company</h2>
+          <h2 className="text-sm font-bold text-ink">Company</h2>
           <ul className="mt-4 space-y-3">
             <li>
               <Link href="/about" className="text-sm text-ink-muted transition-colors hover:text-ink">
@@ -56,7 +56,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-sm font-medium text-ink">Legal</h2>
+          <h2 className="text-sm font-bold text-ink">Legal</h2>
           <ul className="mt-4 space-y-3">
             <li>
               <Link href="/privacy" className="text-sm text-ink-muted transition-colors hover:text-ink">

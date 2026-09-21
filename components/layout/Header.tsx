@@ -14,16 +14,16 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
+    <header className="sticky top-0 z-40 border-b border-border bg-paper/90 backdrop-blur supports-[backdrop-filter]:bg-paper/75">
       <div className="container-page flex h-16 items-center justify-between">
         <Link
           href="/"
-          className="flex items-center gap-2 font-display text-lg font-medium tracking-tight text-ink"
+          className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-ink"
           onClick={() => setOpen(false)}
         >
           <span
             aria-hidden="true"
-            className="flex h-8 w-8 items-center justify-center rounded-[6px] bg-accent text-sm font-semibold text-white"
+            className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-pink text-sm font-extrabold text-white shadow-lift"
           >
             P
           </span>
@@ -35,7 +35,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-[15px] text-ink-muted transition-colors hover:text-ink"
+              className="text-[15px] font-medium text-ink-muted transition-colors hover:text-ink"
             >
               {link.label}
             </Link>
@@ -43,10 +43,10 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
-          <span className="text-xs text-ink-soft">No sign-up required</span>
+          <span className="text-xs font-medium text-ink-soft">No sign-up required</span>
           <Link
             href="/tools"
-            className="rounded-card bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-dark"
+            className="rounded-pill bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lift transition-colors hover:bg-accent-dark"
           >
             Open a tool
           </Link>
@@ -54,7 +54,7 @@ export function Header() {
 
         <button
           type="button"
-          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-ink md:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-ink md:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
@@ -73,7 +73,7 @@ export function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="block rounded-[6px] px-2 py-3 text-[15px] text-ink hover:bg-surface"
+                  className="block rounded-xl px-2 py-3 text-[15px] font-medium text-ink hover:bg-surface"
                   onClick={() => setOpen(false)}
                 >
                   {link.label}
