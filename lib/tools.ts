@@ -20,6 +20,8 @@ export type Tool = {
   icon: LucideIcon;
   /** Accent color used for this tool's icon badge and illustrations. */
   color: ToolColor;
+  /** Minimum number of files required before the tool can run. Defaults to 1. */
+  minFiles?: number;
   /** Short line explaining what the tool needs from the user's file. */
   fileHint: string;
   instructions: string[];
@@ -34,6 +36,7 @@ export const tools: Tool[] = [
     description: "Combine PDFs into one file, in exactly the order you choose.",
     icon: Combine,
     color: "accent",
+    minFiles: 2,
     fileHint: "Select two or more PDF files to combine.",
     instructions: [
       "Add the PDF files you want to combine.",

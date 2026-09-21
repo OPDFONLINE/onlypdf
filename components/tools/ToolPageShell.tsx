@@ -2,15 +2,20 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { CloudUpload, FileText, X, Lock } from "lucide-react";
+import { CloudUpload, FileText, X, Lock, GripVertical, CircleAlert } from "lucide-react";
 import { tools, getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
+import { toolProcessors } from "@/lib/toolProcessors";
 import { Faq } from "@/components/ui/Faq";
 
 export function ToolPageShell({ slug }: { slug: string }) {
   const tool = getToolBySlug(slug);
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [justDownloaded, setJustDownloaded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   if (!tool) return null;
@@ -18,6 +23,9 @@ export function ToolPageShell({ slug }: { slug: string }) {
   const Icon = tool.icon;
   const colors = toolColorClasses[tool.color];
   const related = tools.filter((t) => t.slug !== tool.slug).slice(0, 3);
+  const processor = toolProcessors[tool.slug];
+  const minFiles = tool.minFiles ?? 1;
+  const hasEnoughFiles = files.length >= minFiles;
 
   function addFiles(list: FileList | null) {
     if (!list) return;
@@ -26,11 +34,50 @@ export function ToolPageShell({ slug }: { slug: string }) {
     );
     if (pdfs.length > 0) {
       setFiles((prev) => [...prev, ...pdfs]);
+      setError(null);
+      setJustDownloaded(false);
     }
   }
 
   function removeFile(index: number) {
     setFiles((prev) => prev.filter((_, i) => i !== index));
+    setJustDownloaded(false);
+  }
+
+  function reorderFiles(from: number, to: number) {
+    setFiles((prev) => {
+      const updated = [...prev];
+      const [moved] = updated.splice(from, 1);
+      updated.splice(to, 0, moved);
+      return updated;
+    });
+  }
+
+  async function handleProcess() {
+    if (!processor || !hasEnoughFiles || isProcessing) return;
+    setError(null);
+    setJustDownloaded(false);
+    setIsProcessing(true);
+    try {
+      const { blob, filename } = await processor(files);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setJustDownloaded(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong while processing your file. Please try again."
+      );
+    } finally {
+      setIsProcessing(false);
+    }
   }
 
   return (
@@ -88,9 +135,24 @@ export function ToolPageShell({ slug }: { slug: string }) {
               {files.map((file, index) => (
                 <li
                   key={`${file.name}-${index}`}
-                  className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 py-3 text-sm"
+                  draggable={files.length > 1}
+                  onDragStart={() => setDragIndex(index)}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    if (dragIndex !== null && dragIndex !== index) {
+                      reorderFiles(dragIndex, index);
+                    }
+                    setDragIndex(null);
+                  }}
+                  className={`flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface px-4 py-3 text-sm ${
+                    files.length > 1 ? "cursor-grab active:cursor-grabbing" : ""
+                  }`}
                 >
                   <span className="flex min-w-0 items-center gap-2 text-ink">
+                    {files.length > 1 && (
+                      <GripVertical size={15} className="shrink-0 text-ink-soft" aria-hidden="true" />
+                    )}
                     <FileText size={16} className={`shrink-0 ${colors.text}`} aria-hidden="true" />
                     <span className="truncate">{file.name}</span>
                   </span>
@@ -108,24 +170,62 @@ export function ToolPageShell({ slug }: { slug: string }) {
           )}
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              disabled
-              title="This tool's processing engine is being wired up in the next build step."
-              className="cursor-not-allowed rounded-pill bg-ink/30 px-5 py-2.5 text-sm font-semibold text-white"
-            >
-              {tool.name} {"\u2014"} coming soon
-            </button>
+            {processor ? (
+              <button
+                type="button"
+                onClick={handleProcess}
+                disabled={!hasEnoughFiles || isProcessing}
+                className={`rounded-pill px-5 py-2.5 text-sm font-semibold text-white transition-colors ${
+                  hasEnoughFiles && !isProcessing
+                    ? `${colors.solidBg} ${colors.solidHoverBg}`
+                    : "cursor-not-allowed bg-ink/30"
+                }`}
+              >
+                {isProcessing ? "Working\u2026" : tool.name}
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled
+                title="This tool's processing engine is being wired up in the next build step."
+                className="cursor-not-allowed rounded-pill bg-ink/30 px-5 py-2.5 text-sm font-semibold text-white"
+              >
+                {tool.name} {"\u2014"} coming soon
+              </button>
+            )}
             {files.length > 0 && (
               <button
                 type="button"
-                onClick={() => setFiles([])}
+                onClick={() => {
+                  setFiles([]);
+                  setError(null);
+                  setJustDownloaded(false);
+                }}
                 className="text-sm font-medium text-ink-muted hover:text-ink"
               >
                 Clear files
               </button>
             )}
           </div>
+
+          {processor && !hasEnoughFiles && files.length > 0 && (
+            <p className="mt-3 text-sm text-ink-muted">
+              Add at least {minFiles} PDF files to continue.
+            </p>
+          )}
+
+          {justDownloaded && (
+            <p className={`mt-3 text-sm font-medium ${colors.text}`}>
+              Done! Your file has started downloading.
+            </p>
+          )}
+
+          {error && (
+            <p className="mt-3 flex items-start gap-2 text-sm font-medium text-coral">
+              <CircleAlert size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
+              {error}
+            </p>
+          )}
 
           <p className="mt-4 flex items-center gap-2 text-xs text-ink-soft">
             <Lock size={14} className={colors.text} aria-hidden="true" />
@@ -163,7 +263,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
                   <li key={t.slug}>
                     <Link
                       href={`/tools/${t.slug}`}
-                      className="flex items-center gap-3 rounded-xl px-2 py-2 -mx-2 text-sm font-medium text-ink-muted transition-colors hover:bg-paper hover:text-ink"
+                      className="-mx-2 flex items-center gap-3 rounded-xl px-2 py-2 text-sm font-medium text-ink-muted transition-colors hover:bg-paper hover:text-ink"
                     >
                       <span
                         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${relatedColors.badgeBg} ${relatedColors.badgeText}`}
