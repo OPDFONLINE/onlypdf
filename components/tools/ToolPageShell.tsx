@@ -48,6 +48,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
     setFiles((prev) => {
       const updated = [...prev];
       const [moved] = updated.splice(from, 1);
+      if (!moved) return prev;
       updated.splice(to, 0, moved);
       return updated;
     });
