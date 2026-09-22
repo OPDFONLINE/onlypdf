@@ -1,6 +1,7 @@
 import { mergePdfFiles } from "@/lib/pdf/mergePdf";
 import { splitPdfIntoPages } from "@/lib/pdf/splitPdf";
 import { deletePdfPages } from "@/lib/pdf/deletePages";
+import { extractPdfPages } from "@/lib/pdf/extractPages";
 
 export type ToolProcessorResult = { blob: Blob; filename: string };
 export type ToolProcessor = (
@@ -30,6 +31,11 @@ export const toolProcessors: Partial<Record<string, ToolProcessor>> = {
     const blob = await deletePdfPages(file, selectedPages);
     return { blob, filename: `${baseNameOf(file)}-edited.pdf` };
   },
-  // extract-pdf-pages, rearrange-pdf, and rotate-pdf are implemented one at
-  // a time in later steps.
+  "extract-pdf-pages": async (files, selectedPages) => {
+    const file = files[0];
+    if (!file) throw new Error("Please add a PDF file first.");
+    const blob = await extractPdfPages(file, selectedPages);
+    return { blob, filename: `${baseNameOf(file)}-extracted.pdf` };
+  },
+  // rearrange-pdf and rotate-pdf are implemented one at a time in later steps.
 };

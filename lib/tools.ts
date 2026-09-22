@@ -131,12 +131,13 @@ export const tools: Tool[] = [
     icon: FileOutput,
     color: "amber",
     maxFiles: 1,
+    pageSelection: "extract",
     fileHint: "Select one PDF file to extract pages from.",
     instructions: [
       "Upload your PDF.",
-      "Select the pages you want to keep.",
-      "Reorder them if needed.",
-      "Select Extract to create the new PDF, then download it.",
+      "Tap the page numbers you want to keep.",
+      "Select Extract PDF Pages to build the new file.",
+      "Download it.",
     ],
     faq: [
       {
@@ -146,7 +147,8 @@ export const tools: Tool[] = [
       },
       {
         question: "Can I change the page order while extracting?",
-        answer: "Yes. Reorder the selected pages before creating the new PDF.",
+        answer:
+          "Not yet. Extracted pages keep their original order from the source PDF, no matter what order you tap them in.",
       },
     ],
   },
