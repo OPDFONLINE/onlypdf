@@ -1,22 +1,59 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CloudUpload, FileText, X, Lock, GripVertical, CircleAlert } from "lucide-react";
 import { tools, getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 import { toolProcessors } from "@/lib/toolProcessors";
+import { getPdfPageCount } from "@/lib/pdf/getPageCount";
 import { Faq } from "@/components/ui/Faq";
 
 export function ToolPageShell({ slug }: { slug: string }) {
   const tool = getToolBySlug(slug);
+  const pageSelectionMode = tool?.pageSelection;
+
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [justDownloaded, setJustDownloaded] = useState(false);
+  const [pageCount, setPageCount] = useState<number | null>(null);
+  const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
+  const [isReadingPages, setIsReadingPages] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // For page-selection tools, read the page count as soon as a file is added.
+  useEffect(() => {
+    if (!pageSelectionMode) return;
+    const file = files[0];
+    if (!file) {
+      setPageCount(null);
+      setSelectedPages(new Set());
+      return;
+    }
+    let cancelled = false;
+    setIsReadingPages(true);
+    setError(null);
+    getPdfPageCount(file)
+      .then((count) => {
+        if (cancelled) return;
+        setPageCount(count);
+        setSelectedPages(new Set());
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setPageCount(null);
+        setError(err instanceof Error ? err.message : "Couldn't read this PDF.");
+      })
+      .finally(() => {
+        if (!cancelled) setIsReadingPages(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [files, pageSelectionMode]);
 
   if (!tool) return null;
 
@@ -27,6 +64,14 @@ export function ToolPageShell({ slug }: { slug: string }) {
   const minFiles = tool.minFiles ?? 1;
   const maxFiles = tool.maxFiles;
   const hasEnoughFiles = files.length >= minFiles;
+
+  const pageSelectionReady =
+    !pageSelectionMode ||
+    (pageCount !== null &&
+      selectedPages.size > 0 &&
+      (pageSelectionMode !== "delete" || selectedPages.size < pageCount));
+
+  const canRun = processor && hasEnoughFiles && pageSelectionReady && !isProcessing && !isReadingPages;
 
   function addFiles(list: FileList | null) {
     if (!list) return;
@@ -55,13 +100,25 @@ export function ToolPageShell({ slug }: { slug: string }) {
     });
   }
 
+  function togglePage(index: number) {
+    setSelectedPages((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  }
+
   async function handleProcess() {
-    if (!processor || !hasEnoughFiles || isProcessing) return;
+    if (!processor || !canRun) return;
     setError(null);
     setJustDownloaded(false);
     setIsProcessing(true);
     try {
-      const { blob, filename } = await processor(files);
+      const { blob, filename } = await processor(files, Array.from(selectedPages));
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -171,16 +228,62 @@ export function ToolPageShell({ slug }: { slug: string }) {
             </ul>
           )}
 
+          {/* Page picker, for tools that need one */}
+          {pageSelectionMode && files.length > 0 && (
+            <div className="mt-5">
+              {isReadingPages && (
+                <p className="text-sm text-ink-muted">Reading your PDF\u2026</p>
+              )}
+              {!isReadingPages && pageCount !== null && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-ink">
+                      {pageSelectionMode === "delete"
+                        ? "Tap the pages you want to remove"
+                        : "Tap the pages you want to keep"}
+                    </p>
+                    <p className="text-xs text-ink-soft">
+                      {selectedPages.size} of {pageCount} selected
+                    </p>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {Array.from({ length: pageCount }, (_, i) => i).map((pageIndex) => {
+                      const isSelected = selectedPages.has(pageIndex);
+                      return (
+                        <button
+                          key={pageIndex}
+                          type="button"
+                          onClick={() => togglePage(pageIndex)}
+                          aria-pressed={isSelected}
+                          className={`flex h-10 w-10 items-center justify-center rounded-xl border-2 text-sm font-semibold transition-colors ${
+                            isSelected
+                              ? `${colors.solidBg} border-transparent text-white`
+                              : "border-border bg-surface text-ink-muted hover:border-ink-soft"
+                          }`}
+                        >
+                          {pageIndex + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {pageSelectionMode === "delete" && selectedPages.size === pageCount && (
+                    <p className="mt-2 text-sm text-coral">
+                      At least one page has to remain \u2014 unselect one to continue.
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
           <div className="mt-6 flex flex-wrap items-center gap-3">
             {processor ? (
               <button
                 type="button"
                 onClick={handleProcess}
-                disabled={!hasEnoughFiles || isProcessing}
+                disabled={!canRun}
                 className={`rounded-pill px-5 py-2.5 text-sm font-semibold text-white transition-colors ${
-                  hasEnoughFiles && !isProcessing
-                    ? `${colors.solidBg} ${colors.solidHoverBg}`
-                    : "cursor-not-allowed bg-ink/30"
+                  canRun ? `${colors.solidBg} ${colors.solidHoverBg}` : "cursor-not-allowed bg-ink/30"
                 }`}
               >
                 {isProcessing ? "Working\u2026" : tool.name}
@@ -210,7 +313,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
             )}
           </div>
 
-          {processor && !hasEnoughFiles && files.length > 0 && (
+          {processor && !pageSelectionMode && !hasEnoughFiles && files.length > 0 && (
             <p className="mt-3 text-sm text-ink-muted">
               Add at least {minFiles} PDF files to continue.
             </p>

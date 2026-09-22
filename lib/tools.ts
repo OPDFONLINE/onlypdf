@@ -24,6 +24,8 @@ export type Tool = {
   minFiles?: number;
   /** Maximum number of files this tool accepts. Unset means no limit. */
   maxFiles?: number;
+  /** When set, the tool page shows a page-number picker after upload. */
+  pageSelection?: "delete" | "extract";
   /** Short line explaining what the tool needs from the user's file. */
   fileHint: string;
   instructions: string[];
@@ -100,11 +102,12 @@ export const tools: Tool[] = [
     icon: Trash2,
     color: "teal",
     maxFiles: 1,
+    pageSelection: "delete",
     fileHint: "Select one PDF file to edit.",
     instructions: [
       "Upload your PDF.",
-      "Review the page thumbnails and select the ones to remove.",
-      "Select Delete pages to apply the change.",
+      "Tap the page numbers you want to remove.",
+      "Select Delete PDF Pages to apply the change.",
       "Download the cleaned-up PDF.",
     ],
     faq: [
@@ -115,7 +118,8 @@ export const tools: Tool[] = [
       },
       {
         question: "Is there a limit on how many pages I can remove?",
-        answer: "No. You can remove as many pages as you like, up to the full page count.",
+        answer:
+          "You can remove as many pages as you like, as long as at least one page remains in the file.",
       },
     ],
   },
