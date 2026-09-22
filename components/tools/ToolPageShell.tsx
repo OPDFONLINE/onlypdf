@@ -25,6 +25,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
   const related = tools.filter((t) => t.slug !== tool.slug).slice(0, 3);
   const processor = toolProcessors[tool.slug];
   const minFiles = tool.minFiles ?? 1;
+  const maxFiles = tool.maxFiles;
   const hasEnoughFiles = files.length >= minFiles;
 
   function addFiles(list: FileList | null) {
@@ -33,7 +34,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
       (file) => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")
     );
     if (pdfs.length > 0) {
-      setFiles((prev) => [...prev, ...pdfs]);
+      setFiles((prev) => (maxFiles ? pdfs.slice(0, maxFiles) : [...prev, ...pdfs]));
       setError(null);
       setJustDownloaded(false);
     }
@@ -124,7 +125,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
               ref={inputRef}
               type="file"
               accept="application/pdf,.pdf"
-              multiple
+              multiple={maxFiles !== 1}
               className="sr-only"
               onChange={(e) => addFiles(e.target.files)}
             />

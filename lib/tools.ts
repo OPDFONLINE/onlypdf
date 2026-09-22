@@ -22,6 +22,8 @@ export type Tool = {
   color: ToolColor;
   /** Minimum number of files required before the tool can run. Defaults to 1. */
   minFiles?: number;
+  /** Maximum number of files this tool accepts. Unset means no limit. */
+  maxFiles?: number;
   /** Short line explaining what the tool needs from the user's file. */
   fileHint: string;
   instructions: string[];
@@ -60,22 +62,28 @@ export const tools: Tool[] = [
   {
     slug: "split-pdf",
     name: "Split PDF",
-    oneLiner: "Split one PDF into separate PDF files.",
-    description: "Break a PDF into separate files or individual pages.",
+    oneLiner: "Split one PDF into a separate file for every page.",
+    description: "Break a PDF into one file per page, downloaded as a ZIP.",
     icon: Scissors,
     color: "coral",
+    maxFiles: 1,
     fileHint: "Select one PDF file to split.",
     instructions: [
       "Upload the PDF you want to split.",
-      "Choose which pages should go in each output file.",
-      "Select Split to generate the new files.",
-      "Download the results, individually or as a ZIP.",
+      "We'll split it into one PDF per page automatically.",
+      "Select Split PDF to build the files.",
+      "Download them all together as a ZIP.",
     ],
     faq: [
       {
         question: "Can I split a PDF into individual pages?",
         answer:
-          "Yes. Choose the option to split every page into its own file, then download them together as a ZIP.",
+          "Yes \u2014 that's exactly what this tool does. Every page becomes its own PDF, bundled together in a ZIP you can download.",
+      },
+      {
+        question: "Can I split a PDF into custom page ranges instead?",
+        answer:
+          "Not yet. Right now this tool splits every page into its own file. Custom ranges (like pages 1\u20135 in one file) may be added later.",
       },
       {
         question: "Does splitting reduce PDF quality?",
@@ -91,6 +99,7 @@ export const tools: Tool[] = [
     description: "Remove the pages you don't need and keep the rest.",
     icon: Trash2,
     color: "teal",
+    maxFiles: 1,
     fileHint: "Select one PDF file to edit.",
     instructions: [
       "Upload your PDF.",
@@ -117,6 +126,7 @@ export const tools: Tool[] = [
     description: "Pull specific pages out into a brand-new PDF.",
     icon: FileOutput,
     color: "amber",
+    maxFiles: 1,
     fileHint: "Select one PDF file to extract pages from.",
     instructions: [
       "Upload your PDF.",
@@ -143,6 +153,7 @@ export const tools: Tool[] = [
     description: "Drag pages into the order that makes sense.",
     icon: ListOrdered,
     color: "pink",
+    maxFiles: 1,
     fileHint: "Select one PDF file to reorder.",
     instructions: [
       "Upload your PDF.",
@@ -169,6 +180,7 @@ export const tools: Tool[] = [
     description: "Fix sideways or upside-down pages in seconds.",
     icon: RotateCw,
     color: "sky",
+    maxFiles: 1,
     fileHint: "Select one PDF file to rotate.",
     instructions: [
       "Upload your PDF.",
