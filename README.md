@@ -89,3 +89,8 @@ Next.js settings — no extra configuration is required for this stage.
 
 No environment variables are required yet. See `.env.example` for what will
 be added when Supabase, Resend, and the image providers are introduced.
+
+
+### Compress PDF
+
+The project now includes `/tools/compress-pdf`, with High / Medium / Express automatic compression and a target-size mode (for example, 10 MB or 800 KB). Compression runs in the browser using the existing `pdfjs-dist` and `pdf-lib` dependencies.

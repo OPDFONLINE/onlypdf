@@ -8,6 +8,7 @@ import {
   RotateCw,
   FileImage,
   Image as ImageIcon,
+  FileArchive,
 } from "lucide-react";
 
 export type ToolColor = "accent" | "coral" | "amber" | "teal" | "pink" | "sky" | "lime" | "violet";
@@ -35,6 +36,37 @@ export type Tool = {
 };
 
 export const tools: Tool[] = [
+  {
+    slug: "compress-pdf",
+    name: "Compress PDF",
+    oneLiner: "Reduce PDF file size while keeping the document readable.",
+    description: "Compress a PDF automatically or target a specific maximum file size.",
+    icon: FileArchive,
+    color: "coral",
+    maxFiles: 1,
+    fileHint: "Select one PDF file to compress.",
+    instructions: [
+      "Upload the PDF you want to make smaller.",
+      "Choose Auto compression for High, Medium, or Express, or choose Target file size.",
+      "For a target, enter a size such as 10 MB or 800 KB.",
+      "Compress the PDF and download the smaller file.",
+    ],
+    faq: [
+      {
+        question: "Can I make a PDF fit under a specific size?",
+        answer: "Yes. Target file size mode tests several browser-safe compression levels and stops when it finds a result at or below your requested size. Some PDFs cannot reach very small targets without a larger quality loss or a different compression method.",
+      },
+      {
+        question: "What do High, Medium, and Express mean?",
+        answer: "High keeps more visual detail, Medium balances quality and file size, and Express prioritizes a smaller file and quicker processing.",
+      },
+      {
+        question: "Are my PDFs uploaded to a server?",
+        answer: "No. Compression runs in your browser, so the PDF stays on your device.",
+      },
+    ],
+  },
+
   {
     slug: "merge-pdf",
     name: "Merge PDF",
