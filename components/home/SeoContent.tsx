@@ -161,7 +161,7 @@ export function SeoContent() {
               </Link>{" "}
               converts any page (or every page) of a PDF into a JPG or PNG
               image. Convert a single page and it downloads directly; convert
-              several and they're bundled into one ZIP file.
+              several and they&apos;re bundled into one ZIP file.
             </p>
           </div>
 
