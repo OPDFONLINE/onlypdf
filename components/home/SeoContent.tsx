@@ -18,6 +18,23 @@ export function SeoContent() {
         <div className="mt-10 space-y-10 text-[15px] leading-relaxed text-ink-muted">
           <div>
             <h3 className="text-lg font-bold text-ink">
+              How to compress a PDF to a smaller file size
+            </h3>
+            <p className="mt-2">
+              PDF compression is useful when a document is too large to email,
+              upload, or store. The{" "}
+              <Link href="/tools/compress-pdf" className="text-accent underline underline-offset-2">
+                Compress PDF tool
+              </Link>{" "}
+              offers High, Medium, and Express automatic compression modes,
+              plus a target-size option for cases where you need a PDF to fit
+              within a particular limit such as 10 MB or 800 KB. Compression
+              runs in your browser, so the source PDF stays on your device.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-ink">
               How to merge PDF files online for free
             </h3>
             <p className="mt-2">
@@ -189,16 +206,15 @@ export function SeoContent() {
 
           <div>
             <h3 className="text-lg font-bold text-ink">
-              More PDF tools on the way
+              All nine PDF tools in one place
             </h3>
             <p className="mt-2">
-              This set of tools covers the PDF tasks people run into most
-              often, and more are being added over time. Each new tool is
-              held to the same bar as the ones already here: fast, free to
-              use, and processed in your browser wherever that&apos;s
-              technically practical, so you can keep coming back to one
-              place for PDF work instead of juggling several different
-              sites.
+              OnlyPDF now brings nine everyday PDF tools together: merge,
+              split, compress, delete pages, extract pages, rearrange pages,
+              rotate pages, JPG to PDF, and PDF to JPG. They are designed to
+              cover common document tasks without requiring an account or a
+              desktop PDF editor, while keeping processing in the browser
+              wherever that&apos;s technically practical.
             </p>
           </div>
         </div>

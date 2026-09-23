@@ -18,8 +18,8 @@ export function Footer() {
             OnlyPDF
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-muted">
-            Fast, private PDF tools that work in your browser. No sign-up, no
-            file uploads for these tools.
+            Fast, private PDF tools that work in your browser. No sign-up and no
+            server upload for these tools.
           </p>
         </div>
 

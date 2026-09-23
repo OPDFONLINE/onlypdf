@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { tools, getToolBySlug } from "@/lib/tools";
+import { getRelatedTools, getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 import { Faq } from "@/components/ui/Faq";
 
@@ -16,7 +16,7 @@ export function ToolPageFrame({ slug, children }: { slug: string; children: Reac
 
   const Icon = tool.icon;
   const colors = toolColorClasses[tool.color];
-  const related = tools.filter((t) => t.slug !== tool.slug).slice(0, 3);
+  const related = getRelatedTools(tool.slug);
 
   return (
     <div className="container-page py-14 md:py-16">

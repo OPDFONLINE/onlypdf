@@ -17,7 +17,7 @@ export function Hero() {
           Simple PDF tools that work right in your browser.
         </h1>
         <p className="mt-5 max-w-md text-lg leading-relaxed text-ink-muted">
-          Merge, split, extract, rearrange, and rotate PDF files without
+          Merge, split, compress, convert, extract, rearrange, and rotate PDF files without
           signing up.
         </p>
 

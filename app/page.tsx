@@ -22,6 +22,11 @@ const homeFaq = [
       "Yes. The core tools are free to use, with no hidden limits designed to push you toward a paid plan.",
   },
   {
+    question: "Can I compress a PDF to a specific file size?",
+    answer:
+      "Yes. Compress PDF offers High, Medium, and Express automatic modes, plus a target-size mode where you can enter a maximum size such as 10 MB or 800 KB.",
+  },
+  {
     question: "Which browsers and devices are supported?",
     answer:
       "OnlyPDF works in current versions of Chrome, Firefox, Safari, and Edge, on both desktop and mobile.",

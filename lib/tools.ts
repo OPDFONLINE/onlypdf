@@ -309,3 +309,24 @@ export const tools: Tool[] = [
 export function getToolBySlug(slug: string): Tool | undefined {
   return tools.find((tool) => tool.slug === slug);
 }
+
+
+const relatedToolSlugs: Record<string, string[]> = {
+  "compress-pdf": ["merge-pdf", "split-pdf", "jpg-to-pdf"],
+  "merge-pdf": ["split-pdf", "compress-pdf", "rearrange-pdf"],
+  "split-pdf": ["merge-pdf", "extract-pdf-pages", "compress-pdf"],
+  "delete-pdf-pages": ["extract-pdf-pages", "rearrange-pdf", "rotate-pdf"],
+  "extract-pdf-pages": ["delete-pdf-pages", "split-pdf", "merge-pdf"],
+  "rearrange-pdf": ["rotate-pdf", "merge-pdf", "delete-pdf-pages"],
+  "rotate-pdf": ["rearrange-pdf", "pdf-to-jpg", "merge-pdf"],
+  "jpg-to-pdf": ["pdf-to-jpg", "compress-pdf", "merge-pdf"],
+  "pdf-to-jpg": ["jpg-to-pdf", "compress-pdf", "split-pdf"],
+};
+
+export function getRelatedTools(slug: string): Tool[] {
+  const related = relatedToolSlugs[slug] ?? [];
+  return related
+    .map((relatedSlug) => getToolBySlug(relatedSlug))
+    .filter((tool): tool is Tool => Boolean(tool));
+}
+

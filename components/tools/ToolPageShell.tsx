@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CloudUpload, FileText, X, Lock, GripVertical, CircleAlert } from "lucide-react";
-import { tools, getToolBySlug } from "@/lib/tools";
+import { getRelatedTools, getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 import { toolProcessors } from "@/lib/toolProcessors";
 import { getPdfPageCount } from "@/lib/pdf/getPageCount";
@@ -59,7 +59,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
 
   const Icon = tool.icon;
   const colors = toolColorClasses[tool.color];
-  const related = tools.filter((t) => t.slug !== tool.slug).slice(0, 3);
+  const related = getRelatedTools(tool.slug);
   const processor = toolProcessors[tool.slug];
   const minFiles = tool.minFiles ?? 1;
   const maxFiles = tool.maxFiles;
