@@ -44,6 +44,14 @@ const config: Config = {
           DEFAULT: "#3E9DFF",
           soft: "#E1F0FF",
         },
+        lime: {
+          DEFAULT: "#65A30D",
+          soft: "#ECFCCB",
+        },
+        violet: {
+          DEFAULT: "#9333EA",
+          soft: "#F3E5FF",
+        },
       },
       fontFamily: {
         display: ["var(--font-jakarta)", "system-ui", "sans-serif"],

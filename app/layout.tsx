@@ -18,11 +18,11 @@ export const metadata: Metadata = {
     template: "%s \u2014 OnlyPDF",
   },
   description:
-    "Free PDF tools that run in your browser. Merge, split, extract, rearrange, and rotate PDF files with no sign-up and no file uploads.",
+    "Free PDF tools that run in your browser. Merge, split, extract, rearrange, rotate, and convert PDF files to and from JPG/PNG images, with no sign-up and no file uploads.",
   openGraph: {
     title: "OnlyPDF \u2014 Simple PDF Tools. Right in Your Browser.",
     description:
-      "Free PDF tools that run in your browser. Merge, split, extract, rearrange, and rotate PDF files with no sign-up and no file uploads.",
+      "Free PDF tools that run in your browser. Merge, split, extract, rearrange, rotate, and convert PDF files to and from JPG/PNG images, with no sign-up and no file uploads.",
     url: "https://onlypdf.online",
     siteName: "OnlyPDF",
     locale: "en_US",

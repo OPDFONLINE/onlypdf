@@ -67,4 +67,22 @@ export const toolColorClasses: Record<
     text: "text-sky",
     border: "border-sky",
   },
+  lime: {
+    badgeBg: "bg-lime-soft",
+    badgeText: "text-lime",
+    ring: "group-hover:border-lime",
+    solidBg: "bg-lime",
+    solidHoverBg: "hover:bg-lime",
+    text: "text-lime",
+    border: "border-lime",
+  },
+  violet: {
+    badgeBg: "bg-violet-soft",
+    badgeText: "text-violet",
+    ring: "group-hover:border-violet",
+    solidBg: "bg-violet",
+    solidHoverBg: "hover:bg-violet",
+    text: "text-violet",
+    border: "border-violet",
+  },
 };

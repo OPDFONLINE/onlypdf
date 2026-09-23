@@ -21,6 +21,8 @@ Free, browser-first PDF tools.
 | Extract PDF Pages | `/tools/extract-pdf-pages` | pdf-lib |
 | Rearrange PDF Pages | `/tools/rearrange-pdf` | pdf-lib + pdfjs-dist (thumbnails) |
 | Rotate PDF | `/tools/rotate-pdf` | pdf-lib + pdfjs-dist (thumbnails) |
+| JPG to PDF | `/tools/jpg-to-pdf` | pdf-lib (image embedding) |
+| PDF to JPG | `/tools/pdf-to-jpg` | pdfjs-dist (rendering) + built-in ZIP writer
 
 Rearrange and Rotate render page thumbnails with `pdfjs-dist` so people can
 see and pick pages visually, then apply the change with `pdf-lib`. The
@@ -67,16 +69,10 @@ lib/
 
 ## Next up
 
-Per the product spec, the next tools planned are the image/PDF converters:
+Per the product spec, remaining steps are:
 
-- JPG/JPEG to PDF
-- PNG to PDF
-- PDF to JPG/JPEG/PNG
-
-After the tool library is solid, remaining steps from the spec:
-
-1. Test all tools against a range of real PDF files (including large,
-   scanned, and password-protected PDFs, to confirm error handling).
+1. Test all tools against a range of real PDF and image files (large,
+   scanned, password-protected PDFs; unusual image formats/color profiles).
 2. Build the Supabase schema and secure admin authentication.
 3. Build the admin dashboard (tool management, analytics, ad config).
 4. Build the blog CMS and the Pexels/Pixabay image workflow.

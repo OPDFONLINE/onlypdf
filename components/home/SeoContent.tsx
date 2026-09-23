@@ -132,6 +132,41 @@ export function SeoContent() {
 
           <div>
             <h3 className="text-lg font-bold text-ink">
+              How to convert JPG, JPEG, or PNG images to PDF
+            </h3>
+            <p className="mt-2">
+              Turning a photo, scan, or screenshot into a PDF makes it easier
+              to send, print, or archive alongside other documents. The{" "}
+              <Link href="/tools/jpg-to-pdf" className="text-accent underline underline-offset-2">
+                JPG to PDF tool
+              </Link>{" "}
+              accepts JPG, JPEG, and PNG images, lets you drag them into the
+              order you want, and combines them into a single PDF — one
+              image per page. You can choose a page size that fits each
+              image exactly, or a standard A4 or US Letter size if the PDF
+              needs to look like a regular document.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-ink">
+              How to convert a PDF to JPG or PNG images
+            </h3>
+            <p className="mt-2">
+              Sometimes you need a picture instead of a document — to drop
+              a page into a slide, post it somewhere images are expected, or
+              just view it without a PDF reader. The{" "}
+              <Link href="/tools/pdf-to-jpg" className="text-accent underline underline-offset-2">
+                PDF to JPG tool
+              </Link>{" "}
+              converts any page (or every page) of a PDF into a JPG or PNG
+              image. Convert a single page and it downloads directly; convert
+              several and they're bundled into one ZIP file.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-ink">
               Are online PDF tools safe if they run in the browser?
             </h3>
             <p className="mt-2">
@@ -158,14 +193,12 @@ export function SeoContent() {
             </h3>
             <p className="mt-2">
               This set of tools covers the PDF tasks people run into most
-              often, and more are being added over time — including
-              converting JPG, JPEG, and PNG images into PDF files, and
-              turning PDF pages into image files for the times you need a
-              picture instead of a document. Each new tool is held to the
-              same bar as the ones already here: fast, free to use, and
-              processed in your browser wherever that&apos;s technically
-              practical, so you can keep coming back to one place for PDF
-              work instead of juggling several different sites.
+              often, and more are being added over time. Each new tool is
+              held to the same bar as the ones already here: fast, free to
+              use, and processed in your browser wherever that&apos;s
+              technically practical, so you can keep coming back to one
+              place for PDF work instead of juggling several different
+              sites.
             </p>
           </div>
         </div>

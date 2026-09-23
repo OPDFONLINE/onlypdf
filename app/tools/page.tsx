@@ -5,7 +5,7 @@ import { ToolCard } from "@/components/tools/ToolCard";
 export const metadata: Metadata = {
   title: "PDF Tools",
   description:
-    "Free PDF tools that run in your browser: merge, split, delete pages, extract pages, rearrange, and rotate PDF files.",
+    "Free PDF tools that run in your browser: merge, split, delete pages, extract pages, rearrange, rotate, and convert PDF files to and from JPG/PNG images.",
 };
 
 export default function ToolsPage() {

@@ -6,9 +6,11 @@ import {
   FileOutput,
   ListOrdered,
   RotateCw,
+  FileImage,
+  Image as ImageIcon,
 } from "lucide-react";
 
-export type ToolColor = "accent" | "coral" | "amber" | "teal" | "pink" | "sky";
+export type ToolColor = "accent" | "coral" | "amber" | "teal" | "pink" | "sky" | "lime" | "violet";
 
 export type Tool = {
   slug: string;
@@ -202,6 +204,71 @@ export const tools: Tool[] = [
       {
         question: "Does rotating a page affect its content quality?",
         answer: "No. Rotation only changes page orientation; the page content is unchanged.",
+      },
+    ],
+  },
+  {
+    slug: "jpg-to-pdf",
+    name: "JPG to PDF",
+    oneLiner: "Convert JPG, JPEG, or PNG images into a PDF.",
+    description: "Combine one or more images into a single PDF file.",
+    icon: FileImage,
+    color: "lime",
+    fileHint: "Select one or more JPG, JPEG, or PNG images.",
+    instructions: [
+      "Add the JPG, JPEG, or PNG images you want to convert.",
+      "Drag images into the order you want, or use the arrow buttons.",
+      "Choose a page size: fit to each image, A4, or US Letter.",
+      "Select Convert to PDF, then download the file.",
+    ],
+    faq: [
+      {
+        question: "Can I combine multiple images into one PDF?",
+        answer:
+          "Yes. Add as many JPG, JPEG, or PNG images as you like, put them in the order you want, and they'll be combined into a single PDF with one image per page.",
+      },
+      {
+        question: "What does \u201cFit to image\u201d do?",
+        answer:
+          "It makes each PDF page exactly the size of its image, with no white space or margin. A4 and US Letter instead place the image centered on a standard page size.",
+      },
+      {
+        question: "Does converting reduce image quality?",
+        answer:
+          "No. Your image data is placed into the PDF as-is; converting to PDF doesn't recompress or resize the image itself.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-to-jpg",
+    name: "PDF to JPG",
+    oneLiner: "Convert PDF pages into JPG or PNG images.",
+    description: "Turn any PDF page into a JPG or PNG image you can use anywhere.",
+    icon: ImageIcon,
+    color: "violet",
+    maxFiles: 1,
+    fileHint: "Select one PDF file to convert.",
+    instructions: [
+      "Upload your PDF.",
+      "Choose which pages to convert, or select all of them.",
+      "Choose JPG or PNG as the output format.",
+      "Select Convert, then download your image (or a ZIP, for multiple pages).",
+    ],
+    faq: [
+      {
+        question: "Can I convert just some pages instead of the whole PDF?",
+        answer:
+          "Yes. Every page is selected by default; tap a page's thumbnail to leave it out, or use Select all / Clear selection.",
+      },
+      {
+        question: "Should I choose JPG or PNG?",
+        answer:
+          "JPG is smaller and works well for most documents. PNG is a better choice if a page has fine text, line art, or transparency you want to preserve exactly.",
+      },
+      {
+        question: "How do I get more than one page at once?",
+        answer:
+          "If you convert more than one page, all the resulting images are bundled together into a single ZIP file you can download.",
       },
     ],
   },
