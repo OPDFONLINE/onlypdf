@@ -1,19 +1,33 @@
 # OnlyPDF.online
 
-Free, browser-first PDF tools. This repo currently contains the **foundation**
-described in Step 1 of the project spec:
+Free, browser-first PDF tools.
 
 - Next.js 14 (App Router) + TypeScript + Tailwind CSS
 - Global layout with header and footer
-- Homepage with hero, the six tool cards, a privacy section, and FAQ
-- Basic `/tools/...` routing for all six tools, with a shared page shell
-  (upload UI, instructions, FAQ, related tools) ready for real PDF logic
+- Homepage with hero, tool grid, privacy section, SEO content, and FAQ
+- `/tools/...` routing with a shared page shell (upload UI, instructions,
+  FAQ, related tools) for simple tools, plus dedicated components for tools
+  that need page thumbnails
 - About, Privacy, Terms, and Contact pages
 - Custom 404 page
 
-No PDF processing logic is wired up yet — each tool page currently shows a
-working upload UI with a disabled "coming soon" action. That's intentional:
-per the spec, each tool is implemented one at a time, in its own step.
+## PDF tools (all client-side, no file upload to a server)
+
+| Tool | Slug | Library |
+| --- | --- | --- |
+| Merge PDF | `/tools/merge-pdf` | pdf-lib |
+| Split PDF | `/tools/split-pdf` | pdf-lib + a tiny built-in ZIP writer |
+| Delete PDF Pages | `/tools/delete-pdf-pages` | pdf-lib |
+| Extract PDF Pages | `/tools/extract-pdf-pages` | pdf-lib |
+| Rearrange PDF Pages | `/tools/rearrange-pdf` | pdf-lib + pdfjs-dist (thumbnails) |
+| Rotate PDF | `/tools/rotate-pdf` | pdf-lib + pdfjs-dist (thumbnails) |
+
+Rearrange and Rotate render page thumbnails with `pdfjs-dist` so people can
+see and pick pages visually, then apply the change with `pdf-lib`. The
+`pdfjs-dist` worker is loaded from a CDN (pinned to the installed package
+version) rather than bundled, to keep the build simple. Nothing about the
+file itself ever leaves the browser — the worker is just the rendering
+engine's own script.
 
 ## Getting started
 
@@ -41,22 +55,32 @@ app/
   about/ privacy/ terms/ contact/
 components/
   layout/              # Header, Footer
-  home/                # Hero, ToolGrid, PrivacySection
-  tools/                # ToolCard, ToolPageShell
+  home/                # Hero, ToolGrid, PrivacySection, SeoContent, CtaBand
+  tools/                # ToolCard, ToolPageShell, ToolPageFrame,
+                         # RearrangePdfTool, RotatePdfTool, PdfPageThumb
   ui/                   # Faq
 lib/
   tools.ts             # single source of truth for tool metadata
+  toolProcessors.ts    # (files, selectedPages) -> Blob for the simple tools
+  pdf/                 # one file per PDF operation
 ```
 
-## Next steps (per the spec's development sequence)
+## Next up
 
-1. Build Merge PDF using `pdf-lib` inside `components/tools/ToolPageShell.tsx`
-   (or a tool-specific client component), replacing the disabled button.
-2. Repeat for Split, Delete Pages, Extract Pages, Rearrange, and Rotate.
-3. Test all six tools against a range of real PDF files.
-4. Add the Supabase schema, admin authentication, and admin dashboard.
-5. Build the blog CMS and the Pexels/Pixabay image workflow.
-6. Add SEO infrastructure (sitemap, robots.txt, JSON-LD), analytics, and
+Per the product spec, the next tools planned are the image/PDF converters:
+
+- JPG/JPEG to PDF
+- PNG to PDF
+- PDF to JPG/JPEG/PNG
+
+After the tool library is solid, remaining steps from the spec:
+
+1. Test all tools against a range of real PDF files (including large,
+   scanned, and password-protected PDFs, to confirm error handling).
+2. Build the Supabase schema and secure admin authentication.
+3. Build the admin dashboard (tool management, analytics, ad config).
+4. Build the blog CMS and the Pexels/Pixabay image workflow.
+5. Add SEO infrastructure (sitemap, robots.txt, JSON-LD), analytics, and
    admin-controlled ad configuration.
 
 See the full spec document for details on each of these steps.

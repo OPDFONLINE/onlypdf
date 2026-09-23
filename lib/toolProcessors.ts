@@ -37,5 +37,8 @@ export const toolProcessors: Partial<Record<string, ToolProcessor>> = {
     const blob = await extractPdfPages(file, selectedPages);
     return { blob, filename: `${baseNameOf(file)}-extracted.pdf` };
   },
-  // rearrange-pdf and rotate-pdf are implemented one at a time in later steps.
+  // rearrange-pdf and rotate-pdf need page thumbnails and drag/rotate state
+  // that don't fit this simple (files, selectedPages) shape, so they run
+  // through their own dedicated components (RearrangePdfTool, RotatePdfTool)
+  // instead of ToolPageShell + toolProcessors.
 };

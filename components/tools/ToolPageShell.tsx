@@ -232,7 +232,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
           {pageSelectionMode && files.length > 0 && (
             <div className="mt-5">
               {isReadingPages && (
-                <p className="text-sm text-ink-muted">Reading your PDF\u2026</p>
+                <p className="text-sm text-ink-muted">Reading your PDF…</p>
               )}
               {!isReadingPages && pageCount !== null && (
                 <>
@@ -268,7 +268,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
                   </div>
                   {pageSelectionMode === "delete" && selectedPages.size === pageCount && (
                     <p className="mt-2 text-sm text-coral">
-                      At least one page has to remain \u2014 unselect one to continue.
+                      At least one page has to remain — unselect one to continue.
                     </p>
                   )}
                 </>

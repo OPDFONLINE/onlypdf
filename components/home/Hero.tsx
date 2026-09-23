@@ -11,7 +11,7 @@ export function Hero() {
     <section className="container-page grid items-center gap-12 pb-20 pt-14 md:grid-cols-[1.1fr_0.9fr] md:pb-28 md:pt-20">
       <div>
         <span className="inline-flex items-center gap-1.5 rounded-pill bg-accent-soft px-3 py-1 text-xs font-bold text-accent-dark">
-          Six free tools, zero sign-up
+          Free PDF tools, zero sign-up
         </span>
         <h1 className="mt-5 max-w-xl text-4xl leading-[1.08] tracking-tight sm:text-5xl md:text-[3.4rem]">
           Simple PDF tools that work right in your browser.

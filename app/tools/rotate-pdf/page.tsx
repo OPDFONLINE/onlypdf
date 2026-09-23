@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getToolBySlug } from "@/lib/tools";
-import { ToolPageShell } from "@/components/tools/ToolPageShell";
+import { ToolPageFrame } from "@/components/tools/ToolPageFrame";
+import { RotatePdfTool } from "@/components/tools/RotatePdfTool";
 
 const tool = getToolBySlug("rotate-pdf")!;
 
@@ -10,5 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default function RotatePdfPage() {
-  return <ToolPageShell slug={tool.slug} />;
+  return (
+    <ToolPageFrame slug={tool.slug}>
+      <RotatePdfTool />
+    </ToolPageFrame>
+  );
 }

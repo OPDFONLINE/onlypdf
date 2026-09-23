@@ -163,15 +163,15 @@ export const tools: Tool[] = [
     fileHint: "Select one PDF file to reorder.",
     instructions: [
       "Upload your PDF.",
-      "Drag page thumbnails into the order you want.",
-      "Select Apply to save the new order.",
-      "Download the reordered PDF.",
+      "Drag page thumbnails into the order you want, or use the arrow buttons on each page.",
+      "Rotate any sideways or upside-down pages with the rotate button on that page.",
+      "Select Apply new order, then download the reordered PDF.",
     ],
     faq: [
       {
         question: "Can I rotate pages while rearranging them?",
         answer:
-          "Basic rotation may be available alongside reordering. For dedicated rotation controls, use the Rotate PDF tool.",
+          "Yes. Each page thumbnail has its own rotate button, so you can fix a sideways page at the same time you move it. For rotating many pages at once, the dedicated Rotate PDF tool is faster.",
       },
       {
         question: "Will rearranging affect page content?",

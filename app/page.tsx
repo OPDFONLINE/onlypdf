@@ -1,6 +1,7 @@
 import { Hero } from "@/components/home/Hero";
 import { ToolGrid } from "@/components/home/ToolGrid";
 import { PrivacySection } from "@/components/home/PrivacySection";
+import { SeoContent } from "@/components/home/SeoContent";
 import { CtaBand } from "@/components/home/CtaBand";
 import { Faq } from "@/components/ui/Faq";
 
@@ -13,7 +14,7 @@ const homeFaq = [
   {
     question: "Are my PDF files uploaded to your servers?",
     answer:
-      "For these six tools, no. Processing happens in your browser, so your file stays on your device the whole time.",
+      "No. Processing happens in your browser, so your file stays on your device the whole time.",
   },
   {
     question: "Is OnlyPDF really free?",
@@ -33,6 +34,7 @@ export default function HomePage() {
       <Hero />
       <ToolGrid />
       <PrivacySection />
+      <SeoContent />
       <section className="container-page py-20 md:py-28">
         <Faq items={homeFaq} />
       </section>
