@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CloudUpload, FileText, X, Lock, GripVertical, CircleAlert } from "lucide-react";
-import { getRelatedTools, getToolBySlug } from "@/lib/tools";
+import { tools, getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 import { toolProcessors } from "@/lib/toolProcessors";
 import { getPdfPageCount } from "@/lib/pdf/getPageCount";
 import { Faq } from "@/components/ui/Faq";
+import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
+import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
 
 export function ToolPageShell({ slug }: { slug: string }) {
   const tool = getToolBySlug(slug);
@@ -22,9 +24,46 @@ export function ToolPageShell({ slug }: { slug: string }) {
   const [pageCount, setPageCount] = useState<number | null>(null);
   const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
   const [isReadingPages, setIsReadingPages] = useState(false);
+  const [previewSets, setPreviewSets] = useState<Array<{ fileName: string; pages: PageThumbnail[] }>>([]);
+  const [isBuildingPreviews, setIsBuildingPreviews] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // For page-selection tools, read the page count as soon as a file is added.
+  useEffect(() => {
+    if (files.length === 0) {
+      setPreviewSets([]);
+      return;
+    }
+
+    const shouldPreview = Boolean(pageSelectionMode) || ["split-pdf", "compress-pdf", "merge-pdf"].includes(slug);
+    if (!shouldPreview) {
+      setPreviewSets([]);
+      return;
+    }
+
+    let cancelled = false;
+    setIsBuildingPreviews(true);
+    Promise.all(files.map(async (file) => {
+      const pages = await renderPdfThumbnails(file);
+      const visiblePages = slug === "merge-pdf" ? pages.slice(0, 1) : pages.slice(0, 60);
+      return { fileName: file.name, pages: visiblePages };
+    }))
+      .then((sets) => {
+        if (!cancelled) setPreviewSets(sets);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setPreviewSets([]);
+          setError(err instanceof Error ? err.message : "Couldn't build PDF previews.");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setIsBuildingPreviews(false);
+      });
+
+    return () => { cancelled = true; };
+  }, [files, pageSelectionMode, slug]);
+
   useEffect(() => {
     if (!pageSelectionMode) return;
     const file = files[0];
@@ -59,7 +98,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
 
   const Icon = tool.icon;
   const colors = toolColorClasses[tool.color];
-  const related = getRelatedTools(tool.slug);
+  const related = tools.filter((t) => t.slug !== tool.slug).slice(0, 3);
   const processor = toolProcessors[tool.slug];
   const minFiles = tool.minFiles ?? 1;
   const maxFiles = tool.maxFiles;
@@ -228,52 +267,68 @@ export function ToolPageShell({ slug }: { slug: string }) {
             </ul>
           )}
 
-          {/* Page picker, for tools that need one */}
-          {pageSelectionMode && files.length > 0 && (
-            <div className="mt-5">
-              {isReadingPages && (
-                <p className="text-sm text-ink-muted">Reading your PDF…</p>
-              )}
-              {!isReadingPages && pageCount !== null && (
-                <>
-                  <div className="flex items-center justify-between">
+          {/* Visual PDF preview / page picker */}
+          {previewSets.length > 0 && files.length > 0 && (
+            <div className="mt-6">
+              {pageSelectionMode && (
+                <div className="flex items-center justify-between gap-4">
+                  <div>
                     <p className="text-sm font-semibold text-ink">
-                      {pageSelectionMode === "delete"
-                        ? "Tap the pages you want to remove"
-                        : "Tap the pages you want to keep"}
+                      {pageSelectionMode === "delete" ? "Select the pages you want to remove" : "Select the pages you want to keep"}
                     </p>
-                    <p className="text-xs text-ink-soft">
-                      {selectedPages.size} of {pageCount} selected
-                    </p>
+                    <p className="mt-1 text-xs text-ink-soft">Click a page preview to select or unselect it.</p>
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {Array.from({ length: pageCount }, (_, i) => i).map((pageIndex) => {
-                      const isSelected = selectedPages.has(pageIndex);
-                      return (
-                        <button
-                          key={pageIndex}
-                          type="button"
-                          onClick={() => togglePage(pageIndex)}
-                          aria-pressed={isSelected}
-                          className={`flex h-10 w-10 items-center justify-center rounded-xl border-2 text-sm font-semibold transition-colors ${
-                            isSelected
-                              ? `${colors.solidBg} border-transparent text-white`
-                              : "border-border bg-surface text-ink-muted hover:border-ink-soft"
-                          }`}
-                        >
-                          {pageIndex + 1}
-                        </button>
-                      );
-                    })}
+                  <p className="shrink-0 text-xs font-semibold text-ink-soft">{selectedPages.size} of {pageCount ?? 0} selected</p>
+                </div>
+              )}
+
+              {!pageSelectionMode && slug === "split-pdf" && (
+                <div><p className="text-sm font-semibold text-ink">PDF pages to be split</p><p className="mt-1 text-xs text-ink-soft">Each preview below will become its own PDF inside the ZIP.</p></div>
+              )}
+              {!pageSelectionMode && slug === "compress-pdf" && (
+                <div><p className="text-sm font-semibold text-ink">PDF preview</p><p className="mt-1 text-xs text-ink-soft">Check the pages before choosing your compression settings.</p></div>
+              )}
+              {!pageSelectionMode && slug === "merge-pdf" && (
+                <div><p className="text-sm font-semibold text-ink">Files to merge</p><p className="mt-1 text-xs text-ink-soft">The previews below show the first page of each PDF.</p></div>
+              )}
+
+              {isBuildingPreviews && <p className="mt-3 text-sm text-ink-muted">Building page previews…</p>}
+              <div className="mt-4 space-y-5">
+                {previewSets.map((set) => (
+                  <div key={set.fileName}>
+                    {slug === "merge-pdf" && <p className="mb-2 truncate text-xs font-semibold text-ink-muted" title={set.fileName}>{set.fileName}</p>}
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                      {set.pages.map((page) => {
+                        const pageIndex = page.pageIndex;
+                        const isSelected = selectedPages.has(pageIndex);
+                        const selectable = Boolean(pageSelectionMode);
+                        return (
+                          <PdfPageThumb
+                            key={`${set.fileName}-${pageIndex}`}
+                            dataUrl={page.dataUrl}
+                            label={`Page ${pageIndex + 1}`}
+                            selected={selectable && isSelected}
+                            accentClass={colors.border}
+                            onClick={selectable ? () => togglePage(pageIndex) : undefined}
+                            ariaLabel={selectable ? `${isSelected ? "Unselect" : "Select"} page ${pageIndex + 1}` : `Preview page ${pageIndex + 1}`}
+                            cornerBadge={selectable && isSelected ? <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-bold text-ink shadow">✓</span> : undefined}
+                          />
+                        );
+                      })}
+                    </div>
+                    {slug !== "merge-pdf" && set.pages.length >= 60 && <p className="mt-2 text-xs text-ink-soft">Showing the first 60 pages for a faster preview.</p>}
                   </div>
-                  {pageSelectionMode === "delete" && selectedPages.size === pageCount && (
-                    <p className="mt-2 text-sm text-coral">
-                      At least one page has to remain — unselect one to continue.
-                    </p>
-                  )}
-                </>
+                ))}
+              </div>
+
+              {pageSelectionMode === "delete" && selectedPages.size === pageCount && (
+                <p className="mt-2 text-sm text-coral">At least one page has to remain — unselect one to continue.</p>
               )}
             </div>
+          )}
+
+          {files.length > 0 && (pageSelectionMode || ["split-pdf", "compress-pdf", "merge-pdf"].includes(slug)) && previewSets.length === 0 && !isBuildingPreviews && !error && (
+            <p className="mt-5 text-sm text-ink-muted">Preparing a visual preview…</p>
           )}
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -303,6 +358,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
                 type="button"
                 onClick={() => {
                   setFiles([]);
+                  setPreviewSets([]);
                   setError(null);
                   setJustDownloaded(false);
                 }}

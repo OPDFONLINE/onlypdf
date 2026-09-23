@@ -5,6 +5,8 @@ import { Check, CloudUpload, FileDown, Gauge, Target, Zap } from "lucide-react";
 import { compressPdfToTarget, compressPdfWithPreset, type CompressionPreset } from "@/lib/pdf/compressPdf";
 import { getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
+import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
+import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
 
 const tool = getToolBySlug("compress-pdf")!;
 const colors = toolColorClasses[tool.color];
@@ -45,6 +47,8 @@ export function PdfCompressTool() {
   const [progress, setProgress] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ blob: Blob; original: number; output: number; reachedTarget: boolean } | null>(null);
+  const [thumbnails, setThumbnails] = useState<PageThumbnail[]>([]);
+  const [isLoadingPreview, setIsLoadingPreview] = useState(false);
 
   function chooseFile(next: File | undefined) {
     if (!next) return;
@@ -56,12 +60,19 @@ export function PdfCompressTool() {
     setResult(null);
     setError(null);
     setProgress("");
+    setThumbnails([]);
+    setIsLoadingPreview(true);
+    renderPdfThumbnails(next)
+      .then((pages) => setThumbnails(pages.slice(0, 60)))
+      .catch((err) => setError(err instanceof Error ? err.message : "Couldn't build a PDF preview."))
+      .finally(() => setIsLoadingPreview(false));
   }
 
   function reset() {
     setFile(null);
     setResult(null);
     setError(null);
+    setThumbnails([]);
     setProgress("");
     if (inputRef.current) inputRef.current.value = "";
   }
@@ -138,6 +149,31 @@ export function PdfCompressTool() {
               <p className="mt-1 text-xs text-ink-muted">Original size: {formatBytes(file.size)}</p>
             </div>
             <button type="button" onClick={reset} className="text-sm font-medium text-ink-muted hover:text-ink">Change file</button>
+          </div>
+
+          <div className="mt-6">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-ink">PDF preview</p>
+                <p className="mt-1 text-xs text-ink-soft">Check the document before choosing how much to compress it.</p>
+              </div>
+              {thumbnails.length > 0 && <span className="text-xs text-ink-soft">{thumbnails.length}{thumbnails.length === 60 ? "+" : ""} pages shown</span>}
+            </div>
+            {isLoadingPreview ? (
+              <p className="mt-3 text-sm text-ink-muted">Building page previews…</p>
+            ) : thumbnails.length > 0 ? (
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                {thumbnails.map((page) => (
+                  <PdfPageThumb
+                    key={page.pageIndex}
+                    dataUrl={page.dataUrl}
+                    label={`Page ${page.pageIndex + 1}`}
+                    ariaLabel={`Preview page ${page.pageIndex + 1}`}
+                    accentClass={colors.border}
+                  />
+                ))}
+              </div>
+            ) : null}
           </div>
 
           <div className="mt-6 flex gap-2 rounded-pill bg-paper p-1">
