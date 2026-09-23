@@ -2,73 +2,30 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { tools } from "@/lib/tools";
 
-const primaryLinks = [
+const convertTools = [
+  { href: "/tools/jpg-to-pdf", label: "JPG to PDF" },
+  { href: "/tools/pdf-to-jpg", label: "PDF to JPG" },
+];
+
+const primaryTools = [
   { href: "/tools/merge-pdf", label: "Merge PDF" },
   { href: "/tools/split-pdf", label: "Split PDF" },
   { href: "/tools/compress-pdf", label: "Compress PDF" },
 ];
 
-const convertTools = tools.filter((tool) => ["jpg-to-pdf", "pdf-to-jpg"].includes(tool.slug));
-
-function ToolDropdown({
-  label,
-  items,
-  mobile = false,
-  onNavigate,
-}: {
-  label: string;
-  items: typeof tools;
-  mobile?: boolean;
-  onNavigate?: () => void;
-}) {
-  return (
-    <details className={mobile ? "group" : "group relative"}>
-      <summary
-        className={
-          mobile
-            ? "flex cursor-pointer list-none items-center justify-between rounded-xl px-2 py-3 text-[15px] font-medium text-ink hover:bg-surface [&::-webkit-details-marker]:hidden"
-            : "flex cursor-pointer list-none items-center gap-1 text-[15px] font-medium text-ink-muted transition-colors hover:text-ink [&::-webkit-details-marker]:hidden"
-        }
-      >
-        {label}
-        <ChevronDown
-          size={15}
-          aria-hidden="true"
-          className="transition-transform group-open:rotate-180"
-        />
-      </summary>
-
-      <div
-        className={
-          mobile
-            ? "mt-1 space-y-1 border-l-2 border-border pl-3"
-            : "absolute right-0 top-full z-50 mt-3 w-60 rounded-2xl border-2 border-border bg-paper p-2 shadow-soft"
-        }
-      >
-        {items.map((tool) => (
-          <Link
-            key={tool.slug}
-            href={`/tools/${tool.slug}`}
-            onClick={onNavigate}
-            className={
-              mobile
-                ? "block rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface hover:text-ink"
-                : "block rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface hover:text-ink"
-            }
-          >
-            {tool.name}
-          </Link>
-        ))}
-      </div>
-    </details>
-  );
-}
-
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [mobileConvertOpen, setMobileConvertOpen] = useState(false);
+  const [mobileAllOpen, setMobileAllOpen] = useState(false);
+
+  const closeMobile = () => {
+    setOpen(false);
+    setMobileConvertOpen(false);
+    setMobileAllOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-paper/90 backdrop-blur supports-[backdrop-filter]:bg-paper/75">
@@ -76,7 +33,7 @@ export function Header() {
         <Link
           href="/"
           className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-ink"
-          onClick={() => setOpen(false)}
+          onClick={closeMobile}
         >
           <span
             aria-hidden="true"
@@ -87,8 +44,8 @@ export function Header() {
           OnlyPDF
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
-          {primaryLinks.map((link) => (
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
+          {primaryTools.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -97,19 +54,78 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <ToolDropdown label="Convert Tools" items={convertTools} />
-          <ToolDropdown label="All Tools" items={tools} />
+
+          {/* Desktop dropdowns use hover/focus. The whole group contains the
+              trigger and menu, so moving the pointer into the menu keeps it open. */}
+          <div className="group relative">
+            <button
+              type="button"
+              className="flex items-center gap-1 py-5 text-[15px] font-medium text-ink-muted transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              aria-haspopup="true"
+            >
+              Convert Tools
+              <ChevronDown
+                size={15}
+                className="transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
+              />
+            </button>
+            <div
+              className="invisible absolute left-1/2 top-full z-50 w-52 -translate-x-1/2 translate-y-1 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+              role="menu"
+            >
+              <div className="mt-2 rounded-2xl border border-border bg-paper p-2 shadow-lift">
+                {convertTools.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    role="menuitem"
+                    className="block rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="group relative">
+            <Link
+              href="/tools"
+              className="flex items-center gap-1 py-5 text-[15px] font-medium text-ink-muted transition-colors hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              All Tools
+              <ChevronDown
+                size={15}
+                className="transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
+              />
+            </Link>
+            <div
+              className="invisible absolute right-0 top-full z-50 w-64 translate-y-1 opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+              role="menu"
+            >
+              <div className="mt-2 max-h-[70vh] overflow-y-auto rounded-2xl border border-border bg-paper p-2 shadow-lift">
+                {tools.map((tool) => (
+                  <Link
+                    key={tool.slug}
+                    href={`/tools/${tool.slug}`}
+                    role="menuitem"
+                    className="block rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+                  >
+                    {tool.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
-          <span className="hidden text-xs font-medium text-ink-soft lg:inline">
-            No sign-up required
-          </span>
+          <span className="text-xs font-medium text-ink-soft">No sign-up required</span>
           <Link
             href="/tools"
             className="rounded-pill bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lift transition-colors hover:bg-accent-dark"
           >
-            All Tools
+            Open a tool
           </Link>
         </div>
 
@@ -130,32 +146,74 @@ export function Header() {
           aria-label="Mobile"
         >
           <ul className="flex flex-col gap-1">
-            {primaryLinks.map((link) => (
+            {primaryTools.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
                   className="block rounded-xl px-2 py-3 text-[15px] font-medium text-ink hover:bg-surface"
-                  onClick={() => setOpen(false)}
+                  onClick={closeMobile}
                 >
                   {link.label}
                 </Link>
               </li>
             ))}
+
             <li>
-              <ToolDropdown
-                label="Convert Tools"
-                items={convertTools}
-                mobile
-                onNavigate={() => setOpen(false)}
-              />
+              <button
+                type="button"
+                className="flex w-full items-center justify-between rounded-xl px-2 py-3 text-left text-[15px] font-medium text-ink hover:bg-surface"
+                aria-expanded={mobileConvertOpen}
+                onClick={() => setMobileConvertOpen((v) => !v)}
+              >
+                Convert Tools
+                <ChevronDown
+                  size={17}
+                  className={mobileConvertOpen ? "rotate-180 transition-transform" : "transition-transform"}
+                />
+              </button>
+              {mobileConvertOpen && (
+                <div className="ml-3 border-l border-border pl-3">
+                  {convertTools.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block rounded-xl px-2 py-2.5 text-sm text-ink-muted hover:bg-surface hover:text-ink"
+                      onClick={closeMobile}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </li>
+
             <li>
-              <ToolDropdown
-                label="All Tools"
-                items={tools}
-                mobile
-                onNavigate={() => setOpen(false)}
-              />
+              <button
+                type="button"
+                className="flex w-full items-center justify-between rounded-xl px-2 py-3 text-left text-[15px] font-medium text-ink hover:bg-surface"
+                aria-expanded={mobileAllOpen}
+                onClick={() => setMobileAllOpen((v) => !v)}
+              >
+                All Tools
+                <ChevronDown
+                  size={17}
+                  className={mobileAllOpen ? "rotate-180 transition-transform" : "transition-transform"}
+                />
+              </button>
+              {mobileAllOpen && (
+                <div className="ml-3 max-h-72 overflow-y-auto border-l border-border pl-3">
+                  {tools.map((tool) => (
+                    <Link
+                      key={tool.slug}
+                      href={`/tools/${tool.slug}`}
+                      className="block rounded-xl px-2 py-2.5 text-sm text-ink-muted hover:bg-surface hover:text-ink"
+                      onClick={closeMobile}
+                    >
+                      {tool.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </li>
           </ul>
         </nav>
