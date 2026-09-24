@@ -18,23 +18,6 @@ export function SeoContent() {
         <div className="mt-10 space-y-10 text-[15px] leading-relaxed text-ink-muted">
           <div>
             <h3 className="text-lg font-bold text-ink">
-              How to compress a PDF to a smaller file size
-            </h3>
-            <p className="mt-2">
-              PDF compression is useful when a document is too large to email,
-              upload, or store. The{" "}
-              <Link href="/tools/compress-pdf" className="text-accent underline underline-offset-2">
-                Compress PDF tool
-              </Link>{" "}
-              offers High, Medium, and Express automatic compression modes,
-              plus a target-size option for cases where you need a PDF to fit
-              within a particular limit such as 10 MB or 800 KB. Compression
-              runs in your browser, so the source PDF stays on your device.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-bold text-ink">
               How to merge PDF files online for free
             </h3>
             <p className="mt-2">
@@ -184,6 +167,45 @@ export function SeoContent() {
 
           <div>
             <h3 className="text-lg font-bold text-ink">
+              How to remove a watermark from a PDF
+            </h3>
+            <p className="mt-2">
+              If a watermark appears in a predictable area, the{" "}
+              <Link href="/tools/watermark-remove" className="text-accent underline underline-offset-2">
+                PDF Watermark Remove tool
+              </Link>{" "}
+              lets you preview the page and drag over the area you want covered. You can apply that same area to every page or only the page you are viewing. Because many watermarks are baked into page content, this method intentionally shows the exact area before you process it.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-ink">
+              How to convert PDF to Word
+            </h3>
+            <p className="mt-2">
+              The{" "}
+              <Link href="/tools/pdf-to-word" className="text-accent underline underline-offset-2">
+                PDF to Word tool
+              </Link>{" "}
+              extracts selectable text and basic paragraph structure into an editable DOCX file. It is useful for text-heavy PDFs, while scanned documents and complex layouts may need OCR or manual cleanup.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-ink">
+              How to convert Word to PDF
+            </h3>
+            <p className="mt-2">
+              The{" "}
+              <Link href="/tools/word-to-pdf" className="text-accent underline underline-offset-2">
+                Word to PDF tool
+              </Link>{" "}
+              converts DOCX text into a PDF directly in your browser. It is designed for simple documents; advanced Word layouts, floating objects, and complex tables may require a final visual check.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-ink">
               Are online PDF tools safe if they run in the browser?
             </h3>
             <p className="mt-2">
@@ -206,15 +228,15 @@ export function SeoContent() {
 
           <div>
             <h3 className="text-lg font-bold text-ink">
-              All nine PDF tools in one place
+              PDF and Word tools in one place
             </h3>
             <p className="mt-2">
-              OnlyPDF now brings nine everyday PDF tools together: merge,
-              split, compress, delete pages, extract pages, rearrange pages,
-              rotate pages, JPG to PDF, and PDF to JPG. They are designed to
-              cover common document tasks without requiring an account or a
-              desktop PDF editor, while keeping processing in the browser
-              wherever that&apos;s technically practical.
+              OnlyPDF now covers common PDF editing, compression, conversion, watermark-area cleanup, and Word conversion tasks in one browser-based workspace. Each new tool is
+              held to the same bar as the ones already here: fast, free to
+              use, and processed in your browser wherever that&apos;s
+              technically practical, so you can keep coming back to one
+              place for PDF work instead of juggling several different
+              sites.
             </p>
           </div>
         </div>

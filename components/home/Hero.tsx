@@ -1,4 +1,4 @@
-import { Lock, WifiOff, UserX, Scissors, RotateCw, Combine, ListOrdered } from "lucide-react";
+import { Lock, WifiOff, UserX, Scissors, RotateCw, Combine, ListOrdered, Eraser, FileText } from "lucide-react";
 
 const trustPoints = [
   { icon: UserX, label: "No sign-up" },
@@ -17,8 +17,8 @@ export function Hero() {
           Simple PDF tools that work right in your browser.
         </h1>
         <p className="mt-5 max-w-md text-lg leading-relaxed text-ink-muted">
-          Merge, split, compress, convert, extract, rearrange, and rotate PDF files without
-          signing up.
+          Merge, split, compress, convert, edit, and clean up PDF and Word files
+          without signing up.
         </p>
 
         <ul className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-7 sm:gap-y-3">
@@ -71,6 +71,12 @@ export function Hero() {
           aria-hidden="true"
         >
           <ListOrdered size={20} strokeWidth={2.25} />
+        </div>
+        <div className="absolute left-10 bottom-24 flex h-11 w-11 rotate-[8deg] items-center justify-center rounded-2xl bg-teal text-white shadow-lift" aria-hidden="true">
+          <Eraser size={19} strokeWidth={2.25} />
+        </div>
+        <div className="absolute right-14 bottom-3 flex h-11 w-11 rotate-[-8deg] items-center justify-center rounded-2xl bg-amber text-white shadow-lift" aria-hidden="true">
+          <FileText size={19} strokeWidth={2.25} />
         </div>
       </div>
     </section>

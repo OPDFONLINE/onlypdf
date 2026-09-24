@@ -18,11 +18,11 @@ export const metadata: Metadata = {
     template: "%s \u2014 OnlyPDF",
   },
   description:
-    "Free PDF tools that run in your browser. Merge, split, extract, rearrange, rotate, and convert PDF files to and from JPG/PNG images, with no sign-up and no file uploads.",
+    "Free PDF tools that run in your browser. Merge, split, compress, edit, convert PDF and Word files, and remove selected watermark areas in your browser, with no sign-up and no file uploads.",
   openGraph: {
     title: "OnlyPDF \u2014 Simple PDF Tools. Right in Your Browser.",
     description:
-      "Free PDF tools that run in your browser. Merge, split, extract, rearrange, rotate, and convert PDF files to and from JPG/PNG images, with no sign-up and no file uploads.",
+      "Free PDF tools that run in your browser. Merge, split, compress, edit, convert PDF and Word files, and remove selected watermark areas in your browser, with no sign-up and no file uploads.",
     url: "https://onlypdf.online",
     siteName: "OnlyPDF",
     locale: "en_US",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "OnlyPDF \u2014 Simple PDF Tools. Right in Your Browser.",
     description:
-      "Free PDF tools that run in your browser. No sign-up, no file uploads.",
+      "Free PDF and Word tools that run in your browser. No sign-up, no file uploads.",
   },
 };
 

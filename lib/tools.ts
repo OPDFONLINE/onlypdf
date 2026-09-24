@@ -9,6 +9,8 @@ import {
   FileImage,
   Image as ImageIcon,
   FileArchive,
+  Eraser,
+  FileText,
 } from "lucide-react";
 
 export type ToolColor = "accent" | "coral" | "amber" | "teal" | "pink" | "sky" | "lime" | "violet";
@@ -36,6 +38,65 @@ export type Tool = {
 };
 
 export const tools: Tool[] = [
+  {
+    slug: "watermark-remove",
+    name: "PDF Watermark Remove",
+    oneLiner: "Remove a selected watermark area from PDF pages.",
+    description: "Preview a PDF, select a watermark area, and cover it before downloading a cleaned copy.",
+    icon: Eraser,
+    color: "teal",
+    maxFiles: 1,
+    fileHint: "Select one PDF file with a watermark to remove.",
+    instructions: [
+      "Upload your PDF and wait for the page previews.",
+      "Drag over the watermark area in the preview.",
+      "Choose whether to apply the same area to every page or only the current page.",
+      "Remove the selected area and download the cleaned PDF.",
+    ],
+    faq: [
+      { question: "Does this remove every type of watermark?", answer: "It covers the selected area with white. This works when the watermark is in a predictable area, but a watermark baked into page content cannot always be cleanly separated from text or images." },
+      { question: "Can I preview what will be removed?", answer: "Yes. The tool shows the PDF page before processing and lets you draw the removal area directly over the watermark." },
+    ],
+  },
+  {
+    slug: "pdf-to-word",
+    name: "PDF to Word",
+    oneLiner: "Convert selectable PDF text into an editable Word document.",
+    description: "Convert PDF text and basic paragraph structure into a DOCX file in your browser.",
+    icon: FileText,
+    color: "sky",
+    maxFiles: 1,
+    fileHint: "Select one PDF file to convert to Word.",
+    instructions: [
+      "Upload a PDF with selectable text.",
+      "Convert it to a DOCX document.",
+      "Open the Word file and make any layout adjustments you need.",
+    ],
+    faq: [
+      { question: "Will the Word file look exactly like the PDF?", answer: "Not always. Text and basic paragraph structure are extracted, while complex layouts, forms, floating objects, and scanned-image text may need manual cleanup or OCR." },
+      { question: "Does it work with scanned PDFs?", answer: "Scanned pages usually contain images rather than selectable text, so OCR is needed for reliable text extraction. This browser tool does not claim to perform full OCR." },
+    ],
+  },
+  {
+    slug: "word-to-pdf",
+    name: "Word to PDF",
+    oneLiner: "Convert a DOCX Word document into a PDF.",
+    description: "Turn a DOCX file into a simple PDF directly in your browser.",
+    icon: FileText,
+    color: "amber",
+    maxFiles: 1,
+    fileHint: "Select one .docx Word document.",
+    instructions: [
+      "Upload a DOCX Word document.",
+      "Convert the document into a PDF.",
+      "Download the resulting PDF and check the layout before sharing it.",
+    ],
+    faq: [
+      { question: "Will complex Word formatting be preserved?", answer: "The browser conversion focuses on document text and paragraphs. Advanced Word layout, floating objects, and complex tables may not match the original exactly." },
+      { question: "Are my Word files uploaded?", answer: "No. Conversion runs in your browser and the source file stays on your device." },
+    ],
+  },
+
   {
     slug: "compress-pdf",
     name: "Compress PDF",
@@ -309,24 +370,3 @@ export const tools: Tool[] = [
 export function getToolBySlug(slug: string): Tool | undefined {
   return tools.find((tool) => tool.slug === slug);
 }
-
-
-const relatedToolSlugs: Record<string, string[]> = {
-  "compress-pdf": ["merge-pdf", "split-pdf", "jpg-to-pdf"],
-  "merge-pdf": ["split-pdf", "compress-pdf", "rearrange-pdf"],
-  "split-pdf": ["merge-pdf", "extract-pdf-pages", "compress-pdf"],
-  "delete-pdf-pages": ["extract-pdf-pages", "rearrange-pdf", "rotate-pdf"],
-  "extract-pdf-pages": ["delete-pdf-pages", "split-pdf", "merge-pdf"],
-  "rearrange-pdf": ["rotate-pdf", "merge-pdf", "delete-pdf-pages"],
-  "rotate-pdf": ["rearrange-pdf", "pdf-to-jpg", "merge-pdf"],
-  "jpg-to-pdf": ["pdf-to-jpg", "compress-pdf", "merge-pdf"],
-  "pdf-to-jpg": ["jpg-to-pdf", "compress-pdf", "split-pdf"],
-};
-
-export function getRelatedTools(slug: string): Tool[] {
-  const related = relatedToolSlugs[slug] ?? [];
-  return related
-    .map((relatedSlug) => getToolBySlug(relatedSlug))
-    .filter((tool): tool is Tool => Boolean(tool));
-}
-
