@@ -10,6 +10,7 @@ import { getPdfPageCount } from "@/lib/pdf/getPageCount";
 import { Faq } from "@/components/ui/Faq";
 import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
 import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
+import { useToolAnalytics } from "@/lib/analytics";
 
 export type ToolPageContent = {
   name: string;
@@ -21,6 +22,7 @@ export type ToolPageContent = {
 export function ToolPageShellClient({ slug, content }: { slug: string; content?: ToolPageContent }) {
   const tool = getToolBySlug(slug);
   const pageSelectionMode = tool?.pageSelection;
+  const { trackStart, trackComplete } = useToolAnalytics(slug);
 
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -132,6 +134,7 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
 
   async function handleProcess() {
     if (!processor || !canRun) return;
+    trackStart();
     setError(null);
     setJustDownloaded(false);
     setIsProcessing(true);
@@ -146,6 +149,7 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
       link.remove();
       URL.revokeObjectURL(url);
       setJustDownloaded(true);
+      trackComplete();
     } catch (err) {
       setError(
         err instanceof Error

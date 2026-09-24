@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useToolAnalytics } from "@/lib/analytics";
 import { Check, CloudUpload, Eraser, FileText, RotateCcw } from "lucide-react";
 import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
 import { removeWatermarkArea, type WatermarkRect } from "@/lib/pdf/removeWatermark";
@@ -10,6 +11,8 @@ function clamp(value: number) {
 }
 
 export function PdfWatermarkRemoveTool() {
+  const { trackStart, trackComplete } = useToolAnalytics("watermark-remove");
+
   const [file, setFile] = useState<File | null>(null);
   const [pages, setPages] = useState<PageThumbnail[]>([]);
   const [rect, setRect] = useState<WatermarkRect | null>(null);
@@ -98,6 +101,7 @@ export function PdfWatermarkRemoveTool() {
 
   async function process() {
     if (!file || !rect || rect.width < 0.01 || rect.height < 0.01) return;
+    trackStart();
     setWorking(true);
     setError(null);
     try {
@@ -109,6 +113,7 @@ export function PdfWatermarkRemoveTool() {
       link.download = file.name.replace(/\.pdf$/i, "") + "-watermark-removed.pdf";
       link.click();
       URL.revokeObjectURL(url);
+      trackComplete();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Couldn't remove the selected area.");
     } finally {

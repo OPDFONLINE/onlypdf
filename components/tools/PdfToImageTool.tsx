@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useToolAnalytics } from "@/lib/analytics";
 import { CloudUpload, Lock, CircleAlert, Check } from "lucide-react";
 import { getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
@@ -22,6 +23,8 @@ const FORMAT_OPTIONS: { value: ImageFormat; label: string }[] = [
 ];
 
 export function PdfToImageTool() {
+  const { trackStart, trackComplete } = useToolAnalytics("pdf-to-jpg");
+
   const [file, setFile] = useState<File | null>(null);
   const [thumbnails, setThumbnails] = useState<PageThumbnail[]>([]);
   const [selected, setSelected] = useState<Set<number>>(new Set());
@@ -96,6 +99,8 @@ export function PdfToImageTool() {
     setError(null);
     setJustDownloaded(false);
     setIsProcessing(true);
+    trackStart();
+
     try {
       const pageIndexes: number[] = Array.from(selected).sort((a: number, b: number) => a - b);
       const images = await renderPdfPagesToImages(file, pageIndexes, format);
@@ -132,6 +137,7 @@ export function PdfToImageTool() {
       link.remove();
       URL.revokeObjectURL(url);
       setJustDownloaded(true);
+      trackComplete();
     } catch (err) {
       setError(
         err instanceof Error

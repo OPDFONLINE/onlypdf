@@ -1,10 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useToolAnalytics } from "@/lib/analytics";
 import { CloudUpload, FileText } from "lucide-react";
 import { wordToPdf } from "@/lib/pdf/wordToPdf";
 
 export function WordToPdfTool() {
+  const { trackStart, trackComplete } = useToolAnalytics("word-to-pdf");
+
   const [file, setFile] = useState<File | null>(null);
   const [working, setWorking] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +25,7 @@ export function WordToPdfTool() {
       link.download = file.name.replace(/\.docx$/i, "") + ".pdf";
       link.click();
       URL.revokeObjectURL(url);
+      trackComplete();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Couldn't convert this Word file.");
     } finally {

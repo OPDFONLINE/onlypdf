@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useToolAnalytics } from "@/lib/analytics";
 import { CloudUpload, Lock, CircleAlert, RotateCw, RotateCcw, Check } from "lucide-react";
 import { getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
@@ -20,6 +21,8 @@ function normalizeDegrees(value: number): number {
 }
 
 export function RotatePdfTool() {
+  const { trackStart, trackComplete } = useToolAnalytics("rotate-pdf");
+
   const [file, setFile] = useState<File | null>(null);
   const [thumbnails, setThumbnails] = useState<PageThumbnail[]>([]);
   const [rotations, setRotations] = useState<number[]>([]);
@@ -103,6 +106,8 @@ export function RotatePdfTool() {
     setError(null);
     setJustDownloaded(false);
     setIsProcessing(true);
+    trackStart();
+
     try {
       const rotationMap = new Map(rotations.map((delta, i): [number, number] => [i, delta]));
       const blob = await rotatePdfPages(file, rotationMap);
@@ -115,6 +120,7 @@ export function RotatePdfTool() {
       link.remove();
       URL.revokeObjectURL(url);
       setJustDownloaded(true);
+      trackComplete();
     } catch (err) {
       setError(
         err instanceof Error

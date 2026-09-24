@@ -74,16 +74,17 @@ export default function PrivacyPage() {
             Analytics and cookies
           </h2>
           <p className="mt-2">
-            We intend to use lightweight, privacy-conscious analytics to
-            understand which tools and articles are useful, without invasive
-            cross-site tracking. This kind of analytics typically records
-            things like which pages were viewed, which tool was opened, and
-            general device/browser information — not the contents of any
-            file you process. If and when we add advertising, ad partners
-            may set their own cookies subject to their own privacy policies;
-            we&apos;ll disclose which providers are in use once that
-            happens. This section will be updated with specifics as each of
-            these is implemented.
+            OnlyPDF uses lightweight, privacy-conscious analytics to
+            understand which public pages and tools are useful. We record
+            events such as page views, tool starts, and successful tool
+            completions. The analytics record may include the page path, the
+            referring site&apos;s hostname, a broad device category, and a
+            country code supplied by our hosting platform. We also use a
+            randomly generated browser session identifier stored in local
+            browser storage so repeated events from the same browser session
+            can be counted more meaningfully. We do not send the contents,
+            names, or bytes of files you process to analytics. Admin pages
+            are excluded from public page-view tracking.
           </p>
         </section>
 

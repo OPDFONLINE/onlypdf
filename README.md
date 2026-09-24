@@ -137,8 +137,9 @@ you're ready to use the admin panel.
 - The header/footer navigation still uses the static tool registry for its
   labels and links; the public homepage and `/tools` index already honor the
   admin enabled/visibility settings.
-- No analytics collection, blog CMS, image workflow, or ad configuration
-  yet. Those remain later roadmap phases.
+- Blog CMS, image workflow, and ad configuration remain later roadmap phases.
+- Real analytics collection is now implemented: page views, tool starts, tool completions,
+  traffic source category, device category, country code, and search landing pages.
 
 ## Next up
 
@@ -146,11 +147,10 @@ Per the product spec, remaining steps are:
 
 1. Test all tools against a range of real PDF and image files (large,
    scanned, password-protected PDFs; unusual image formats/color profiles).
-2. Extend admin tool management to the 12 individual tool pages, header, and
-   footer (see "Known limits" above).
-3. Build the blog CMS and the Pexels/Pixabay image workflow.
-4. Add SEO infrastructure (sitemap, robots.txt, JSON-LD), analytics
-   collection, and admin-controlled ad configuration.
+2. Build the blog CMS and the Pexels/Pixabay image workflow.
+3. Add SEO infrastructure (sitemap, robots.txt, JSON-LD) and admin-controlled
+   ad configuration.
+4. Continue testing all tools against a range of real-world files.
 
 See the full spec document for details on each of these steps.
 

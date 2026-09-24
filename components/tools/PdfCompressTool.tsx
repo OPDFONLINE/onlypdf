@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useToolAnalytics } from "@/lib/analytics";
 import { Check, CloudUpload, FileDown, Gauge, Target, Zap } from "lucide-react";
 import { compressPdfToTarget, compressPdfWithPreset, type CompressionPreset } from "@/lib/pdf/compressPdf";
 import { getToolBySlug } from "@/lib/tools";
@@ -37,6 +38,8 @@ function parseTargetSize(value: string): number | null {
 }
 
 export function PdfCompressTool() {
+  const { trackStart, trackComplete } = useToolAnalytics("compress-pdf");
+
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [mode, setMode] = useState<Mode>("auto");
@@ -79,6 +82,8 @@ export function PdfCompressTool() {
 
   async function compress() {
     if (!file) return;
+    trackStart();
+
     setError(null);
     setResult(null);
     setIsProcessing(true);
@@ -97,6 +102,7 @@ export function PdfCompressTool() {
         reachedTarget: compressed.reachedTarget,
       });
       setProgress("");
+      trackComplete();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong while compressing the PDF.");
       setProgress("");

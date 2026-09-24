@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useToolAnalytics } from "@/lib/analytics";
 import {
   CloudUpload,
   Lock,
@@ -26,6 +27,8 @@ function baseNameOf(file: File): string {
 }
 
 export function RearrangePdfTool() {
+  const { trackStart, trackComplete } = useToolAnalytics("rearrange-pdf");
+
   const [file, setFile] = useState<File | null>(null);
   const [pages, setPages] = useState<OrderedPage[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -108,6 +111,8 @@ export function RearrangePdfTool() {
     setError(null);
     setJustDownloaded(false);
     setIsProcessing(true);
+    trackStart();
+
     try {
       const blob = await reorderPdfPages(
         file,
@@ -122,6 +127,7 @@ export function RearrangePdfTool() {
       link.remove();
       URL.revokeObjectURL(url);
       setJustDownloaded(true);
+      trackComplete();
     } catch (err) {
       setError(
         err instanceof Error

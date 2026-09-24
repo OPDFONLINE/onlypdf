@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useToolAnalytics } from "@/lib/analytics";
 import { CloudUpload, Lock, CircleAlert, ArrowLeft, ArrowRight, X, GripVertical } from "lucide-react";
 import { getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
@@ -25,6 +26,8 @@ const PAGE_SIZE_OPTIONS: { value: PageSizeOption; label: string }[] = [
 ];
 
 export function JpgToPdfTool() {
+  const { trackStart, trackComplete } = useToolAnalytics("jpg-to-pdf");
+
   const [items, setItems] = useState<ImageItem[]>([]);
   const [pageSize, setPageSize] = useState<PageSizeOption>("fit");
   const [isDragging, setIsDragging] = useState(false);
@@ -83,6 +86,8 @@ export function JpgToPdfTool() {
     setError(null);
     setJustDownloaded(false);
     setIsProcessing(true);
+    trackStart();
+
     try {
       const blob = await imagesToPdf(
         items.map((item) => item.file),
@@ -99,6 +104,7 @@ export function JpgToPdfTool() {
       link.remove();
       URL.revokeObjectURL(url);
       setJustDownloaded(true);
+      trackComplete();
     } catch (err) {
       setError(
         err instanceof Error
