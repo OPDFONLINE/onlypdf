@@ -87,6 +87,8 @@ export function ToolPageShell({ slug }: { slug: string }) {
       setFiles((prev) => (maxFiles ? pdfs.slice(0, maxFiles) : [...prev, ...pdfs]));
       setError(null);
       setJustDownloaded(false);
+    } else {
+      setError("Please select a PDF file.");
     }
   }
 
@@ -307,6 +309,7 @@ export function ToolPageShell({ slug }: { slug: string }) {
                   setFiles([]);
                   setError(null);
                   setJustDownloaded(false);
+                  if (inputRef.current) inputRef.current.value = "";
                 }}
                 className="text-sm font-medium text-ink-muted hover:text-ink"
               >

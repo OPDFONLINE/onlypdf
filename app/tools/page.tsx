@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { tools } from "@/lib/tools";
+import { getEffectiveTools } from "@/lib/supabase/tools";
 import { ToolCard } from "@/components/tools/ToolCard";
 
 export const metadata: Metadata = {
@@ -8,7 +8,10 @@ export const metadata: Metadata = {
     "Free PDF tools that run in your browser: merge, split, compress, delete, extract, rearrange, rotate, remove watermark areas, and convert PDF and Word files.",
 };
 
-export default function ToolsPage() {
+export default async function ToolsPage() {
+  const tools = await getEffectiveTools();
+  const visible = tools.filter((tool) => tool.enabled);
+
   return (
     <div className="container-page py-16 md:py-20">
       <h1 className="max-w-xl text-3xl sm:text-4xl">PDF tools</h1>
@@ -18,7 +21,7 @@ export default function ToolsPage() {
       </p>
 
       <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {tools.map((tool) => (
+        {visible.map((tool) => (
           <ToolCard key={tool.slug} tool={tool} />
         ))}
       </div>

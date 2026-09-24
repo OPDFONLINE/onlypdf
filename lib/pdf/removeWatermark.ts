@@ -1,5 +1,3 @@
-import { PDFDocument, rgb } from "pdf-lib";
-
 export type WatermarkRect = {
   /** Normalized coordinates relative to the rendered page: 0..1. */
   x: number;
@@ -26,6 +24,7 @@ export async function removeWatermarkArea(
     throw new Error("Select the watermark area before removing it.");
   }
 
+  const { PDFDocument, rgb } = await import("pdf-lib");
   const bytes = await file.arrayBuffer();
   const pdf = await PDFDocument.load(bytes);
   const pages = pdf.getPages();

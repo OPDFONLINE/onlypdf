@@ -1,11 +1,12 @@
-import { Document, HeadingLevel, Packer, Paragraph, TextRun } from "docx";
+import type { Paragraph as ParagraphType } from "docx";
 
 export async function pdfToWord(file: File): Promise<Blob> {
+  const { Document, HeadingLevel, Packer, Paragraph, TextRun } = await import("docx");
   const pdfjsLib = await import("pdfjs-dist");
   pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
   const bytes = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
-  const paragraphs: Paragraph[] = [];
+  const paragraphs: ParagraphType[] = [];
 
   try {
     for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {

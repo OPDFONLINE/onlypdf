@@ -51,6 +51,7 @@ export function PdfToImageTool() {
       setError(
         err instanceof Error ? err.message : "We couldn't read this PDF. Please try another file."
       );
+      if (inputRef.current) inputRef.current.value = "";
     } finally {
       setIsLoadingPages(false);
     }
@@ -87,6 +88,7 @@ export function PdfToImageTool() {
     setSelected(new Set());
     setError(null);
     setJustDownloaded(false);
+    if (inputRef.current) inputRef.current.value = "";
   }
 
   async function handleApply() {

@@ -19,13 +19,26 @@ export function PdfWatermarkRemoveTool() {
   const [applyAll, setApplyAll] = useState(true);
   const [working, setWorking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isDraggingFile, setIsDraggingFile] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  function pickFile(candidate: File | null | undefined) {
+    if (!candidate) return;
+    const isPdf = candidate.type === "application/pdf" || candidate.name.toLowerCase().endsWith(".pdf");
+    if (!isPdf) {
+      setError("Please select a PDF file.");
+      return;
+    }
+    setFile(candidate);
+    setRect(null);
+    setSelectedPage(0);
+    setError(null);
+  }
 
   useEffect(() => {
     if (!file) return;
     let cancelled = false;
-    setError(null);
     setPages([]);
     renderPdfThumbnails(file)
       .then((items) => {
@@ -105,13 +118,34 @@ export function PdfWatermarkRemoveTool() {
 
   return (
     <div className="mt-8">
-      <div className="rounded-card border-2 border-dashed border-border bg-surface p-8 text-center">
+      <div
+        className={`rounded-card border-2 border-dashed p-8 text-center transition-colors ${isDraggingFile ? "border-teal bg-teal-soft" : "border-border bg-surface"}`}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setIsDraggingFile(true);
+        }}
+        onDragLeave={() => setIsDraggingFile(false)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setIsDraggingFile(false);
+          pickFile(e.dataTransfer.files?.[0]);
+        }}
+      >
         <CloudUpload size={28} className="mx-auto text-teal" aria-hidden="true" />
-        <p className="mt-3 text-sm font-semibold text-ink">Upload a PDF to preview it</p>
+        <p className="mt-3 text-sm font-semibold text-ink">Drag and drop a PDF, or choose one</p>
         <button type="button" onClick={() => inputRef.current?.click()} className="mt-3 rounded-pill bg-teal px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
           Choose PDF
         </button>
-        <input ref={inputRef} type="file" accept="application/pdf,.pdf" className="sr-only" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+        <input
+          ref={inputRef}
+          type="file"
+          accept="application/pdf,.pdf"
+          className="sr-only"
+          onChange={(e) => {
+            pickFile(e.target.files?.[0]);
+            if (inputRef.current) inputRef.current.value = "";
+          }}
+        />
         {file && <p className="mt-3 text-xs text-ink-soft">{file.name}</p>}
       </div>
 

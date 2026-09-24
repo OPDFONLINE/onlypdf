@@ -39,7 +39,10 @@ export function JpgToPdfTool() {
     const picked = Array.from(list).filter(
       (f) => f.type === "image/jpeg" || f.type === "image/png" || /\.(jpe?g|png)$/i.test(f.name)
     );
-    if (picked.length === 0) return;
+    if (picked.length === 0) {
+      setError("Please select a JPG, JPEG, or PNG image.");
+      return;
+    }
     const newItems = picked.map((file) => ({ id: makeId(), file, url: URL.createObjectURL(file) }));
     setItems((prev) => [...prev, ...newItems]);
     setError(null);
@@ -72,6 +75,7 @@ export function JpgToPdfTool() {
     setItems([]);
     setError(null);
     setJustDownloaded(false);
+    if (inputRef.current) inputRef.current.value = "";
   }
 
   async function handleApply() {
