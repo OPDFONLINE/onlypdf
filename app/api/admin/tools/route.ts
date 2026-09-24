@@ -29,10 +29,33 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "A tool slug is required." }, { status: 400 });
   }
 
+  const instructions = Array.isArray(body.instructions)
+    ? body.instructions.filter((item: unknown): item is string => typeof item === "string")
+        .map((item: string) => item.trim())
+        .filter(Boolean)
+    : null;
+
+  const faq = Array.isArray(body.faq)
+    ? body.faq
+        .filter(
+          (item: unknown): item is { question: string; answer: string } =>
+            typeof item === "object" &&
+            item !== null &&
+            typeof (item as { question?: unknown }).question === "string" &&
+            typeof (item as { answer?: unknown }).answer === "string"
+        )
+        .map((item: { question: string; answer: string }) => ({
+          question: item.question.trim(),
+          answer: item.answer.trim(),
+        }))
+        .filter((item: { question: string; answer: string }) => item.question && item.answer)
+    : null;
+
   const patch = {
     slug: body.slug.trim(),
     enabled: Boolean(body.enabled),
     name: typeof body.name === "string" && body.name.trim() ? body.name.trim() : null,
+    one_liner: typeof body.one_liner === "string" && body.one_liner.trim() ? body.one_liner.trim() : null,
     description:
       typeof body.description === "string" && body.description.trim() ? body.description.trim() : null,
     seo_title: typeof body.seo_title === "string" && body.seo_title.trim() ? body.seo_title.trim() : null,
@@ -40,6 +63,8 @@ export async function PATCH(request: Request) {
       typeof body.seo_description === "string" && body.seo_description.trim()
         ? body.seo_description.trim()
         : null,
+    instructions,
+    faq,
     sort_order: Number.isFinite(body.sort_order) ? Number(body.sort_order) : null,
     featured: Boolean(body.featured),
     homepage_visible: body.homepage_visible !== false,

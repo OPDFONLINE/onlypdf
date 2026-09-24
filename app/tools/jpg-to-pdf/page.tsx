@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { getToolBySlug } from "@/lib/tools";
+import { getEffectiveTool } from "@/lib/supabase/tools";
 import { ToolPageFrame } from "@/components/tools/ToolPageFrame";
 import { JpgToPdfTool } from "@/components/tools/JpgToPdfTool";
 
-const tool = getToolBySlug("jpg-to-pdf")!;
+const slug = "jpg-to-pdf";
 
-export const metadata: Metadata = {
-  title: tool.name,
-  description: tool.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getEffectiveTool(slug);
+  return { title: tool?.seoTitle || tool?.name || "PDF Tool", description: tool?.seoDescription || tool?.description || "" };
+}
 
 export default function JpgToPdfPage() {
   return (
-    <ToolPageFrame slug={tool.slug}>
+    <ToolPageFrame slug={slug}>
       <JpgToPdfTool />
     </ToolPageFrame>
   );

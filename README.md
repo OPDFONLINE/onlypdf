@@ -99,17 +99,24 @@ spec's requirement that admin access never depend only on a hidden URL.
   `admin_users`).
 - A dashboard overview (`/admin`) with tool counts and an honest "no data
   yet" state for analytics — nothing here is faked.
-- Tool management (`/admin/tools`): enable/disable any tool, rename it,
-  edit its description and SEO title/description, set homepage visibility,
-  mark it featured, and control display order. Saved changes go live on the
-  homepage and `/tools` index within about a minute (or immediately, since
-  saving also triggers on-demand revalidation).
+- Tool management (`/admin/tools`): enable/disable any tool, edit its display
+  name, one-line intro, description, SEO title/description, homepage
+  visibility, featured status, and display order. Saved changes go live on the
+  public pages through the existing cache revalidation flow.
+- Tool page content management: edit and reorder the "How it works" steps, and
+  add, edit, delete, and reorder FAQ items for every live tool. These values
+  are stored as plain text/JSON and rendered on the public tool pages.
+- Public tool pages use the admin-managed page copy, FAQ, SEO metadata, and
+  enabled/disabled state. Disabled tools return a 404 instead of remaining
+  directly reachable.
 
 **Setup:**
 
 1. Create a Supabase project.
-2. Run `supabase/migrations/0001_admin_foundation.sql` against it (Supabase
-   dashboard → SQL Editor, or the Supabase CLI).
+2. Run the existing admin foundation migration against it, then run
+   `supabase/migrations/0002_tool_page_content.sql` (Supabase dashboard → SQL
+   Editor, or the Supabase CLI). The second migration adds the admin-controlled
+   tool-page content fields to the existing `public.tools` table.
 3. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in your
    environment (see `.env.example`). `SUPABASE_SERVICE_ROLE_KEY` isn't
    required for the admin panel itself yet — it's reserved for the
@@ -127,17 +134,11 @@ you're ready to use the admin panel.
 
 **Known limits of this pass** (next increments, in spec order):
 
-- The 12 individual `/tools/[slug]` pages and the header/footer nav still
-  read the static `lib/tools.ts` data directly. Disabling a tool currently
-  hides it from the homepage and `/tools` index, but its URL is still
-  reachable and it's still linked from the nav — wiring `enabled` into a
-  `notFound()` check and pulling the admin-edited name/SEO copy into those
-  12 pages is the next small step.
-- Tool page body content (the instructions list) and FAQ editing aren't in
-  the admin panel yet — only the fields listed above.
+- The header/footer navigation still uses the static tool registry for its
+  labels and links; the public homepage and `/tools` index already honor the
+  admin enabled/visibility settings.
 - No analytics collection, blog CMS, image workflow, or ad configuration
-  yet. The `site_settings` and `analytics_events` tables already exist in
-  the migration for when those are built.
+  yet. Those remain later roadmap phases.
 
 ## Next up
 

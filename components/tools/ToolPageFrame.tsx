@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { getRelatedTools, getToolBySlug } from "@/lib/tools";
+import { getEffectiveTool, getEffectiveTools } from "@/lib/supabase/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 import { Faq } from "@/components/ui/Faq";
+import { notFound } from "next/navigation";
 
 /**
  * Shared layout for tool pages whose upload/preview/action area is too
@@ -10,13 +11,13 @@ import { Faq } from "@/components/ui/Faq";
  * PDF). Handles the title, instructions, FAQ, and related-tools sidebar;
  * the tool itself renders its own upload zone and controls as children.
  */
-export function ToolPageFrame({ slug, children }: { slug: string; children: ReactNode }) {
-  const tool = getToolBySlug(slug);
-  if (!tool) return null;
+export async function ToolPageFrame({ slug, children }: { slug: string; children: ReactNode }) {
+  const tool = await getEffectiveTool(slug);
+  if (!tool || !tool.enabled) notFound();
 
   const Icon = tool.icon;
   const colors = toolColorClasses[tool.color];
-  const related = getRelatedTools(tool.slug);
+  const related = (await getEffectiveTools()).filter((item) => item.slug !== tool.slug && item.enabled).slice(0, 3);
 
   return (
     <div className="container-page py-14 md:py-16">

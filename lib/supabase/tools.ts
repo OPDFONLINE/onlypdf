@@ -13,6 +13,9 @@ export type ToolOverrideRow = {
   sort_order: number | null;
   featured: boolean;
   homepage_visible: boolean;
+  one_liner: string | null;
+  instructions: unknown;
+  faq: unknown;
 };
 
 /**
@@ -27,7 +30,36 @@ export type EffectiveTool = Tool & {
   featured: boolean;
   homepageVisible: boolean;
   sortOrder: number;
+  oneLiner: string;
+  instructions: string[];
+  faq: { question: string; answer: string }[];
 };
+
+function parseInstructions(value: unknown, fallback: string[]): string[] {
+  if (!Array.isArray(value)) return fallback;
+  const parsed = value.filter((item): item is string => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return parsed.length > 0 ? parsed : fallback;
+}
+
+function parseFaq(
+  value: unknown,
+  fallback: { question: string; answer: string }[]
+): { question: string; answer: string }[] {
+  if (!Array.isArray(value)) return fallback;
+  const parsed = value
+    .filter(
+      (item): item is { question: unknown; answer: unknown } =>
+        typeof item === "object" && item !== null && "question" in item && "answer" in item
+    )
+    .map((item) => ({
+      question: typeof item.question === "string" ? item.question.trim() : "",
+      answer: typeof item.answer === "string" ? item.answer.trim() : "",
+    }))
+    .filter((item) => item.question && item.answer);
+  return parsed;
+}
 
 function mergeTool(base: Tool, index: number, override: ToolOverrideRow | undefined): EffectiveTool {
   const name = override?.name?.trim() || base.name;
@@ -35,7 +67,10 @@ function mergeTool(base: Tool, index: number, override: ToolOverrideRow | undefi
   return {
     ...base,
     name,
+    oneLiner: override?.one_liner?.trim() || base.oneLiner,
     description,
+    instructions: parseInstructions(override?.instructions, base.instructions),
+    faq: parseFaq(override?.faq, base.faq),
     enabled: override?.enabled ?? true,
     seoTitle: override?.seo_title?.trim() || name,
     seoDescription: override?.seo_description?.trim() || description,

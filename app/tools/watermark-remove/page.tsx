@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { getToolBySlug } from "@/lib/tools";
+import { getEffectiveTool } from "@/lib/supabase/tools";
 import { ToolPageFrame } from "@/components/tools/ToolPageFrame";
 import { PdfWatermarkRemoveTool } from "@/components/tools/PdfWatermarkRemoveTool";
 
-const tool = getToolBySlug("watermark-remove")!;
-export const metadata: Metadata = { title: tool.name, description: tool.description };
+const slug = "watermark-remove";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getEffectiveTool(slug);
+  return { title: tool?.seoTitle || tool?.name || "PDF Tool", description: tool?.seoDescription || tool?.description || "" };
+}
 
 export default function WatermarkRemovePage() {
-  return <ToolPageFrame slug={tool.slug}><PdfWatermarkRemoveTool /></ToolPageFrame>;
+  return <ToolPageFrame slug={slug}><PdfWatermarkRemoveTool /></ToolPageFrame>;
 }

@@ -20,14 +20,17 @@ export default async function AdminToolsPage() {
     featured: tool.featured,
     homepageVisible: tool.homepageVisible,
     sortOrder: tool.sortOrder,
+    oneLiner: tool.oneLiner,
+    instructions: tool.instructions,
+    faq: tool.faq,
   }));
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-ink">Tools</h1>
       <p className="mt-1 max-w-2xl text-sm text-ink-muted">
-        Enable or disable tools, rename them, edit their SEO title/description, and control
-        homepage visibility, featured status, and ordering. Changes take effect on the public site
+        Enable or disable tools, edit page copy and FAQ content, SEO metadata, homepage visibility,
+        featured status, and ordering. Changes take effect on the public site
         within about a minute.
       </p>
       <ToolsManager initialTools={initialTools} />

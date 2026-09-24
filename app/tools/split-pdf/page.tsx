@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { getToolBySlug } from "@/lib/tools";
+import { getEffectiveTool } from "@/lib/supabase/tools";
 import { ToolPageShell } from "@/components/tools/ToolPageShell";
 
-const tool = getToolBySlug("split-pdf")!;
+const slug = "split-pdf";
 
-export const metadata: Metadata = {
-  title: tool.name,
-  description: tool.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const tool = await getEffectiveTool(slug);
+  return { title: tool?.seoTitle || tool?.name || "PDF Tool", description: tool?.seoDescription || tool?.description || "" };
+}
 
 export default function SplitPdfPage() {
-  return <ToolPageShell slug={tool.slug} />;
+  return <ToolPageShell slug={slug} />;
 }
