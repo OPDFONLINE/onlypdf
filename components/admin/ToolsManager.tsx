@@ -56,7 +56,11 @@ export function ToolsManager({ initialTools }: { initialTools: AdminTool[] }) {
     const nextIndex = index + direction;
     if (nextIndex < 0 || nextIndex >= row.instructions.length) return;
     const instructions = [...row.instructions];
-    [instructions[index], instructions[nextIndex]] = [instructions[nextIndex], instructions[index]];
+    const current = instructions[index];
+    const next = instructions[nextIndex];
+    if (current === undefined || next === undefined) return;
+    instructions[index] = next;
+    instructions[nextIndex] = current;
     updateRow(slug, { instructions });
   }
 
@@ -85,7 +89,11 @@ export function ToolsManager({ initialTools }: { initialTools: AdminTool[] }) {
     const nextIndex = index + direction;
     if (nextIndex < 0 || nextIndex >= row.faq.length) return;
     const faq = [...row.faq];
-    [faq[index], faq[nextIndex]] = [faq[nextIndex], faq[index]];
+    const current = faq[index];
+    const next = faq[nextIndex];
+    if (current === undefined || next === undefined) return;
+    faq[index] = next;
+    faq[nextIndex] = current;
     updateRow(slug, { faq });
   }
 
