@@ -7,6 +7,21 @@ export const metadata: Metadata = { title: "Tools" };
 export default async function AdminToolsPage() {
   const tools = await getEffectiveTools();
 
+  // Keep the Server -> Client boundary serializable. EffectiveTool extends
+  // the public Tool type, which contains a React icon component/function.
+  // The admin editor only needs these plain data fields.
+  const initialTools = tools.map((tool) => ({
+    slug: tool.slug,
+    enabled: tool.enabled,
+    name: tool.name,
+    description: tool.description,
+    seoTitle: tool.seoTitle,
+    seoDescription: tool.seoDescription,
+    featured: tool.featured,
+    homepageVisible: tool.homepageVisible,
+    sortOrder: tool.sortOrder,
+  }));
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-ink">Tools</h1>
@@ -15,7 +30,7 @@ export default async function AdminToolsPage() {
         homepage visibility, featured status, and ordering. Changes take effect on the public site
         within about a minute.
       </p>
-      <ToolsManager initialTools={tools} />
+      <ToolsManager initialTools={initialTools} />
     </div>
   );
 }

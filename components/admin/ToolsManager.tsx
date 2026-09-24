@@ -2,7 +2,17 @@
 
 import { useState } from "react";
 import { Check, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
-import type { EffectiveTool } from "@/lib/supabase/tools";
+type AdminTool = {
+  slug: string;
+  enabled: boolean;
+  name: string;
+  description: string;
+  seoTitle: string;
+  seoDescription: string;
+  featured: boolean;
+  homepageVisible: boolean;
+  sortOrder: number;
+};
 
 type EditableTool = {
   slug: string;
@@ -16,7 +26,7 @@ type EditableTool = {
   sortOrder: number;
 };
 
-function toEditable(tool: EffectiveTool): EditableTool {
+function toEditable(tool: AdminTool): EditableTool {
   return {
     slug: tool.slug,
     enabled: tool.enabled,
@@ -30,7 +40,7 @@ function toEditable(tool: EffectiveTool): EditableTool {
   };
 }
 
-export function ToolsManager({ initialTools }: { initialTools: EffectiveTool[] }) {
+export function ToolsManager({ initialTools }: { initialTools: AdminTool[] }) {
   const [rows, setRows] = useState<EditableTool[]>(initialTools.map(toEditable));
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const [savingSlug, setSavingSlug] = useState<string | null>(null);
