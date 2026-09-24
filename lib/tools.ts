@@ -370,3 +370,8 @@ export const tools: Tool[] = [
 export function getToolBySlug(slug: string): Tool | undefined {
   return tools.find((tool) => tool.slug === slug);
 }
+
+/** Return a small set of tools to show in the Related tools section. */
+export function getRelatedTools(slug: string, limit = 3): Tool[] {
+  return tools.filter((tool) => tool.slug !== slug).slice(0, limit);
+}
