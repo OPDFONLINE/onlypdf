@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NavigationLink } from "@/components/layout/NavigationLink";
 import { tools } from "@/lib/tools";
 
 export function Footer() {
@@ -42,6 +43,9 @@ export function Footer() {
         <div>
           <h2 className="text-sm font-bold text-ink">Company</h2>
           <ul className="mt-4 space-y-3">
+            <li>
+              <NavigationLink href="/blog" className="text-sm text-ink-muted transition-colors hover:text-ink" activeClassName="text-ink">Blog</NavigationLink>
+            </li>
             <li>
               <Link href="/about" className="text-sm text-ink-muted transition-colors hover:text-ink">
                 About
