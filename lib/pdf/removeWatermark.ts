@@ -51,5 +51,11 @@ export async function removeWatermarkArea(
     });
   }
 
-  return new Blob([await pdf.save()], { type: "application/pdf" });
+  // pdf-lib may return Uint8Array<ArrayBufferLike>; Blob expects an ArrayBuffer-backed view.
+  // Copying into a fresh Uint8Array guarantees an ArrayBuffer-compatible backing buffer
+  // under newer TypeScript DOM typings.
+  const saved = await pdf.save();
+  const blobBytes = new Uint8Array(saved.byteLength);
+  blobBytes.set(saved);
+  return new Blob([blobBytes.buffer], { type: "application/pdf" });
 }
