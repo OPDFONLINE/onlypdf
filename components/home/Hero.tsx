@@ -6,7 +6,7 @@ const trustPoints = [
   { icon: WifiOff, label: "Works without an upload" },
 ];
 
-export function Hero() {
+export function Hero({ tagline }: { tagline?: string }) {
   return (
     <section className="container-page grid items-center gap-12 pb-20 pt-14 md:grid-cols-[1.1fr_0.9fr] md:pb-28 md:pt-20">
       <div>
@@ -17,8 +17,7 @@ export function Hero() {
           Simple PDF tools that work right in your browser.
         </h1>
         <p className="mt-5 max-w-md text-lg leading-relaxed text-ink-muted">
-          Merge, split, compress, convert, edit, and clean up PDF and Word files
-          without signing up.
+          {tagline || "Merge, split, compress, convert, edit, and clean up PDF and Word files without signing up."}
         </p>
 
         <ul className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-7 sm:gap-y-3">

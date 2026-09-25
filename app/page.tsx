@@ -4,6 +4,7 @@ import { PrivacySection } from "@/components/home/PrivacySection";
 import { SeoContent } from "@/components/home/SeoContent";
 import { CtaBand } from "@/components/home/CtaBand";
 import { Faq } from "@/components/ui/Faq";
+import { getSiteSettings } from "@/lib/supabase/settings";
 
 const homeFaq = [
   {
@@ -33,10 +34,11 @@ const homeFaq = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const settings = await getSiteSettings();
   return (
     <>
-      <Hero />
+      <Hero tagline={settings.site_tagline} />
       <ToolGrid />
       <PrivacySection />
       <SeoContent />

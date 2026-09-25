@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageAnalytics } from "@/components/analytics/PageAnalytics";
+import { getSiteSettings } from "@/lib/supabase/settings";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -12,30 +13,20 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://onlypdf.online"),
-  title: {
-    default: "OnlyPDF \u2014 Simple PDF Tools. Right in Your Browser.",
-    template: "%s \u2014 OnlyPDF",
-  },
-  description:
-    "Free PDF tools that run in your browser. Merge, split, compress, edit, convert PDF and Word files, and remove selected watermark areas in your browser, with no sign-up and no file uploads.",
-  openGraph: {
-    title: "OnlyPDF \u2014 Simple PDF Tools. Right in Your Browser.",
-    description:
-      "Free PDF tools that run in your browser. Merge, split, compress, edit, convert PDF and Word files, and remove selected watermark areas in your browser, with no sign-up and no file uploads.",
-    url: "https://onlypdf.online",
-    siteName: "OnlyPDF",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "OnlyPDF \u2014 Simple PDF Tools. Right in Your Browser.",
-    description:
-      "Free PDF and Word tools that run in your browser. No sign-up, no file uploads.",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const title = settings.homepage_title || "OnlyPDF — Simple PDF Tools. Right in Your Browser.";
+  const description = settings.homepage_description ||
+    "Free PDF tools that run in your browser. Merge, split, compress, edit, convert PDF and Word files, and remove selected watermark areas in your browser, with no sign-up and no file uploads.";
+
+  return {
+    metadataBase: new URL("https://onlypdf.online"),
+    title: { default: title, template: "%s — OnlyPDF" },
+    description,
+    openGraph: { title, description, url: "https://onlypdf.online", siteName: settings.site_name || "OnlyPDF", locale: "en_US", type: "website" },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export default function RootLayout({
   children,
