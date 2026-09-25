@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Mail, Bug, Lightbulb, Building2, ShieldQuestion } from "lucide-react";
 import { Faq } from "@/components/ui/Faq";
+import { ContactForm } from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -66,10 +67,7 @@ export default function ContactPage() {
         hello@onlypdf.online
       </a>
 
-      <p className="mt-6 text-xs text-ink-soft">
-        An in-page contact form will replace this once email delivery is
-        connected.
-      </p>
+      <ContactForm />
 
       <div className="mt-12">
         <h2 className="text-xl font-bold text-ink">What to include</h2>

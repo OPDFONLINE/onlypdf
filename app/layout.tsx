@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageAnalytics } from "@/components/analytics/PageAnalytics";
 import { getSiteSettings } from "@/lib/supabase/settings";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -36,6 +37,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={jakarta.variable}>
       <body className="flex min-h-screen flex-col">
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "OnlyPDF",
+            url: "https://onlypdf.online",
+            description: "Fast, privacy-friendly PDF tools that work in your browser.",
+          }}
+        />
         <PageAnalytics />
         <Header />
         <main className="flex-1">{children}</main>

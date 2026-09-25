@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Blog images will be sourced from Pexels/Pixabay in a later step.
-  // Add their domains here once the blog image workflow is implemented:
-  // images: { remotePatterns: [{ hostname: 'images.pexels.com' }, { hostname: 'pixabay.com' }] },
+  // Blog images are copied into Supabase Storage by the admin workflow,
+  // so external image domains are not required for published article media.
 };
 
 export default nextConfig;

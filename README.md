@@ -1,20 +1,50 @@
-# OnlyPDF — Phase 3 + Navigation UX Patch
+# OnlyPDF — Production Readiness Patch
 
-## Included
-- Admin Analytics navigation item at `/admin/analytics` with active/pending state.
-- Admin Blog CMS at `/admin/blog`.
-- Blog draft, publish, scheduled publish, preview, edit and delete.
-- Blog SEO title/description, slug, excerpt, category, topic cluster, related article slugs, author and featured image URL fields.
-- Public `/blog` index and `/blog/[slug]` article pages.
-- Blog scheduling fields are retained, but automatic Vercel Cron publishing is disabled.
-- Public navigation active + loading feedback for top tools, dropdown tools, mobile tools, Blog, About, Contact and All Tools.
-- Admin sidebar active + loading feedback.
+This repository contains the current OnlyPDF application plus the latest production-readiness fixes.
 
-## Supabase
-Run `supabase/migrations/0004_blog_posts.sql` after the existing migrations.
+## Included in this patch
 
-## Vercel
-Vercel Cron is intentionally disabled to avoid Vercel Cron limits. No `CRON_SECRET` is required by this project for scheduled publishing.
+- Supabase SSR middleware for reliable admin session refresh.
+- Dynamic `sitemap.xml` and `robots.txt`.
+- Canonical metadata for tool and blog routes.
+- WebSite, WebApplication, and Article JSON-LD structured data.
+- Pexels/Pixabay admin image search with server-side API keys.
+- Selected blog images copied into Supabase Storage instead of permanently hotlinking Pixabay URLs.
+- Blog image usage/source/creator metadata recording.
+- Resend-powered contact form with server-side delivery.
+- Production environment variable documentation for Supabase, Resend, Pexels, and Pixabay.
+- Existing Analytics, Blog CMS, admin navigation, monetization settings, and Cron-free deployment behavior are preserved.
 
-## Testing limitation
-Local dependency installation timed out in the available environment, so a clean Next.js build/typecheck could not be completed here. Do not treat this patch as build-verified until Vercel reports a successful build.
+## Required Supabase migration
+
+Run the new migration after the existing migrations:
+
+`supabase/migrations/0006_blog_images.sql`
+
+This creates the public `blog-images` storage bucket and admin-only storage write policies.
+
+## Required production environment variables
+
+Supabase:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+Resend contact delivery:
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL`
+- `CONTACT_TO_EMAIL`
+
+Blog image search:
+- `PEXELS_API_KEY`
+- `PIXABAY_API_KEY`
+
+Keep all provider/API secrets server-side. Do not prefix them with `NEXT_PUBLIC_`.
+
+## Scheduled publishing
+
+Blog scheduling fields remain available, but Vercel Cron is intentionally not used. A scheduled article is not automatically published merely because its scheduled time has passed. Automatic publishing needs a separate scheduler (for example, a trusted external job or a Supabase-based scheduler) before it should be advertised as fully automatic.
+
+## Build verification
+
+The available environment could not complete `npm install` before timeout, so this patch has not been independently verified with a clean local Next.js build. Treat Vercel's production build as the final deployment gate.

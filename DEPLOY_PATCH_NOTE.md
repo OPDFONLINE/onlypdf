@@ -1,13 +1,22 @@
-# OnlyPDF GitHub Patch — Cron Removed
+# OnlyPDF Deployment Patch
 
-This patch contains only files that are new or updated compared with the previously supplied base repository.
+This archive contains only files that are new or updated compared with the freshly supplied repository.
 
-Important:
-- `vercel.json` contains no `crons` configuration.
-- The old `app/api/cron/publish-blog/route.ts` must be DELETED from the GitHub repository. File upload/overwrite cannot delete an existing file.
-- All other existing GitHub files remain part of the deployment; Vercel deploys the complete repository, not only uploaded files.
+### Apply
 
-Upload/overwrite the files in this patch, then delete:
-`app/api/cron/publish-blog/route.ts`
+1. Upload/overwrite every file in this patch at the same repository path.
+2. Commit the changes to GitHub.
+3. Let the connected Vercel project redeploy.
+4. Run `supabase/migrations/0006_blog_images.sql`.
+5. Add the required production environment variables listed in `README.md`.
+6. Confirm the Vercel build succeeds before treating the deployment as complete.
 
-After the GitHub commit, Vercel should redeploy the full repository.
+### Important
+
+- This patch does **not** contain the complete repository.
+- Existing repository files not included here must remain in GitHub.
+- No Vercel Cron configuration is being added.
+- No old Cron file needs deletion because it is already absent from the supplied repository.
+- The new contact form only sends mail after Resend environment variables are configured.
+- Pexels/Pixabay search only works after the corresponding API key is configured.
+- Automatic blog scheduled publishing is still a separate infrastructure task.

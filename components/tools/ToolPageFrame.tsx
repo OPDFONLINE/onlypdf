@@ -4,6 +4,7 @@ import { getEffectiveTool, getEffectiveTools } from "@/lib/supabase/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 import { Faq } from "@/components/ui/Faq";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 /**
  * Shared layout for tool pages whose upload/preview/action area is too
@@ -21,6 +22,18 @@ export async function ToolPageFrame({ slug, children }: { slug: string; children
 
   return (
     <div className="container-page py-14 md:py-16">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: tool.name,
+          url: `https://onlypdf.online/tools/${tool.slug}`,
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Any",
+          description: tool.description,
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        }}
+      />
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <span

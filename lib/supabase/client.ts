@@ -1,7 +1,7 @@
 "use client";
 
 import { createBrowserClient } from "@supabase/ssr";
-import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/env";
+import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/public-env";
 
 /**
  * Browser-side Supabase client, used only by the admin login form

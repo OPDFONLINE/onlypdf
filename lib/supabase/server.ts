@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/env";
+import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/public-env";
 
 /**
  * Server-side Supabase client bound to the current request's cookies, so it

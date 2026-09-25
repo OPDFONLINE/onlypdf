@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/env";
+import { supabaseAnonKey, supabaseUrl } from "@/lib/supabase/public-env";
 
 /**
  * A Supabase client that never touches cookies, so it's safe to call from

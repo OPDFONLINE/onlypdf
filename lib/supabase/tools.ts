@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { tools as staticTools, type Tool } from "@/lib/tools";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isSupabaseConfigured } from "@/lib/supabase/public-env";
 
 export type ToolOverrideRow = {
   slug: string;

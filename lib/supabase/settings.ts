@@ -1,6 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isSupabaseConfigured } from "@/lib/supabase/public-env";
 
 const getCachedSiteSettings = unstable_cache(
   async (): Promise<Record<string, string>> => {
