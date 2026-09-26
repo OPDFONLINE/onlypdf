@@ -33,15 +33,6 @@ create index if not exists analytics_events_tool_slug_created_at_idx on public.a
 
 alter table public.analytics_events enable row level security;
 
-drop policy if exists "Admins can read analytics events" on public.analytics_events;
-create policy "Admins can read analytics events"
-on public.analytics_events
-for select
-to authenticated
-using (
-  exists (
-    select 1
-    from public.admin_users
-    where admin_users.id = auth.uid()
-  )
-);
+-- The admin_users table is created by the later 0005_admin_core migration.
+-- The admin read policy is therefore created in that migration (and repaired
+-- by 0007_analytics_repair.sql for already-provisioned projects).

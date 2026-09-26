@@ -15,6 +15,21 @@ alter table public.admin_users
   add column if not exists created_at timestamptz not null default now();
 
 create index if not exists admin_users_role_idx on public.admin_users(role);
+
+-- Analytics was created by 0003 before admin_users exists, so its admin-only
+-- read policy must be installed here, after the admin table is available.
+drop policy if exists "Admins can read analytics events" on public.analytics_events;
+create policy "Admins can read analytics events"
+on public.analytics_events
+for select
+to authenticated
+using (
+  exists (
+    select 1
+    from public.admin_users
+    where admin_users.id = auth.uid()
+  )
+);
 alter table public.admin_users enable row level security;
 drop policy if exists "Admins can read own admin record" on public.admin_users;
 create policy "Admins can read own admin record"

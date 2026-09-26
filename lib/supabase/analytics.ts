@@ -27,11 +27,14 @@ async function countEvents(
   supabase: SupabaseClient,
   eventName: string,
   since?: string
-): Promise<number> {
-  let query = supabase.from("analytics_events").select("id", { count: "exact", head: true }).eq("event_name", eventName);
+): Promise<{ count: number; error: { message: string } | null }> {
+  let query = supabase
+    .from("analytics_events")
+    .select("id", { count: "exact", head: true })
+    .eq("event_name", eventName);
   if (since) query = query.gte("created_at", since);
-  const { count } = await query;
-  return count ?? 0;
+  const { count, error } = await query;
+  return { count: count ?? 0, error };
 }
 
 function topValues(values: string[], limit: number): { name: string; count: number }[] {
@@ -68,25 +71,44 @@ export async function getAnalyticsSummary(supabase: SupabaseClient): Promise<Ana
       .limit(10000),
   ]);
 
+  const errors = [
+    allTimeResult.error,
+    recentResult.error,
+    ...last30.map((result) => result.error),
+    ...last7.map((result) => result.error),
+  ].filter(Boolean);
+
+  if (errors.length > 0) {
+    throw new Error(`Analytics database query failed: ${errors[0]?.message ?? "unknown database error"}`);
+  }
+
   const recent = (recentResult.data ?? []) as AnalyticsEvent[];
   const startsByTool = new Map<string, number>();
   const completesByTool = new Map<string, number>();
 
   for (const event of recent) {
     if (!event.tool_slug) continue;
-    if (event.event_name === "tool_start") startsByTool.set(event.tool_slug, (startsByTool.get(event.tool_slug) ?? 0) + 1);
-    if (event.event_name === "tool_complete") completesByTool.set(event.tool_slug, (completesByTool.get(event.tool_slug) ?? 0) + 1);
+    if (event.event_name === "tool_start") {
+      startsByTool.set(event.tool_slug, (startsByTool.get(event.tool_slug) ?? 0) + 1);
+    }
+    if (event.event_name === "tool_complete") {
+      completesByTool.set(event.tool_slug, (completesByTool.get(event.tool_slug) ?? 0) + 1);
+    }
   }
 
   const topTools = [...new Set([...startsByTool.keys(), ...completesByTool.keys()])]
-    .map((slug) => ({ slug, starts: startsByTool.get(slug) ?? 0, completes: completesByTool.get(slug) ?? 0 }))
+    .map((slug) => ({
+      slug,
+      starts: startsByTool.get(slug) ?? 0,
+      completes: completesByTool.get(slug) ?? 0,
+    }))
     .sort((a, b) => b.starts - a.starts || b.completes - a.completes || a.slug.localeCompare(b.slug))
     .slice(0, 10);
 
   return {
     allTimeEvents: allTimeResult.count ?? 0,
-    last30: { pageViews: last30[0], starts: last30[1], completes: last30[2] },
-    last7: { pageViews: last7[0], starts: last7[1], completes: last7[2] },
+    last30: { pageViews: last30[0].count, starts: last30[1].count, completes: last30[2].count },
+    last7: { pageViews: last7[0].count, starts: last7[1].count, completes: last7[2].count },
     topTools,
     sources: topValues(recent.map((event) => event.source).filter((value): value is string => Boolean(value)), 6),
     devices: topValues(recent.map((event) => event.device_category).filter((value): value is string => Boolean(value)), 5),
