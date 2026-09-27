@@ -6,7 +6,17 @@ type SettingRow = { key: string; value: string | null };
 
 export const metadata: Metadata = { title: "Site settings" };
 
-const DEFAULT_KEYS = ["site_name", "site_tagline", "homepage_title", "homepage_description", "contact_email", "default_author"];
+const DEFAULT_KEYS = [
+  "site_name",
+  "site_tagline",
+  "homepage_title",
+  "homepage_description",
+  "contact_email",
+  "default_author",
+  "google_site_verification",
+  "google_adsense_publisher_id",
+  "other_verification_meta",
+];
 
 export default async function AdminSettingsPage() {
   const context = await getAdminContext();

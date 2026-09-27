@@ -9,6 +9,9 @@ const ALLOWED_KEYS = new Set([
   "homepage_description",
   "contact_email",
   "default_author",
+  "google_site_verification",
+  "google_adsense_publisher_id",
+  "other_verification_meta",
 ]);
 
 export async function PATCH(request: Request) {

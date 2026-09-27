@@ -6,6 +6,15 @@ import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
 
 export const metadata: Metadata = { title: "Analytics" };
 
+// Without this, Next.js's fetch Data Cache can cache the Supabase client's
+// internal fetch() calls indefinitely, even though this page reads
+// cookies(). Calling cookies() only opts the page OUT OF STATIC GENERATION;
+// it does not, by itself, disable per-fetch caching. force-dynamic makes
+// every fetch on this page use cache: "no-store", so it always reflects the
+// current row counts instead of freezing on whatever it first saw.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminAnalyticsPage() {
   const supabase = await createSupabaseServerClient();
   let summary = null;

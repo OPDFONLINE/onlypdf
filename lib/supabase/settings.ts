@@ -10,7 +10,15 @@ const getCachedSiteSettings = unstable_cache(
     const { data } = await supabase
       .from("site_settings")
       .select("key, value")
-      .in("key", ["site_name", "site_tagline", "homepage_title", "homepage_description"]);
+      .in("key", [
+        "site_name",
+        "site_tagline",
+        "homepage_title",
+        "homepage_description",
+        "google_site_verification",
+        "google_adsense_publisher_id",
+        "other_verification_meta",
+      ]);
     return Object.fromEntries((data ?? []).map((row) => [row.key, row.value ?? ""]));
   },
   ["public-site-settings"],

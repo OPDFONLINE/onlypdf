@@ -21,6 +21,10 @@ export function NavigationLink({ children, className = "", activeClassName = "",
     setPending(false);
   }, [pathname]);
   return <Link href={href} {...props} aria-current={active ? "page" : undefined} aria-busy={pending || undefined} onClick={() => { setPending(true); onClick?.(); }} className={`${className} ${active ? activeClassName : ""} ${pending ? "opacity-70" : ""}`}>
-    {pending && showSpinner ? <Loader2 size={14} className="mr-1.5 inline-block animate-spin align-[-2px]" aria-hidden="true" /> : null}{children}
+    {showSpinner ? (
+      <span className="mr-1.5 inline-block w-[14px] align-[-2px]" aria-hidden="true">
+        {pending ? <Loader2 size={14} className="animate-spin" /> : null}
+      </span>
+    ) : null}{children}
   </Link>;
 }

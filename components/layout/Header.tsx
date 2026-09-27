@@ -32,7 +32,12 @@ function NavDropdown({ label, tools: items, panelClassName }: { label: string; t
   }, [pathname]);
 
   return (
-    <div ref={rootRef} className="relative h-16 py-0">
+    <div
+      ref={rootRef}
+      className="relative h-16 py-0"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
       <button
         type="button"
         className="flex h-16 items-center gap-1 text-[15px] font-medium text-ink-muted hover:text-ink"
