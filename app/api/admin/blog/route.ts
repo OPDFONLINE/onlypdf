@@ -33,6 +33,7 @@ function postBody(body: Record<string, unknown>) {
     seo_title: clean(body.seo_title),
     seo_description: clean(body.seo_description),
     featured_image_url: clean(body.featured_image_url),
+    featured_image_title: clean(body.featured_image_title),
     image_provider: (() => {
       const source = body.image_source && typeof body.image_source === "object" ? body.image_source as Record<string, unknown> : null;
       return source?.provider === "pexels" || source?.provider === "pixabay" ? source.provider : null;

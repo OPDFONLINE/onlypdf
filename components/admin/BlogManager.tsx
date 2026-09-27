@@ -13,6 +13,7 @@ type Post = {
   seo_title: string | null;
   seo_description: string | null;
   featured_image_url: string | null;
+  featured_image_title: string | null;
   category: string | null;
   topic_cluster: string | null;
   related_slugs: string[];
@@ -45,6 +46,7 @@ const empty: Draft = {
   seo_title: "",
   seo_description: "",
   featured_image_url: "",
+  featured_image_title: "",
   category: "",
   topic_cluster: "",
   related_slugs: [],
@@ -227,6 +229,9 @@ function Editor({
         </Field>
         <Field label="Featured image URL">
           <input value={form.featured_image_url || ""} onChange={(e) => { update("featured_image_url", e.target.value); update("image_source", null); }} />
+        </Field>
+        <Field label="Featured image hover title">
+          <input value={form.featured_image_title || ""} onChange={(e) => update("featured_image_title", e.target.value)} placeholder="Text shown on mouse hover" />
         </Field>
 
         <div className="sm:col-span-2 rounded-xl border border-border bg-paper p-4">
