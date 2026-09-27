@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { tools } from "@/lib/tools";
+import { toolColorClasses } from "@/lib/toolColors";
 
 const convertTools = ["jpg-to-pdf", "pdf-to-jpg", "pdf-to-word", "word-to-pdf"];
 const topTools = ["merge-pdf", "split-pdf", "compress-pdf"];
@@ -52,18 +53,23 @@ function NavDropdown({ label, tools: items, panelClassName }: { label: string; t
           open ? "visible translate-y-0 opacity-100 pointer-events-auto" : "invisible translate-y-1 opacity-0 pointer-events-none"
         }`}
       >
-        {items.map((tool) => (
-          <NavigationLink
-            key={tool.slug}
-            href={`/tools/${tool.slug}`}
-            className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface hover:text-ink"
-            activeClassName="bg-surface text-ink"
-            onClick={() => setOpen(false)}
-          >
-            <tool.icon size={16} className="shrink-0 text-ink-soft" aria-hidden="true" />
-            {tool.name}
-          </NavigationLink>
-        ))}
+        {items.map((tool) => {
+          const colors = toolColorClasses[tool.color];
+          return (
+            <NavigationLink
+              key={tool.slug}
+              href={`/tools/${tool.slug}`}
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface hover:text-ink"
+              activeClassName="bg-surface text-ink"
+              onClick={() => setOpen(false)}
+            >
+              <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${colors.badgeBg} ${colors.badgeText}`}>
+                <tool.icon size={15} aria-hidden="true" strokeWidth={2.25} />
+              </span>
+              {tool.name}
+            </NavigationLink>
+          );
+        })}
       </div>
     </div>
   );
