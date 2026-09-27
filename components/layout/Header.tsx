@@ -1,12 +1,68 @@
 "use client";
 
 import { NavigationLink } from "@/components/layout/NavigationLink";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { tools } from "@/lib/tools";
 
 const convertTools = ["jpg-to-pdf", "pdf-to-jpg", "pdf-to-word", "word-to-pdf"];
 const topTools = ["merge-pdf", "split-pdf", "compress-pdf"];
+
+function NavDropdown({ label, tools: items, panelClassName }: { label: string; tools: typeof tools; panelClassName: string }) {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // Close on click outside the trigger + panel.
+  useEffect(() => {
+    if (!open) return;
+    function handlePointerDown(event: PointerEvent) {
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) setOpen(false);
+    }
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [open]);
+
+  // Close as soon as navigation to a submenu link completes, instead of
+  // relying on :focus-within, which stayed true because the clicked link
+  // kept DOM focus even after the route changed underneath it.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  return (
+    <div ref={rootRef} className="relative h-16 py-0">
+      <button
+        type="button"
+        className="flex h-16 items-center gap-1 text-[15px] font-medium text-ink-muted hover:text-ink"
+        aria-haspopup="true"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {label} <ChevronDown size={15} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <div
+        className={`absolute top-[58px] rounded-2xl border border-border bg-paper p-2 shadow-lift transition-all duration-150 ${panelClassName} ${
+          open ? "visible translate-y-0 opacity-100 pointer-events-auto" : "invisible translate-y-1 opacity-0 pointer-events-none"
+        }`}
+      >
+        {items.map((tool) => (
+          <NavigationLink
+            key={tool.slug}
+            href={`/tools/${tool.slug}`}
+            className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface hover:text-ink"
+            activeClassName="bg-surface text-ink"
+            onClick={() => setOpen(false)}
+          >
+            <tool.icon size={16} className="shrink-0 text-ink-soft" aria-hidden="true" />
+            {tool.name}
+          </NavigationLink>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -26,23 +82,9 @@ export function Header() {
             const tool = tools.find((item) => item.slug === slug)!;
             return <NavigationLink key={slug} href={`/tools/${slug}`} className="text-[15px] font-medium text-ink-muted hover:text-ink" activeClassName="text-ink">{tool.name}</NavigationLink>;
           })}
-          <div className="group relative h-16 py-0">
-            <button type="button" className="flex h-16 items-center gap-1 text-[15px] font-medium text-ink-muted hover:text-ink" aria-haspopup="true">
-              Convert Tools <ChevronDown size={15} />
-            </button>
-            <div className="invisible absolute left-1/2 top-[58px] w-56 -translate-x-1/2 translate-y-1 opacity-0 pointer-events-none rounded-2xl border border-border bg-paper p-2 shadow-lift transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
-              {convert.map((tool) => <NavigationLink key={tool.slug} href={`/tools/${tool.slug}`} className="block rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface hover:text-ink" activeClassName="bg-surface text-ink">{tool.name}</NavigationLink>)}
-            </div>
-          </div>
+          <NavDropdown label="Convert Tools" tools={convert} panelClassName="left-1/2 w-56 -translate-x-1/2" />
           <NavigationLink href="/blog" className="text-[15px] font-medium text-ink-muted hover:text-ink" activeClassName="text-ink">Blog</NavigationLink>
-          <div className="group relative h-16 py-0">
-            <button type="button" className="flex h-16 items-center gap-1 text-[15px] font-medium text-ink-muted hover:text-ink" aria-haspopup="true">
-              All Tools <ChevronDown size={15} />
-            </button>
-            <div className="invisible absolute right-0 top-[58px] grid w-[430px] grid-cols-2 translate-y-1 gap-1 rounded-2xl border border-border bg-paper p-2 opacity-0 pointer-events-none shadow-lift transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:pointer-events-auto">
-              {allTools.map((tool) => <NavigationLink key={tool.slug} href={`/tools/${tool.slug}`} className="rounded-xl px-3 py-2.5 text-sm font-medium text-ink-muted hover:bg-surface hover:text-ink" activeClassName="bg-surface text-ink">{tool.name}</NavigationLink>)}
-            </div>
-          </div>
+          <NavDropdown label="All Tools" tools={allTools} panelClassName="right-0 grid w-[430px] grid-cols-2 gap-1" />
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">

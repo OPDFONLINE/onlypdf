@@ -3,7 +3,7 @@
 import Link, { type LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 type Props = LinkProps & { children: ReactNode; className?: string; activeClassName?: string; showSpinner?: boolean; onClick?: () => void };
@@ -12,6 +12,14 @@ export function NavigationLink({ children, className = "", activeClassName = "",
   const pathname = usePathname();
   const [pending, setPending] = useState(false);
   const active = typeof href === "string" && (href === "/" ? pathname === "/" : pathname.startsWith(href));
+
+  // Header/nav components stay mounted across client-side navigations, so
+  // once "pending" is set true on click it never went back to false on its
+  // own — the spinner just kept spinning forever after the new page loaded.
+  // Reset it whenever the route actually finishes changing.
+  useEffect(() => {
+    setPending(false);
+  }, [pathname]);
   return <Link href={href} {...props} aria-current={active ? "page" : undefined} aria-busy={pending || undefined} onClick={() => { setPending(true); onClick?.(); }} className={`${className} ${active ? activeClassName : ""} ${pending ? "opacity-70" : ""}`}>
     {pending && showSpinner ? <Loader2 size={14} className="mr-1.5 inline-block animate-spin align-[-2px]" aria-hidden="true" /> : null}{children}
   </Link>;
