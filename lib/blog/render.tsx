@@ -13,7 +13,9 @@ function renderInline(text: string, keyPrefix: string) {
   LINK_PATTERN.lastIndex = 0;
   while ((match = LINK_PATTERN.exec(text))) {
     if (match.index > lastIndex) nodes.push(text.slice(lastIndex, match.index));
-    const [, label, href] = match;
+    const label = match[1];
+    const href = match[2];
+    if (!label || !href) continue;
     const isInternal = href.startsWith("/");
     nodes.push(
       isInternal ? (
@@ -39,8 +41,9 @@ export function renderBlogContent(markdown: string) {
     if (!text) return null;
 
     const imageMatch = text.match(IMAGE_BLOCK_PATTERN);
-    if (imageMatch) {
-      const [, altAndTitle, url] = imageMatch;
+    if (imageMatch && imageMatch[2]) {
+      const altAndTitle = imageMatch[1] ?? "";
+      const url = imageMatch[2];
       const [alt, title] = altAndTitle.split("|").map((part) => part.trim());
       return (
         <figure key={i} className="my-8">
