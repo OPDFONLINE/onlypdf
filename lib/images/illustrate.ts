@@ -47,6 +47,22 @@ async function downloadAndCompress(imageUrl: string): Promise<Buffer> {
   return sharp(original).resize({ width: 800 }).jpeg({ quality: 15, mozjpeg: true }).toBuffer();
 }
 
+type ServiceClient = NonNullable<ReturnType<typeof createSupabaseServiceClient>>;
+
+let bucketChecked = false;
+/** Makes sure the public blog-images bucket exists (creates it if the media migration never ran). */
+async function ensureBucket(service: ServiceClient) {
+  if (bucketChecked) return;
+  const { data } = await service.storage.getBucket(BUCKET);
+  if (!data) {
+    const { error } = await service.storage.createBucket(BUCKET, { public: true });
+    if (error && !/already exists/i.test(error.message)) {
+      throw new Error(`Could not create storage bucket "${BUCKET}": ${error.message}`);
+    }
+  }
+  bucketChecked = true;
+}
+
 /**
  * Resolves one image slot: search (Pexels first, then Pixabay) for a query,
  * skip anything already used anywhere on the site, download + compress it
@@ -68,10 +84,36 @@ export async function resolveAndStoreImage(
   const extension = "jpg";
   const path = `${candidate.provider}/${candidate.providerImageId}-${Date.now()}.${extension}`;
 
-  const { error: uploadError } = await service.storage
-    .from(BUCKET)
-    .upload(path, compressed, { contentType: "image/jpeg", upsert: false, cacheControl: "31536000" });
-  if (uploadError) throw new Error(`Storage upload failed: ${uploadError.message}`);
+  await ensureBucket(service);
+
+  let uploadError = (
+    await service.storage
+      .from(BUCKET)
+      .upload(path, compressed, { contentType: "image/jpeg", upsert: false, cacheControl: "31536000" })
+  ).error;
+  if (uploadError) {
+    // Retry once with a Blob body; some runtimes handle Blob more reliably than Buffer.
+    uploadError = (
+      await service.storage
+        .from(BUCKET)
+        .upload(path, new Blob([new Uint8Array(compressed)], { type: "image/jpeg" }), {
+          contentType: "image/jpeg",
+          upsert: false,
+          cacheControl: "31536000",
+        })
+    ).error;
+  }
+  if (uploadError) {
+    const details = uploadError as unknown as Record<string, unknown>;
+    throw new Error(
+      `Storage upload failed: ${uploadError.message || "(no message)"} | details: ${JSON.stringify({
+        name: details.name,
+        status: details.status,
+        statusCode: details.statusCode,
+        error: details.error,
+      })} | bucket: ${BUCKET} | path: ${path} | bytes: ${compressed.length}`
+    );
+  }
 
   const { data: publicUrlData } = service.storage.from(BUCKET).getPublicUrl(path);
 

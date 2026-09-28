@@ -17,5 +17,10 @@ export function createSupabaseServiceClient() {
   if (!supabaseUrl || !supabaseServiceRoleKey) return null;
   return createClient(supabaseUrl, supabaseServiceRoleKey, {
     auth: { autoRefreshToken: false, persistSession: false },
+    global: {
+      // Next.js patches fetch with its own caching layer; privileged writes
+      // (inserts, storage uploads) must never go through it.
+      fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }),
+    },
   });
 }
