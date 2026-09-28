@@ -3,7 +3,7 @@
 import { NavigationLink } from "@/components/layout/NavigationLink";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, Sparkles, X } from "lucide-react";
 import { tools } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 
@@ -98,9 +98,11 @@ export function Header() {
           <NavDropdown label="All Tools" tools={allTools} panelClassName="right-0 grid w-[430px] grid-cols-2 gap-1" />
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
-          <span className="text-xs font-medium text-ink-soft">No sign-up required</span>
-          <NavigationLink href="/tools" className="rounded-pill bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lift hover:bg-accent-dark" activeClassName="bg-accent-dark">All Tools</NavigationLink>
+        <div className="hidden items-center gap-3 md:flex">
+          <span className="inline-flex items-center gap-1.5 rounded-pill bg-lime-soft px-3 py-1.5 text-xs font-bold text-lime">
+            <Sparkles size={13} aria-hidden="true" /> No sign-up required
+          </span>
+          <NavigationLink href="/tools" className="rounded-pill bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lift hover:bg-accent-dark" activeClassName="bg-accent-dark">Get Started</NavigationLink>
         </div>
 
         <button type="button" className="flex h-9 w-9 items-center justify-center rounded-xl text-ink md:hidden" aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen} onClick={() => setMobileOpen((v) => !v)}>

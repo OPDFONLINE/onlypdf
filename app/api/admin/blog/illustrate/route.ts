@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getAdminContext } from "@/lib/supabase/admin";
 import { createSupabaseServiceClient } from "@/lib/supabase/service";
 import { batch1Articles } from "@/lib/blog/batch1-articles";
+import { batch2Articles } from "@/lib/blog/batch2-articles";
 import { loadGloballyUsedImageIds, resolveAndStoreImage } from "@/lib/images/illustrate";
+
+const allArticles = [...batch1Articles, ...batch2Articles];
 
 // Each run only processes ONE article (see slug param below), which keeps
 // this comfortably under serverless time limits even on the Hobby plan.
@@ -19,13 +23,13 @@ export async function GET(request: Request) {
   if (!slug) {
     return NextResponse.json({
       message: "Pass ?slug=<article-slug> to illustrate and publish one article as a draft.",
-      availableSlugs: batch1Articles.map((a) => a.slug),
+      availableSlugs: allArticles.map((a) => a.slug),
     });
   }
 
-  const article = batch1Articles.find((a) => a.slug === slug);
+  const article = allArticles.find((a) => a.slug === slug);
   if (!article) {
-    return NextResponse.json({ error: `Unknown slug "${slug}".`, availableSlugs: batch1Articles.map((a) => a.slug) }, { status: 400 });
+    return NextResponse.json({ error: `Unknown slug "${slug}".`, availableSlugs: allArticles.map((a) => a.slug) }, { status: 400 });
   }
 
   const service = createSupabaseServiceClient();
@@ -72,7 +76,8 @@ export async function GET(request: Request) {
       const token = `{{IMG:${marker}}}`;
       const resolved = await resolveAndStoreImage(query, usedIds, articleId);
       if (resolved) {
-        content = content.replace(token, `![${resolved.alt}|${article.title}](${resolved.publicUrl})`);
+        const safeAlt = resolved.alt.replace(/[\[\]|()]/g, " ").replace(/\s+/g, " ").trim() || article.title;
+        content = content.replace(token, `![${safeAlt}|${article.title}](${resolved.publicUrl})`);
         log.push(`Image ${marker} ("${query}"): ${resolved.provider}:${resolved.providerImageId}`);
       } else {
         content = content.replace(
@@ -95,6 +100,9 @@ export async function GET(request: Request) {
 
     const { error: updateError } = await service.from("blog_posts").update(updatePayload).eq("id", articleId);
     if (updateError) throw new Error(updateError.message);
+
+    revalidatePath(`/blog/${article.slug}`);
+    revalidatePath("/blog");
 
     return NextResponse.json({
       ok: true,
