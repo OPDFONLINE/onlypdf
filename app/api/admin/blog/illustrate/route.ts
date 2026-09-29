@@ -4,9 +4,10 @@ import { getAdminContext } from "@/lib/supabase/admin";
 import { createSupabaseServiceClient } from "@/lib/supabase/service";
 import { batch1Articles } from "@/lib/blog/batch1-articles";
 import { batch2Articles } from "@/lib/blog/batch2-articles";
+import { batch3Articles } from "@/lib/blog/batch3-articles";
 import { loadGloballyUsedImageIds, resolveAndStoreImage } from "@/lib/images/illustrate";
 
-const allArticles = [...batch1Articles, ...batch2Articles];
+const allArticles = [...batch1Articles, ...batch2Articles, ...batch3Articles];
 
 // Each run only processes ONE article (see slug param below), which keeps
 // this comfortably under serverless time limits even on the Hobby plan.

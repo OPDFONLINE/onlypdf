@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { getAdminContext } from "@/lib/supabase/admin";
 import { SignOutButton } from "@/components/admin/SignOutButton";
@@ -12,7 +12,9 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
     <div className="flex min-h-[calc(100vh-4rem)] flex-col md:flex-row">
       <aside className="w-full shrink-0 border-b border-border bg-surface p-5 md:w-64 md:border-b-0 md:border-r">
         <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">OnlyPDF Admin</p>
-        <AdminNav />
+        <Suspense fallback={null}>
+          <AdminNav />
+        </Suspense>
         <div className="mt-6 border-t border-border pt-4 md:mt-8">
           <p className="truncate text-xs text-ink-soft">{context.admin.email || context.user.email}</p>
           <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-ink-soft">{context.admin.role}</p>

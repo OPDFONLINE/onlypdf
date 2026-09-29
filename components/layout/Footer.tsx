@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { NavigationLink } from "@/components/layout/NavigationLink";
-import { tools } from "@/lib/tools";
+import { getToolGroups } from "@/lib/tools";
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const { pdfTools, convertTools } = getToolGroups();
 
   return (
     <footer className="border-t border-border bg-surface">
-      <div className="container-page grid gap-10 py-14 sm:grid-cols-2 md:grid-cols-4">
-        <div className="sm:col-span-2 md:col-span-1">
+      <div className="container-page grid gap-10 py-14 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
+        <div className="sm:col-span-2 md:col-span-3 lg:col-span-1">
           <Link href="/" className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-ink">
             <span
               aria-hidden="true"
@@ -27,7 +28,23 @@ export function Footer() {
         <div>
           <h2 className="text-sm font-bold text-ink">PDF Tools</h2>
           <ul className="mt-4 space-y-3">
-            {tools.map((tool) => (
+            {pdfTools.map((tool) => (
+              <li key={tool.slug}>
+                <Link
+                  href={`/tools/${tool.slug}`}
+                  className="text-sm text-ink-muted transition-colors hover:text-ink"
+                >
+                  {tool.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="text-sm font-bold text-ink">Convert Tools</h2>
+          <ul className="mt-4 space-y-3">
+            {convertTools.map((tool) => (
               <li key={tool.slug}>
                 <Link
                   href={`/tools/${tool.slug}`}

@@ -367,6 +367,21 @@ export const tools: Tool[] = [
   },
 ];
 
+/** Tools that convert between PDF and another format; everything else is a plain PDF-editing tool. */
+export const convertToolSlugs = ["pdf-to-word", "word-to-pdf", "jpg-to-pdf", "pdf-to-jpg"] as const;
+
+export function isConvertTool(slug: string): boolean {
+  return (convertToolSlugs as readonly string[]).includes(slug);
+}
+
+/** Tools grouped for the footer: PDF editing tools and Convert tools. */
+export function getToolGroups(): { pdfTools: Tool[]; convertTools: Tool[] } {
+  return {
+    pdfTools: tools.filter((tool) => !isConvertTool(tool.slug)),
+    convertTools: convertToolSlugs.map((slug) => tools.find((tool) => tool.slug === slug)).filter((tool): tool is Tool => Boolean(tool)),
+  };
+}
+
 export function getToolBySlug(slug: string): Tool | undefined {
   return tools.find((tool) => tool.slug === slug);
 }
