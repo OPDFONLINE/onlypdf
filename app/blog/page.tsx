@@ -23,10 +23,6 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
   };
 }
 
-function formatDate(value: string | null) {
-  return value ? new Date(value).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "";
-}
-
 export default async function BlogPage({ searchParams }: { searchParams: SearchParams }) {
   const all = await getPublishedSummaries();
 
@@ -101,11 +97,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
               <Link href={`/blog/${hero.slug}`} className="hover:text-accent-dark">{hero.title}</Link>
             </h2>
             {hero.excerpt && <p className="mt-4 leading-7 text-ink-muted">{hero.excerpt}</p>}
-            <p className="mt-5 text-xs text-ink-soft">
-              {hero.author && <span>By {hero.author}</span>}
-              {hero.author && hero.published_at && <span> · </span>}
-              {hero.published_at && <span>{formatDate(hero.published_at)}</span>}
-            </p>
+            {hero.author && <p className="mt-5 text-xs text-ink-soft">By {hero.author}</p>}
             <Link href={`/blog/${hero.slug}`} className="mt-6 inline-flex w-fit items-center gap-2 rounded-pill bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-dark">
               Read article <ArrowRight size={16} aria-hidden="true" />
             </Link>
@@ -138,8 +130,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
                     <Link href={`/blog/${post.slug}`} className="hover:text-accent-dark">{post.title}</Link>
                   </h3>
                   {post.excerpt && <p className="mt-2 line-clamp-3 text-sm leading-6 text-ink-muted">{post.excerpt}</p>}
-                  <div className="mt-auto flex items-center justify-between pt-4 text-xs text-ink-soft">
-                    <span>{formatDate(post.published_at)}</span>
+                  <div className="mt-auto pt-4 text-xs">
                     <Link href={`/blog/${post.slug}`} className="font-semibold text-accent-dark hover:underline">Read →</Link>
                   </div>
                 </div>

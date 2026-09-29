@@ -58,12 +58,7 @@ export default async function BlogArticle({ params }: { params: { slug: string }
           <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{post.category || "PDF guide"}</p>
           <h1 className="mt-3 text-3xl sm:text-5xl">{post.title}</h1>
           {post.excerpt && <p className="mt-5 text-lg leading-8 text-ink-muted">{post.excerpt}</p>}
-          <div className="mt-8 flex gap-3 text-xs text-ink-soft">
-            {post.author && <span>By {post.author}</span>}
-            {post.published_at && (
-              <span>{new Date(post.published_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
-            )}
-          </div>
+          {post.author && <p className="mt-8 text-xs text-ink-soft">By {post.author}</p>}
           {post.featured_image_url && (
             <div className="mt-8">
               <img
@@ -72,20 +67,6 @@ export default async function BlogArticle({ params }: { params: { slug: string }
                 title={post.featured_image_title || post.title}
                 className="w-full rounded-card border border-border object-cover"
               />
-              {post.image_photographer && post.image_provider && (
-                <p className="mt-2 text-xs text-ink-soft">
-                  Photo by {post.image_photographer} on {post.image_provider}
-                  {post.image_source_url && (
-                    <>
-                      {" "}
-                      ·{" "}
-                      <a href={post.image_source_url} target="_blank" rel="noreferrer" className="underline">
-                        Source
-                      </a>
-                    </>
-                  )}
-                </p>
-              )}
             </div>
           )}
           <div className="mt-10 space-y-5">{renderBlogContent(post.content, <TableOfContents items={toc} />)}</div>
@@ -106,10 +87,6 @@ export default async function BlogArticle({ params }: { params: { slug: string }
       </div>
     </div>
   );
-}
-
-function formatDate(value: string | null) {
-  return value ? new Date(value).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "";
 }
 
 /** Sidebar / mobile card listing 3-5 similar (or, failing that, recent) articles. */
@@ -136,7 +113,6 @@ function SimilarArticles({ posts }: { posts: PostSummary[] }) {
               <span className="min-w-0">
                 <span className="block text-[11px] font-semibold uppercase tracking-wide text-ink-soft">{item.category || "PDF guide"}</span>
                 <span className="mt-0.5 block text-sm font-semibold leading-snug text-ink group-hover:text-accent-dark">{item.title}</span>
-                {item.published_at && <span className="mt-0.5 block text-[11px] text-ink-soft">{formatDate(item.published_at)}</span>}
               </span>
             </Link>
           </li>

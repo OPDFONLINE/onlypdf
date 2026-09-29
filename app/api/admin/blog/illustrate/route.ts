@@ -7,9 +7,10 @@ import { batch2Articles } from "@/lib/blog/batch2-articles";
 import { batch3Articles } from "@/lib/blog/batch3-articles";
 import { batch4Articles } from "@/lib/blog/batch4-articles";
 import { batch5Articles } from "@/lib/blog/batch5-articles";
+import { batch6Articles } from "@/lib/blog/batch6-articles";
 import { loadGloballyUsedImageIds, resolveAndStoreImage } from "@/lib/images/illustrate";
 
-const allArticles = [...batch1Articles, ...batch2Articles, ...batch3Articles, ...batch4Articles, ...batch5Articles];
+const allArticles = [...batch1Articles, ...batch2Articles, ...batch3Articles, ...batch4Articles, ...batch5Articles, ...batch6Articles];
 
 // Each run only processes ONE article (see slug param below), which keeps
 // this comfortably under serverless time limits even on the Hobby plan.
@@ -88,7 +89,8 @@ export async function GET(request: Request) {
         : `! No unused featured image found for "${article.featuredImageQuery}"`
     );
 
-    let content = article.content;
+    // The page renders the title itself, so drop a leading "# Title" line from the body.
+    let content = article.content.replace(/^\s*# [^\n]*\n+/, "");
     for (const { marker, query } of article.images) {
       const token = `{{IMG:${marker}}}`;
       const resolved = await resolveAndStoreImage(query, usedIds, articleId);

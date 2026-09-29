@@ -155,9 +155,17 @@ export function extractContentImages(markdown: string): { url: string; alt: stri
  */
 export function renderBlogContent(markdown: string, beforeFirstH2?: ReactNode) {
   let inserted = false;
+  let checkedFirstBlock = false;
   return markdown.split(/\n{2,}/).map((block, i) => {
     const text = block.trim();
     if (!text) return null;
+
+    // The page already shows the article title as its <h1>, so a leading
+    // "# Title" line inside the content would repeat it. Skip it.
+    if (!checkedFirstBlock) {
+      checkedFirstBlock = true;
+      if (text.startsWith("# ") && !text.includes("\n")) return null;
+    }
     const lines = text.split("\n");
 
     if (beforeFirstH2 && !inserted && text.startsWith("## ")) {

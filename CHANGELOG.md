@@ -16,3 +16,5 @@
 - Added blog batch 3 (10 articles): illustrate via /api/admin/blog/illustrate?slug=<slug>.
 - Added blog batch 4 (5 pillar guides, 1370-1650 words) and aligned batch 3 categories/clusters with batches 1-2.
 - Added blog batch 5 (5 pillar guides, 1470-1770 words).
+- Removed public image credit line; hid duplicate in-body H1 title; added blog batch 6 (5 guides).
+- Removed visible publish dates from the blog index, hero, cards, similar-articles sidebar and article page (JSON-LD dates kept).
