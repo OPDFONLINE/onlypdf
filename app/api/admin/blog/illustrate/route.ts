@@ -6,9 +6,10 @@ import { batch1Articles } from "@/lib/blog/batch1-articles";
 import { batch2Articles } from "@/lib/blog/batch2-articles";
 import { batch3Articles } from "@/lib/blog/batch3-articles";
 import { batch4Articles } from "@/lib/blog/batch4-articles";
+import { batch5Articles } from "@/lib/blog/batch5-articles";
 import { loadGloballyUsedImageIds, resolveAndStoreImage } from "@/lib/images/illustrate";
 
-const allArticles = [...batch1Articles, ...batch2Articles, ...batch3Articles, ...batch4Articles];
+const allArticles = [...batch1Articles, ...batch2Articles, ...batch3Articles, ...batch4Articles, ...batch5Articles];
 
 // Each run only processes ONE article (see slug param below), which keeps
 // this comfortably under serverless time limits even on the Hobby plan.
