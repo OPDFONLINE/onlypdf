@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
 const LINK_PATTERN = /\[([^\]]+)\]\((\/[^\s)]+|https?:\/\/[^\s)]+)\)/g;
 const IMAGE_BLOCK_PATTERN = /^!\[([^\]]*)\]\((\S+)\)$/;
@@ -148,11 +148,28 @@ export function extractContentImages(markdown: string): { url: string; alt: stri
   return images;
 }
 
-export function renderBlogContent(markdown: string) {
+/**
+ * Renders the article body. If `beforeFirstH2` is given (e.g. the table of
+ * contents), it is inserted right before the first "## " heading, so it sits
+ * after the intro and ahead of the article's second headline.
+ */
+export function renderBlogContent(markdown: string, beforeFirstH2?: ReactNode) {
+  let inserted = false;
   return markdown.split(/\n{2,}/).map((block, i) => {
     const text = block.trim();
     if (!text) return null;
     const lines = text.split("\n");
+
+    if (beforeFirstH2 && !inserted && text.startsWith("## ")) {
+      inserted = true;
+      const heading = renderBlogContent(text)[0];
+      return (
+        <Fragment key={`toc-${i}`}>
+          {beforeFirstH2}
+          {heading}
+        </Fragment>
+      );
+    }
 
     // ::: highlight <color> ... ::: (single block, no blank lines inside)
     const firstLine = lines[0]?.trim() ?? "";

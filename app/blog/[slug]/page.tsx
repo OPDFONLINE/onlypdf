@@ -88,8 +88,7 @@ export default async function BlogArticle({ params }: { params: { slug: string }
               )}
             </div>
           )}
-          <TableOfContents items={toc} />
-          <div className="mt-10 space-y-5">{renderBlogContent(post.content)}</div>
+          <div className="mt-10 space-y-5">{renderBlogContent(post.content, <TableOfContents items={toc} />)}</div>
           <RelatedLinks slugs={post.related_slugs || []} />
           {similar.length > 0 && (
             <div className="mt-12 lg:hidden">

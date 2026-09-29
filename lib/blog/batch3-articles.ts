@@ -171,6 +171,10 @@ Imagine a twelve-page application packet in which pages 3, 4 and 9 are sideways 
 
 Checking thumbnails for those three signs takes about ten seconds even for a long file.
 
+## Quick answers to common worries
+
+If you are afraid of making things worse, remember that every operation produces a new file and leaves your original alone. You can experiment freely: rotate, download, look, and if the result is wrong, go back and try again from the untouched scan.
+
 ## Frequently asked questions
 
 ### Will the text still be searchable after rotating?
@@ -265,6 +269,14 @@ For a document with dozens of pages, dragging every thumbnail is tedious. A calm
 - Expecting page numbers to update. Numbers printed on pages stay as they are, so a reordered document may show numbers out of sequence. That is normal, and it is worth telling recipients if it matters.
 - Reordering when merging would do. If your pages come from separate files, [merge them](/tools/merge-pdf) in the right order rather than combining first and rearranging afterward.
 
+## A simple example
+
+Suppose a six-page contract arrives with the signature page first, the terms in the middle, and the cover page last. Three moves fix it: cover to the front, signature page to the end, terms into the middle in reading order. Since pages are only being repositioned, the whole job takes about a minute, and the finished document reads the way the author intended.
+
+## Sharing the result
+
+Once the pages are in order, consider giving the file a clear name that includes the word final, so nobody accidentally circulates the earlier, jumbled version. If the file is also large, run it through the [compress PDF tool](/tools/compress-pdf) before sending it by email.
+
 ## Frequently asked questions
 
 ### Can I move several pages at once?
@@ -292,7 +304,7 @@ Reordering takes a couple of minutes, and the result reads the way the document 
     seo_title: "How to Delete Pages From a PDF for Free (No Software)",
     seo_description: "Delete unwanted pages from a PDF in your browser. Tap the pages, remove them, download the clean file. Free and private.",
     category: "Edit PDF",
-    topic_cluster: "split-extract",
+    topic_cluster: "split-pdf",
     author: "OnlyPDF Team",
     related_slugs: ["extract-one-page-from-pdf", "split-pdf-into-individual-pages"],
     featuredImageQuery: "removing pages from document",
@@ -356,6 +368,14 @@ Deleting is easy, so it is worth building a small habit around it:
 
 A landlord sends a lease with a template instruction page at the front; you remove it before sending the signed copy back. A student exports lecture slides with a blank page between every slide; the blanks go before printing. A freelancer's invoice bundle includes a draft page that should never reach the client. In each case the fix takes less time than writing the email that explains the problem.
 
+## Deleting pages from long documents
+
+With a long document, resist the urge to tap pages from memory. Scroll through the thumbnails from beginning to end, tap what should go, and then review your selection once more before applying. A slow, deliberate pass is faster than repairing a mistake, because a wrong deletion means starting the whole job again from the original. If you are removing pages in several places, write down the page numbers first so you can check them against the tool.
+
+## After deleting
+
+When the new file is ready, open it and confirm the page count looks right, then read the pages on either side of each removed section to be sure the document still flows. If you used deletion to trim a file for an upload limit and it is still too big, [compress it](/tools/compress-pdf) as a final step.
+
 ## Frequently asked questions
 
 ### Can I delete every page?
@@ -368,7 +388,7 @@ No. The pages you keep are unchanged, and they keep their original order.
 
 ### Is there a page limit?
 
-The tool works in your browser, so very large files depend on your device's memory. If a file is huge, [split it](/tools/split-pdf) first and clean up the parts.
+The tool works in your browser, so very large files depend on your device's memory. If a file is very large and your browser struggles, close other tabs and try again, or work on a device with more memory.
 
 Removing the pages you do not need is one of the fastest ways to make a document tidier and safer to share.`,
     images: [
@@ -383,7 +403,7 @@ Removing the pages you do not need is one of the fastest ways to make a document
     seo_title: "How to Remove Blank Pages From a Scanned PDF",
     seo_description: "Spot and remove blank or stray pages from a scanned PDF using page previews. Free, in your browser, nothing to install.",
     category: "Edit PDF",
-    topic_cluster: "split-extract",
+    topic_cluster: "split-pdf",
     author: "OnlyPDF Team",
     related_slugs: ["delete-pages-from-pdf-free", "how-to-merge-reorder-organize-pdf-files"],
     featuredImageQuery: "scanned pages stack office",
@@ -437,11 +457,19 @@ A stack of sheets scanned duplex produces exactly twice as many pages as sheets.
 
 ## Cleaning a large scan efficiently
 
-- Zoom the preview out so many thumbnails fit at once.
+- Scroll through the thumbnails in order rather than jumping around.
 - Move down the list in order, tapping each blank as you see it.
 - Do not deselect and reselect repeatedly; make one deliberate pass, then one review pass.
 
-For very large files, [splitting the PDF](/tools/split-pdf) into sections first can make each pass easier to manage, and you can clean each section separately before [merging](/tools/merge-pdf) them back together.
+For a very large scan, work in short stretches and take a break between passes, since spotting blanks gets harder the longer you look. Note that the [split PDF tool](/tools/split-pdf) turns every page into its own file, so it is not the right way to cut a document into sections.
+
+## Why blank pages are worth removing
+
+Blank pages are more than a cosmetic nuisance. They waste paper when the document is printed, they make a file larger than it needs to be, and they make readers wonder whether something is missing. In application portals with page limits, a few blanks can push a document over the allowed count. Spending two minutes removing them makes the file smaller, cheaper to print, and easier to read.
+
+## Keep a clean master
+
+After cleaning, save the tidy version as your master copy and archive the raw scan separately if you need to keep it. Working from one clean file means the next person to print, share, or convert the document never has to repeat the cleanup, and there is no risk of the blank-filled version being sent by mistake. A clear file name makes the difference obvious at a glance.
 
 ## Frequently asked questions
 
@@ -469,8 +497,8 @@ A minute of checking thumbnails is all it takes to turn an untidy scan into a cl
     excerpt: "Turn any page of a PDF into a JPG or PNG you can post, embed, or send. Convert a single page or the whole document.",
     seo_title: "How to Convert PDF Pages to JPG Images for Free",
     seo_description: "Convert one page or every page of a PDF into JPG or PNG images in your browser. Multiple pages download as a single ZIP file.",
-    category: "Convert PDF",
-    topic_cluster: "convert",
+    category: "Convert from PDF",
+    topic_cluster: "convert-from-pdf",
     author: "OnlyPDF Team",
     related_slugs: ["pdf-to-png-or-jpg-which-format", "how-to-convert-pdf-to-word-or-images"],
     featuredImageQuery: "photo gallery images on screen",
@@ -530,6 +558,14 @@ Before converting, decide what the images are for. A single page for a presentat
 
 Images made from full pages can be large, especially as PNG. If you plan to post them online or send them in a chat, JPG keeps the files small enough to load quickly. If the receiving service has a strict limit, convert to JPG and check the size before uploading. When you are handling many pages, the ZIP download saves you from opening each file individually and keeps them together in one folder.
 
+## Naming and organising the images
+
+When you convert several pages, the images come in page order inside the ZIP. Extract the ZIP into a new folder straight away and give the folder a descriptive name, such as the document title with the word pages added. Keeping images together with the source PDF in one place makes it far easier to find them again months later, and it prevents you from confusing pages of one document with another.
+
+## When an image is the wrong choice
+
+Images are ideal for showing a page, but they are a poor choice when readers need to search, copy, or edit text, or when accessibility matters. A screen reader cannot read text that has become part of a picture. If your goal is to share a document that people will actually read closely, keep it as a PDF and reserve images for previews, slides, and social posts, where the look of the page matters more than its text.
+
 ## Frequently asked questions
 
 ### Can I convert a password-protected PDF?
@@ -556,8 +592,8 @@ Converting a page to an image takes seconds, and it makes any document easy to d
     excerpt: "Both formats turn a PDF page into an image, but they suit different pages. Here is how to choose in ten seconds.",
     seo_title: "PDF to PNG or JPG: Which Format Is Better?",
     seo_description: "Should you convert a PDF to PNG or JPG? Compare quality, file size, and best uses so you pick the right image format every time.",
-    category: "Convert PDF",
-    topic_cluster: "convert",
+    category: "Convert from PDF",
+    topic_cluster: "convert-from-pdf",
     author: "OnlyPDF Team",
     related_slugs: ["convert-pdf-to-jpg-pages", "how-to-convert-pdf-to-word-or-images"],
     featuredImageQuery: "comparing two images side by side",
@@ -621,6 +657,14 @@ If you are still undecided, use this quick test. Zoom into the page on screen un
 - Choosing JPG for a page of thin-line diagrams and noticing faint smudging around the lines.
 - Converting a page that is already a photograph of a document. The quality ceiling is set by that photograph, not by the format.
 
+## Final recommendation
+
+For everyday use, start with JPG. It produces smaller files that upload and load quickly, and for most pages the difference from PNG is invisible. Switch to PNG only when you see fuzzy text or ragged lines, or when you specifically need transparency. Because you can always re-convert from the original PDF, there is no cost to trying the other format if the first result disappoints you.
+
+## What about very large pages?
+
+Pages with large dimensions, such as posters or architectural drawings, produce large images in either format, and PNG files in particular can become heavy. If the image is only for viewing on screen, JPG is usually the sensible choice. If the image will be printed at a large size, consider the trade-off carefully and test one page before converting the whole document, so you are not surprised by the size of the finished files.
+
 ## Frequently asked questions
 
 ### Which is better for printing?
@@ -647,8 +691,8 @@ Pick the format by the kind of page, and you will rarely need to think about it 
     excerpt: "Need to change text in a PDF? Convert it to Word, edit it, and save it again. Here is how, and what to expect.",
     seo_title: "How to Convert a PDF to an Editable Word Document",
     seo_description: "Convert a PDF with selectable text into a DOCX Word file you can edit. Free, in your browser, with honest notes on what converts well.",
-    category: "Convert PDF",
-    topic_cluster: "convert",
+    category: "Convert from PDF",
+    topic_cluster: "convert-from-pdf",
     author: "OnlyPDF Team",
     related_slugs: ["why-pdf-to-word-loses-formatting", "how-to-convert-pdf-to-word-or-images"],
     featuredImageQuery: "editing text document on laptop",
@@ -713,6 +757,14 @@ Once the file is open in Word, turn on the display of paragraph marks. Stray lin
 
 Read it through once from top to bottom as though you have never seen it, because conversion can quietly change punctuation or split words at line ends. Then save a copy, and if you are sending it to someone who only needs to read it, convert it back to a fixed-layout PDF so it looks the same on every screen.
 
+## A realistic time estimate
+
+For a simple two-page letter, expect the conversion itself to take seconds and the cleanup a couple of minutes. For a long report with tables and columns, plan on more, since each complicated layout element may need attention. Deciding how much editing you really need before you start helps you choose between converting the whole file and extracting only the pages you want to change.
+
+## Keeping your original safe
+
+Always keep the source PDF untouched while you work on the Word copy. The PDF is your reference for how the document was meant to look, and it is your fallback if an edit goes wrong. Give the Word file a name that shows it is an editable working copy, and save your progress as you go. When the edits are finished, exporting a new PDF gives you a clean final version to share with everyone else.
+
 ## Frequently asked questions
 
 ### Will it look exactly like the PDF?
@@ -739,8 +791,8 @@ Converting to Word turns a locked page into a working draft, which is often all 
     excerpt: "Fonts shift, columns break, and tables wander. Here is why it happens and how to get a clean result anyway.",
     seo_title: "Why PDF to Word Loses Formatting and How to Fix It",
     seo_description: "Understand why converting PDF to Word changes layout, and use practical steps to get a clean editable document.",
-    category: "Convert PDF",
-    topic_cluster: "convert",
+    category: "Convert from PDF",
+    topic_cluster: "convert-from-pdf",
     author: "OnlyPDF Team",
     related_slugs: ["convert-pdf-to-editable-word-document", "convert-word-to-pdf-without-losing-formatting"],
     featuredImageQuery: "messy document layout on desk",
@@ -803,6 +855,10 @@ Different problems point to different causes, which tells you where to spend you
 
 Perfect fidelity is the wrong target for PDF-to-Word conversion. A better target is a document where all the words are present and correct, and where the structure is easy to repair. Measured that way, most conversions succeed, and the ten minutes of cleanup is still faster than retyping the document from scratch.
 
+## A note on expectations with scanned files
+
+Scans deserve a special mention because they cause the most disappointment. A scan is a photograph of paper, so a converter that only extracts text has nothing to work with. If your converted file is empty or contains only images, that is the reason, and the remedy is OCR software rather than a different PDF-to-Word tool. It is worth checking whether text can be selected in the PDF before you convert, since that one test predicts the outcome better than anything else.
+
 ## Frequently asked questions
 
 ### Is losing formatting a sign the tool is broken?
@@ -830,7 +886,7 @@ Once you know why formatting shifts, the cleanup becomes routine rather than fru
     seo_title: "How to Remove a Watermark From a PDF by Selecting the Area",
     seo_description: "Remove a watermark from a PDF by drawing over it in a preview. Free and private, with honest limits on what area-based removal can do.",
     category: "Edit PDF",
-    topic_cluster: "watermark",
+    topic_cluster: "watermark-cleanup",
     author: "OnlyPDF Team",
     related_slugs: ["how-to-remove-watermark-from-pdf", "delete-pages-from-pdf-free"],
     featuredImageQuery: "document stamp on paper",
@@ -900,6 +956,10 @@ A large diagonal "Sample" runs across the middle of every page. Here, a box woul
 ## Reviewing the result
 
 Open the cleaned file and check three things: that the watermark is gone, that no white patch is visible against a coloured background, and that no text next to the watermark was hidden. If something looks wrong, go back to your original and draw a tighter box.
+
+## Being realistic about what a box can do
+
+Area removal is a covering technique, not an editing miracle. It works when the surroundings are plain and the watermark is contained. It struggles when the watermark overlaps content you need. Deciding this in advance, by looking at the page and asking whether anything important lies under the watermark, saves you from a result you will not be happy with and points you toward asking for a clean copy instead.
 
 ## Frequently asked questions
 

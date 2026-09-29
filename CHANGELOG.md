@@ -14,3 +14,4 @@
 - Admin Blog: server-side search, status/category filters, status counts, pagination (10 per page), tabbed editor (Content / SEO / Media / Settings) with Markdown toolbar and search preview. Admin sidebar has a Blog sub-menu (All posts, Published, Drafts, Scheduled, New article).
 - Footer: tools split into "PDF Tools" (8) and "Convert Tools" (4: PDF to Word, Word to PDF, JPG to PDF, PDF to JPG).
 - Added blog batch 3 (10 articles): illustrate via /api/admin/blog/illustrate?slug=<slug>.
+- Added blog batch 4 (5 pillar guides, 1370-1650 words) and aligned batch 3 categories/clusters with batches 1-2.
