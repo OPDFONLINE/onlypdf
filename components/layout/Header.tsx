@@ -41,7 +41,7 @@ function NavDropdown({ label, tools: items, panelClassName }: { label: string; t
     >
       <button
         type="button"
-        className="flex h-16 items-center gap-1 text-[15px] font-medium text-ink-muted hover:text-ink"
+        className="flex h-16 items-center gap-1 whitespace-nowrap text-[15px] font-medium text-ink-muted hover:text-ink"
         aria-haspopup="true"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
@@ -88,7 +88,7 @@ export function Header() {
           OnlyPDF
         </NavigationLink>
 
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-6 whitespace-nowrap lg:flex xl:gap-7" aria-label="Primary">
           {topTools.map((slug) => {
             const tool = tools.find((item) => item.slug === slug)!;
             return <NavigationLink key={slug} href={`/tools/${slug}`} className="text-[15px] font-medium text-ink-muted hover:text-ink" activeClassName="text-ink">{tool.name}</NavigationLink>;
@@ -98,20 +98,19 @@ export function Header() {
           <NavDropdown label="All Tools" tools={allTools} panelClassName="right-0 grid w-[430px] grid-cols-2 gap-1" />
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
-          <span className="inline-flex items-center gap-1.5 rounded-pill bg-lime-soft px-3 py-1.5 text-xs font-bold text-lime">
+        <div className="hidden items-center gap-3 lg:flex">
+          <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-pill bg-lime-soft px-3 py-1.5 text-xs font-bold text-lime xl:inline-flex">
             <Sparkles size={13} aria-hidden="true" /> No sign-up required
           </span>
-          <NavigationLink href="/tools" className="rounded-pill bg-accent px-4 py-2 text-sm font-semibold text-white shadow-lift hover:bg-accent-dark" activeClassName="bg-accent-dark">Get Started</NavigationLink>
         </div>
 
-        <button type="button" className="flex h-9 w-9 items-center justify-center rounded-xl text-ink md:hidden" aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen} onClick={() => setMobileOpen((v) => !v)}>
+        <button type="button" className="flex h-9 w-9 items-center justify-center rounded-xl text-ink lg:hidden" aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen} onClick={() => setMobileOpen((v) => !v)}>
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {mobileOpen && (
-        <nav className="border-t border-border bg-paper px-5 py-4 md:hidden" aria-label="Mobile">
+        <nav className="border-t border-border bg-paper px-5 py-4 lg:hidden" aria-label="Mobile">
           <div className="grid grid-cols-2 gap-1">
             {allTools.map((tool) => <NavigationLink key={tool.slug} href={`/tools/${tool.slug}`} className="rounded-xl px-2 py-3 text-sm font-medium text-ink hover:bg-surface" activeClassName="bg-surface" onClick={() => setMobileOpen(false)}>{tool.name}</NavigationLink>)}
           </div>

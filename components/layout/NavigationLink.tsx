@@ -20,11 +20,14 @@ export function NavigationLink({ children, className = "", activeClassName = "",
   useEffect(() => {
     setPending(false);
   }, [pathname]);
-  return <Link href={href} {...props} aria-current={active ? "page" : undefined} aria-busy={pending || undefined} onClick={() => { setPending(true); onClick?.(); }} className={`${className} ${active ? activeClassName : ""} ${pending ? "opacity-70" : ""}`}>
-    {showSpinner ? (
-      <span className="mr-1.5 inline-block w-[14px] align-[-2px]" aria-hidden="true">
-        {pending ? <Loader2 size={14} className="animate-spin" /> : null}
+  return <Link href={href} {...props} aria-current={active ? "page" : undefined} aria-busy={pending || undefined} onClick={() => { setPending(true); onClick?.(); }} className={`relative ${className} ${active ? activeClassName : ""} ${pending ? "opacity-70" : ""}`}>
+    {children}
+    {showSpinner && pending ? (
+      // Overlaid on the link instead of sitting inline, so it never adds width
+      // (no wrapped menu items) and never shifts the surrounding text.
+      <span className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
+        <Loader2 size={14} className="animate-spin text-accent" />
       </span>
-    ) : null}{children}
+    ) : null}
   </Link>;
 }

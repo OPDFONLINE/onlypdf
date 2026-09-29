@@ -39,30 +39,44 @@ export async function GET(request: Request) {
     const usedIds = await loadGloballyUsedImageIds();
     const log: string[] = [];
 
-    // Create (or find) the row first so image_usage can reference a real article_id.
-    const { data: shell, error: shellError } = await service
+    // Look up any existing row first. Re-running this route must never touch
+    // "status" on an existing article — the earlier version always forced
+    // status back to "draft" here, which silently un-published every article
+    // an admin had already reviewed and published.
+    const { data: existing, error: lookupError } = await service
       .from("blog_posts")
-      .upsert(
-        {
-          title: article.title,
-          slug: article.slug,
-          status: "draft",
-          excerpt: article.excerpt,
-          content: article.content,
-          seo_title: article.seo_title,
-          seo_description: article.seo_description,
-          category: article.category,
-          topic_cluster: article.topic_cluster,
-          related_slugs: article.related_slugs,
-          author: article.author,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "slug" }
-      )
       .select("id")
-      .single();
-    if (shellError || !shell) throw new Error(shellError?.message || "Could not create article row.");
-    const articleId = shell.id as string;
+      .eq("slug", article.slug)
+      .maybeSingle();
+    if (lookupError) throw new Error(lookupError.message);
+
+    let articleId: string;
+    const sharedFields = {
+      title: article.title,
+      excerpt: article.excerpt,
+      content: article.content,
+      seo_title: article.seo_title,
+      seo_description: article.seo_description,
+      category: article.category,
+      topic_cluster: article.topic_cluster,
+      related_slugs: article.related_slugs,
+      author: article.author,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (existing) {
+      articleId = existing.id as string;
+      const { error: updateShellError } = await service.from("blog_posts").update(sharedFields).eq("id", articleId);
+      if (updateShellError) throw new Error(updateShellError.message);
+    } else {
+      const { data: inserted, error: insertError } = await service
+        .from("blog_posts")
+        .insert({ ...sharedFields, slug: article.slug, status: "draft" })
+        .select("id")
+        .single();
+      if (insertError || !inserted) throw new Error(insertError?.message || "Could not create article row.");
+      articleId = inserted.id as string;
+    }
 
     const featured = await resolveAndStoreImage(article.featuredImageQuery, usedIds, articleId);
     log.push(
