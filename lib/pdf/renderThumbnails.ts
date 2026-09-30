@@ -17,7 +17,8 @@ export type PageThumbnail = {
   height: number;
 };
 
-const THUMBNAIL_WIDTH = 260;
+// 360px keeps the "Large" preview size sharp; Small/Medium just scale it down.
+const THUMBNAIL_WIDTH = 360;
 
 export async function renderPdfThumbnails(file: File): Promise<PageThumbnail[]> {
   const pdfjsLib = await import("pdfjs-dist");

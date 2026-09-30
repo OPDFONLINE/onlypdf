@@ -1,6 +1,7 @@
 "use client";
 
 import type { DragEvent, ReactNode } from "react";
+import { Plus } from "lucide-react";
 
 export function PdfPageThumb({
   dataUrl,
@@ -18,6 +19,7 @@ export function PdfPageThumb({
   isDragging = false,
   cornerBadge,
   footer,
+  onZoom,
 }: {
   dataUrl: string;
   label: string;
@@ -37,6 +39,8 @@ export function PdfPageThumb({
   cornerBadge?: ReactNode;
   /** Row of controls rendered under the thumbnail, e.g. rotate/move buttons. */
   footer?: ReactNode;
+  /** When set, a "+" button opens this page at full size. */
+  onZoom?: () => void;
 }) {
   return (
     <div
@@ -70,7 +74,21 @@ export function PdfPageThumb({
 
       {cornerBadge && <div className="absolute right-3.5 top-3.5">{cornerBadge}</div>}
 
-      <p className="mt-2 text-center text-xs font-semibold text-ink-muted">{label}</p>
+      {onZoom && (
+        <button
+          type="button"
+          onClick={onZoom}
+          aria-label={`View ${label} larger`}
+          title="View larger"
+          className="absolute left-3.5 top-3.5 flex h-7 w-7 items-center justify-center rounded-full bg-ink/70 text-white shadow-soft transition-colors hover:bg-ink focus-visible:bg-ink"
+        >
+          <Plus size={15} strokeWidth={3} aria-hidden="true" />
+        </button>
+      )}
+
+      <p className="mt-2 truncate px-1 text-center text-xs font-semibold text-ink-muted" title={label}>
+        {label}
+      </p>
 
       {footer && <div className="mt-1.5 flex items-center justify-center gap-1">{footer}</div>}
     </div>

@@ -16,6 +16,9 @@ import { toolColorClasses } from "@/lib/toolColors";
 import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
 import { reorderPdfPages, type ReorderedPage } from "@/lib/pdf/reorderPages";
 import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
+import { PagePreviewModal } from "@/components/tools/preview/PagePreviewModal";
+import { PreviewSizeControl } from "@/components/tools/preview/PreviewSizeControl";
+import { PREVIEW_GRID_CLASSES, usePreviewSize } from "@/components/tools/preview/usePreviewSize";
 
 const tool = getToolBySlug("rearrange-pdf")!;
 const colors = toolColorClasses[tool.color];
@@ -37,6 +40,8 @@ export function RearrangePdfTool() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [justDownloaded, setJustDownloaded] = useState(false);
+  const [previewSize, setPreviewSize] = usePreviewSize();
+  const [zoomPage, setZoomPage] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const originalOrder =
@@ -193,7 +198,11 @@ export function RearrangePdfTool() {
             No mouse? Use the arrow buttons on each page to move it left or right.
           </p>
 
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <div className="mt-3">
+            <PreviewSizeControl value={previewSize} onChange={setPreviewSize} activeClass={colors.solidBg} />
+          </div>
+
+          <div className={`mt-3 grid gap-3 ${PREVIEW_GRID_CLASSES[previewSize]}`}>
             {pages.map((page, index) => (
               <PdfPageThumb
                 key={`${page.originalIndex}-${page.thumbnail.dataUrl.slice(-8)}`}
@@ -201,6 +210,7 @@ export function RearrangePdfTool() {
                 rotation={page.rotationDelta}
                 label={`Position ${index + 1} \u00b7 was page ${page.originalIndex + 1}`}
                 ariaLabel={`Page currently at position ${index + 1}, originally page ${page.originalIndex + 1}`}
+                onZoom={() => setZoomPage(page.originalIndex)}
                 accentClass={colors.border}
                 draggable={pages.length > 1}
                 isDragging={dragIndex === index}
@@ -300,6 +310,9 @@ export function RearrangePdfTool() {
         <Lock size={14} className={colors.text} aria-hidden="true" />
         Files you add here stay in your browser and are not uploaded to a server.
       </p>
+      {file && zoomPage !== null && (
+        <PagePreviewModal file={file} initialPage={zoomPage} title={file.name} onClose={() => setZoomPage(null)} />
+      )}
     </>
   );
 }

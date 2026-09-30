@@ -132,7 +132,7 @@ export function SeoContent() {
 
           <div>
             <h3 className="text-lg font-bold text-ink">
-              How to convert JPG, JPEG, or PNG images to PDF
+              How to convert JPG or PNG images to PDF
             </h3>
             <p className="mt-2">
               Turning a photo, scan, or screenshot into a PDF makes it easier
@@ -140,8 +140,12 @@ export function SeoContent() {
               <Link href="/tools/jpg-to-pdf" className="text-accent underline underline-offset-2">
                 JPG to PDF tool
               </Link>{" "}
-              accepts JPG, JPEG, and PNG images, lets you drag them into the
-              order you want, and combines them into a single PDF — one
+              and the{" "}
+              <Link href="/tools/png-to-pdf" className="text-accent underline underline-offset-2">
+                PNG to PDF tool
+              </Link>{" "}
+              accept your images, let you drag them into the
+              order you want, and combine them into a single PDF — one
               image per page. You can choose a page size that fits each
               image exactly, or a standard A4 or US Letter size if the PDF
               needs to look like a regular document.
@@ -159,7 +163,11 @@ export function SeoContent() {
               <Link href="/tools/pdf-to-jpg" className="text-accent underline underline-offset-2">
                 PDF to JPG tool
               </Link>{" "}
-              converts any page (or every page) of a PDF into a JPG or PNG
+              and the{" "}
+              <Link href="/tools/pdf-to-png" className="text-accent underline underline-offset-2">
+                PDF to PNG tool
+              </Link>{" "}
+              convert any page (or every page) of a PDF into a JPG or PNG
               image. Convert a single page and it downloads directly; convert
               several and they&apos;re bundled into one ZIP file.
             </p>

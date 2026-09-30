@@ -8,9 +8,6 @@ import { toolColorClasses } from "@/lib/toolColors";
 import { imagesToPdf, type PageSizeOption } from "@/lib/pdf/imagesToPdf";
 import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
 
-const tool = getToolBySlug("jpg-to-pdf")!;
-const colors = toolColorClasses[tool.color];
-
 type ImageItem = { id: string; file: File; url: string };
 
 function makeId(): string {
@@ -25,8 +22,41 @@ const PAGE_SIZE_OPTIONS: { value: PageSizeOption; label: string }[] = [
   { value: "letter", label: "US Letter" },
 ];
 
-export function JpgToPdfTool() {
-  const { trackStart, trackComplete } = useToolAnalytics("jpg-to-pdf");
+export type ImageKind = "jpg" | "png";
+
+const KINDS: Record<
+  ImageKind,
+  { label: string; mime: string; ext: RegExp; accept: string; other: string; otherTool: string; noun: string }
+> = {
+  jpg: {
+    label: "JPG",
+    mime: "image/jpeg",
+    ext: /\.jpe?g$/i,
+    accept: "image/jpeg,.jpg,.jpeg",
+    other: "PNG",
+    otherTool: "PNG to PDF",
+    noun: "JPG or JPEG",
+  },
+  png: {
+    label: "PNG",
+    mime: "image/png",
+    ext: /\.png$/i,
+    accept: "image/png,.png",
+    other: "JPG",
+    otherTool: "JPG to PDF",
+    noun: "PNG",
+  },
+};
+
+/**
+ * One component powers both "JPG to PDF" and "PNG to PDF". Each tool accepts
+ * only its own image type, so the two stay clearly separate.
+ */
+export function JpgToPdfTool({ slug = "jpg-to-pdf", kind = "jpg" }: { slug?: string; kind?: ImageKind }) {
+  const tool = getToolBySlug(slug)!;
+  const colors = toolColorClasses[tool.color];
+  const spec = KINDS[kind];
+  const { trackStart, trackComplete } = useToolAnalytics(slug);
 
   const [items, setItems] = useState<ImageItem[]>([]);
   const [pageSize, setPageSize] = useState<PageSizeOption>("fit");
@@ -39,16 +69,24 @@ export function JpgToPdfTool() {
 
   function addFiles(list: FileList | null) {
     if (!list) return;
-    const picked = Array.from(list).filter(
-      (f) => f.type === "image/jpeg" || f.type === "image/png" || /\.(jpe?g|png)$/i.test(f.name)
-    );
+    const all = Array.from(list);
+    const picked = all.filter((f) => f.type === spec.mime || spec.ext.test(f.name));
     if (picked.length === 0) {
-      setError("Please select a JPG, JPEG, or PNG image.");
+      const looksLikeOther = all.some((f) => (kind === "jpg" ? f.type === "image/png" || /\.png$/i.test(f.name) : f.type === "image/jpeg" || /\.jpe?g$/i.test(f.name)));
+      setError(
+        looksLikeOther
+          ? `This tool is for ${spec.noun} images. For ${spec.other} files, use the ${spec.otherTool} tool.`
+          : `Please select a ${spec.noun} image.`
+      );
       return;
+    }
+    if (picked.length < all.length) {
+      setError(`Skipped ${all.length - picked.length} file(s) that aren't ${spec.noun} images.`);
+    } else {
+      setError(null);
     }
     const newItems = picked.map((file) => ({ id: makeId(), file, url: URL.createObjectURL(file) }));
     setItems((prev) => [...prev, ...newItems]);
-    setError(null);
     setJustDownloaded(false);
   }
 
@@ -134,18 +172,18 @@ export function JpgToPdfTool() {
         }}
       >
         <CloudUpload size={28} className={`mx-auto ${colors.text}`} aria-hidden="true" />
-        <p className="mt-3 text-sm font-semibold text-ink">Drag and drop images here, or</p>
+        <p className="mt-3 text-sm font-semibold text-ink">Drag and drop {spec.label} images here, or</p>
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           className={`mt-3 rounded-pill px-5 py-2.5 text-sm font-semibold text-white transition-colors ${colors.solidBg} ${colors.solidHoverBg}`}
         >
-          Choose images
+          Choose {spec.label} images
         </button>
         <input
           ref={inputRef}
           type="file"
-          accept="image/jpeg,image/png,.jpg,.jpeg,.png"
+          accept={spec.accept}
           multiple
           className="sr-only"
           onChange={(e) => addFiles(e.target.files)}

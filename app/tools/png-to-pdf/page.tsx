@@ -3,17 +3,17 @@ import { getEffectiveTool } from "@/lib/supabase/tools";
 import { ToolPageFrame } from "@/components/tools/ToolPageFrame";
 import { JpgToPdfTool } from "@/components/tools/JpgToPdfTool";
 
-const slug = "jpg-to-pdf";
+const slug = "png-to-pdf";
 
 export async function generateMetadata(): Promise<Metadata> {
   const tool = await getEffectiveTool(slug);
-  return { title: tool?.seoTitle || tool?.name || "PDF Tool", description: tool?.seoDescription || tool?.description || "", alternates: { canonical: "/tools/jpg-to-pdf" } };
+  return { title: tool?.seoTitle || tool?.name || "PDF Tool", description: tool?.seoDescription || tool?.description || "", alternates: { canonical: "/tools/png-to-pdf" } };
 }
 
-export default function JpgToPdfPage() {
+export default function PngToPdfPage() {
   return (
     <ToolPageFrame slug={slug}>
-      <JpgToPdfTool slug={slug} kind="jpg" />
+      <JpgToPdfTool slug={slug} kind="png" />
     </ToolPageFrame>
   );
 }

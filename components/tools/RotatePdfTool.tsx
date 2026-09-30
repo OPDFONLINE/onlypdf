@@ -8,6 +8,9 @@ import { toolColorClasses } from "@/lib/toolColors";
 import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
 import { rotatePdfPages } from "@/lib/pdf/rotatePages";
 import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
+import { PagePreviewModal } from "@/components/tools/preview/PagePreviewModal";
+import { PreviewSizeControl } from "@/components/tools/preview/PreviewSizeControl";
+import { PREVIEW_GRID_CLASSES, usePreviewSize } from "@/components/tools/preview/usePreviewSize";
 
 const tool = getToolBySlug("rotate-pdf")!;
 const colors = toolColorClasses[tool.color];
@@ -32,6 +35,8 @@ export function RotatePdfTool() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [justDownloaded, setJustDownloaded] = useState(false);
+  const [previewSize, setPreviewSize] = usePreviewSize();
+  const [zoomPage, setZoomPage] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const hasChanges = rotations.some((delta) => delta % 360 !== 0);
@@ -214,7 +219,11 @@ export function RotatePdfTool() {
             </span>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <div className="mt-3">
+            <PreviewSizeControl value={previewSize} onChange={setPreviewSize} activeClass={colors.solidBg} />
+          </div>
+
+          <div className={`mt-3 grid gap-3 ${PREVIEW_GRID_CLASSES[previewSize]}`}>
             {thumbnails.map((page, index) => (
               <PdfPageThumb
                 key={page.pageIndex}
@@ -222,6 +231,7 @@ export function RotatePdfTool() {
                 rotation={rotations[index] ?? 0}
                 label={`Page ${page.pageIndex + 1}`}
                 ariaLabel={`Select page ${page.pageIndex + 1} to rotate`}
+                onZoom={() => setZoomPage(page.pageIndex)}
                 selected={selected.has(index)}
                 accentClass={colors.border}
                 onClick={() => toggleSelect(index)}
@@ -287,6 +297,9 @@ export function RotatePdfTool() {
         <Lock size={14} className={colors.text} aria-hidden="true" />
         Files you add here stay in your browser and are not uploaded to a server.
       </p>
+      {file && zoomPage !== null && (
+        <PagePreviewModal file={file} initialPage={zoomPage} title={file.name} onClose={() => setZoomPage(null)} />
+      )}
     </>
   );
 }

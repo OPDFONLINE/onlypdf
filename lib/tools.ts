@@ -11,6 +11,7 @@ import {
   FileArchive,
   Eraser,
   FileText,
+  FilePlus2,
 } from "lucide-react";
 
 export type ToolColor = "accent" | "coral" | "amber" | "teal" | "pink" | "sky" | "lime" | "violet";
@@ -31,6 +32,12 @@ export type Tool = {
   maxFiles?: number;
   /** When set, the tool page shows a page-number picker after upload. */
   pageSelection?: "delete" | "extract";
+  /**
+   * How the generic tool page previews uploaded PDFs when there is no page
+   * picker: "cover" shows each file's first page (Merge), "pages" shows every
+   * page of the single file (Split).
+   */
+  pagePreview?: "cover" | "pages";
   /** Short line explaining what the tool needs from the user's file. */
   fileHint: string;
   instructions: string[];
@@ -139,6 +146,7 @@ export const tools: Tool[] = [
     icon: Combine,
     color: "accent",
     minFiles: 2,
+    pagePreview: "cover",
     fileHint: "Select two or more PDF files to combine.",
     instructions: [
       "Add the PDF files you want to combine.",
@@ -167,6 +175,7 @@ export const tools: Tool[] = [
     icon: Scissors,
     color: "coral",
     maxFiles: 1,
+    pagePreview: "pages",
     fileHint: "Select one PDF file to split.",
     instructions: [
       "Upload the PDF you want to split.",
@@ -278,6 +287,47 @@ export const tools: Tool[] = [
     ],
   },
   {
+    slug: "insert-pdf-pages",
+    name: "Insert PDF Pages",
+    oneLiner: "Add new pages after any page of your PDF.",
+    description: "Insert pages from another PDF, images or blank pages after the page number you choose, such as after page 7 of a 30-page file.",
+    icon: FilePlus2,
+    color: "accent",
+    maxFiles: 1,
+    fileHint: "Select the PDF you want to add pages to.",
+    instructions: [
+      "Upload the PDF you want to add pages to.",
+      "Choose where the new pages go: pick \u201cInsert after\u201d on a page, or use the position menu (including before page 1 and at the end).",
+      "Choose what to insert: pages from another PDF, one or more images, or blank pages.",
+      "Check the result summary, then select Insert pages and download the new PDF.",
+    ],
+    faq: [
+      {
+        question: "Can I add a page after a specific page number?",
+        answer:
+          "Yes. If your PDF has 30 pages, you can insert after page 7, after page 9, at the very beginning or at the very end. The new pages are placed right after the page you choose and every later page moves down.",
+      },
+      {
+        question: "What can I insert?",
+        answer:
+          "Pages from another PDF (all of them or just the ones you tick), JPG or PNG images (each becomes a page), or blank pages. Blank pages can match the neighbouring page size, A4 or US Letter.",
+      },
+      {
+        question: "Can I insert in several places at once?",
+        answer:
+          "One position per run. To add pages in more than one place, download the result and run the tool again with the new file.",
+      },
+      {
+        question: "Does it change my original file?",
+        answer: "No. The tool builds a new PDF in your browser, and your original stays untouched.",
+      },
+      {
+        question: "Does it work with password-protected PDFs?",
+        answer: "No. Remove the password in the program that created the file first, then upload it here.",
+      },
+    ],
+  },
+  {
     slug: "rotate-pdf",
     name: "Rotate PDF",
     oneLiner: "Rotate one or more PDF pages.",
@@ -306,13 +356,13 @@ export const tools: Tool[] = [
   {
     slug: "jpg-to-pdf",
     name: "JPG to PDF",
-    oneLiner: "Convert JPG, JPEG, or PNG images into a PDF.",
-    description: "Combine one or more images into a single PDF file.",
+    oneLiner: "Convert JPG or JPEG images into a PDF.",
+    description: "Combine one or more JPG images into a single PDF file.",
     icon: FileImage,
     color: "lime",
-    fileHint: "Select one or more JPG, JPEG, or PNG images.",
+    fileHint: "Select one or more JPG or JPEG images. For PNG files, use PNG to PDF.",
     instructions: [
-      "Add the JPG, JPEG, or PNG images you want to convert.",
+      "Add the JPG or JPEG images you want to convert.",
       "Drag images into the order you want, or use the arrow buttons.",
       "Choose a page size: fit to each image, A4, or US Letter.",
       "Select Convert to PDF, then download the file.",
@@ -321,7 +371,12 @@ export const tools: Tool[] = [
       {
         question: "Can I combine multiple images into one PDF?",
         answer:
-          "Yes. Add as many JPG, JPEG, or PNG images as you like, put them in the order you want, and they'll be combined into a single PDF with one image per page.",
+          "Yes. Add as many JPG images as you like, put them in the order you want, and they'll be combined into a single PDF with one image per page.",
+      },
+      {
+        question: "Can I convert PNG images here?",
+        answer:
+          "PNG files have their own tool. Use PNG to PDF for PNG images so transparency and sharp graphics are handled correctly.",
       },
       {
         question: "What does \u201cFit to image\u201d do?",
@@ -336,19 +391,54 @@ export const tools: Tool[] = [
     ],
   },
   {
+    slug: "png-to-pdf",
+    name: "PNG to PDF",
+    oneLiner: "Convert PNG images into a PDF.",
+    description: "Combine one or more PNG images into a single PDF file, right in your browser.",
+    icon: FileImage,
+    color: "teal",
+    fileHint: "Select one or more PNG images. For JPG or JPEG files, use JPG to PDF.",
+    instructions: [
+      "Add the PNG images you want to convert.",
+      "Drag images into the order you want, or use the arrow buttons.",
+      "Choose a page size: fit to each image, A4, or US Letter.",
+      "Select Convert to PDF, then download the file.",
+    ],
+    faq: [
+      {
+        question: "Can I combine multiple PNG images into one PDF?",
+        answer:
+          "Yes. Add as many PNG images as you like, put them in the order you want, and they'll be combined into a single PDF with one image per page.",
+      },
+      {
+        question: "What about transparent PNG images?",
+        answer:
+          "Transparent areas stay transparent inside the PDF, so they show the page colour, which is normally white, in most PDF viewers.",
+      },
+      {
+        question: "Can I convert JPG images here?",
+        answer: "JPG and JPEG files have their own tool. Use JPG to PDF for those.",
+      },
+      {
+        question: "Are my images uploaded to a server?",
+        answer: "No. The conversion runs in your browser and your images stay on your device.",
+      },
+    ],
+  },
+  {
     slug: "pdf-to-jpg",
     name: "PDF to JPG",
-    oneLiner: "Convert PDF pages into JPG or PNG images.",
-    description: "Turn any PDF page into a JPG or PNG image you can use anywhere.",
+    oneLiner: "Convert PDF pages into JPG images.",
+    description: "Turn any PDF page into a JPG image you can use anywhere.",
     icon: ImageIcon,
     color: "violet",
     maxFiles: 1,
-    fileHint: "Select one PDF file to convert.",
+    fileHint: "Select one PDF file to convert. For PNG output, use PDF to PNG.",
     instructions: [
       "Upload your PDF.",
-      "Choose which pages to convert, or select all of them.",
-      "Choose JPG or PNG as the output format.",
-      "Select Convert, then download your image (or a ZIP, for multiple pages).",
+      "Choose which pages to convert, or select all of them. Use the + button on a page to see it larger.",
+      "Select Convert to JPG.",
+      "Download your image (or a ZIP, for multiple pages).",
     ],
     faq: [
       {
@@ -359,7 +449,40 @@ export const tools: Tool[] = [
       {
         question: "Should I choose JPG or PNG?",
         answer:
-          "JPG is smaller and works well for most documents. PNG is a better choice if a page has fine text, line art, or transparency you want to preserve exactly.",
+          "JPG is smaller and works well for most documents and photos. If a page has fine text or line art you want to keep razor sharp, use the PDF to PNG tool instead.",
+      },
+      {
+        question: "How do I get more than one page at once?",
+        answer:
+          "If you convert more than one page, all the resulting images are bundled together into a single ZIP file you can download.",
+      },
+    ],
+  },
+  {
+    slug: "pdf-to-png",
+    name: "PDF to PNG",
+    oneLiner: "Convert PDF pages into PNG images.",
+    description: "Turn any PDF page into a sharp PNG image, ideal for text, line art and screenshots.",
+    icon: ImageIcon,
+    color: "amber",
+    maxFiles: 1,
+    fileHint: "Select one PDF file to convert. For JPG output, use PDF to JPG.",
+    instructions: [
+      "Upload your PDF.",
+      "Choose which pages to convert, or select all of them. Use the + button on a page to see it larger.",
+      "Select Convert to PNG.",
+      "Download your image (or a ZIP, for multiple pages).",
+    ],
+    faq: [
+      {
+        question: "Why choose PNG instead of JPG?",
+        answer:
+          "PNG keeps fine text, thin lines and flat colours crisp, with no compression artefacts. The files are larger than JPG, so use PDF to JPG when size matters more.",
+      },
+      {
+        question: "Can I convert just some pages instead of the whole PDF?",
+        answer:
+          "Yes. Every page is selected by default; tap a page's thumbnail to leave it out, or use Select all / Clear selection.",
       },
       {
         question: "How do I get more than one page at once?",
@@ -371,7 +494,7 @@ export const tools: Tool[] = [
 ];
 
 /** Tools that convert between PDF and another format; everything else is a plain PDF-editing tool. */
-export const convertToolSlugs = ["pdf-to-word", "word-to-pdf", "jpg-to-pdf", "pdf-to-jpg"] as const;
+export const convertToolSlugs = ["pdf-to-word", "word-to-pdf", "jpg-to-pdf", "png-to-pdf", "pdf-to-jpg", "pdf-to-png"] as const;
 
 export function isConvertTool(slug: string): boolean {
   return (convertToolSlugs as readonly string[]).includes(slug);

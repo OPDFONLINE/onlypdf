@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { CloudUpload, FileText, X, Lock, GripVertical, CircleAlert } from "lucide-react";
+import { CloudUpload, FileText, X, Lock, GripVertical, CircleAlert, ArrowLeft, ArrowRight } from "lucide-react";
 import { tools, getToolBySlug } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 import { toolProcessors } from "@/lib/toolProcessors";
@@ -10,7 +10,14 @@ import { getPdfPageCount } from "@/lib/pdf/getPageCount";
 import { Faq } from "@/components/ui/Faq";
 import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
 import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
+import { getPdfCover, type PdfCover } from "@/lib/pdf/pdfPreview";
+import { PagePreviewModal } from "@/components/tools/preview/PagePreviewModal";
+import { PreviewSizeControl } from "@/components/tools/preview/PreviewSizeControl";
+import { PREVIEW_GRID_CLASSES, usePreviewSize } from "@/components/tools/preview/usePreviewSize";
 import { useToolAnalytics } from "@/lib/analytics";
+
+/** 1x1 transparent GIF, shown while a cover preview is still rendering. */
+const BLANK_IMAGE = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
 export type ToolPageContent = {
   name: string;
@@ -22,6 +29,8 @@ export type ToolPageContent = {
 export function ToolPageShellClient({ slug, content }: { slug: string; content?: ToolPageContent }) {
   const tool = getToolBySlug(slug);
   const pageSelectionMode = tool?.pageSelection;
+  const pagePreviewMode = tool?.pagePreview;
+  const needsThumbs = Boolean(pageSelectionMode) || pagePreviewMode === "pages";
   const { trackStart, trackComplete } = useToolAnalytics(slug);
 
   const [files, setFiles] = useState<File[]>([]);
@@ -34,11 +43,34 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
   const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
   const [isReadingPages, setIsReadingPages] = useState(false);
   const [pageThumbs, setPageThumbs] = useState<PageThumbnail[]>([]);
+  const [covers, setCovers] = useState<Map<File, PdfCover | "error">>(new Map());
+  const [previewSize, setPreviewSize] = usePreviewSize();
+  const [zoomTarget, setZoomTarget] = useState<{ file: File; page: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // For page-selection tools, read the page count as soon as a file is added.
+  // Merge: render a first-page cover for every file that gets added.
   useEffect(() => {
-    if (!pageSelectionMode) return;
+    if (pagePreviewMode !== "cover") return;
+    let cancelled = false;
+    for (const file of files) {
+      if (covers.has(file)) continue;
+      getPdfCover(file)
+        .then((cover) => {
+          if (!cancelled) setCovers((prev) => new Map(prev).set(file, cover));
+        })
+        .catch(() => {
+          if (!cancelled) setCovers((prev) => new Map(prev).set(file, "error"));
+        });
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [files, pagePreviewMode, covers]);
+
+  // For page-selection and page-preview tools, read the page count and
+  // render thumbnails as soon as a file is added.
+  useEffect(() => {
+    if (!needsThumbs) return;
     const file = files[0];
     if (!file) {
       setPageCount(null);
@@ -67,7 +99,7 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
     return () => {
       cancelled = true;
     };
-  }, [files, pageSelectionMode]);
+  }, [files, needsThumbs]);
 
   if (!tool) return null;
 
@@ -211,7 +243,82 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
             <p className="mt-3 text-xs text-ink-soft">{tool.fileHint}</p>
           </div>
 
-          {files.length > 0 && (
+          {pagePreviewMode === "cover" && files.length > 0 && (
+            <div className="mt-6">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-ink">
+                  {files.length > 1 ? "Drag files into the order you want" : "Your file"}
+                </p>
+                <PreviewSizeControl value={previewSize} onChange={setPreviewSize} activeClass={colors.solidBg} />
+              </div>
+              <div className={`mt-3 grid gap-3 ${PREVIEW_GRID_CLASSES[previewSize]}`}>
+                {files.map((file, index) => {
+                  const cover = covers.get(file);
+                  const ready = cover && cover !== "error" ? cover : null;
+                  return (
+                    <PdfPageThumb
+                      key={`${file.name}-${index}`}
+                      dataUrl={ready?.dataUrl ?? BLANK_IMAGE}
+                      label={`${index + 1}. ${file.name}${ready ? ` · ${ready.pageCount} ${ready.pageCount === 1 ? "page" : "pages"}` : ""}`}
+                      ariaLabel={`${file.name}, position ${index + 1}`}
+                      accentClass={colors.border}
+                      draggable={files.length > 1}
+                      isDragging={dragIndex === index}
+                      onDragStart={() => setDragIndex(index)}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        if (dragIndex !== null && dragIndex !== index) reorderFiles(dragIndex, index);
+                        setDragIndex(null);
+                      }}
+                      onDragEnd={() => setDragIndex(null)}
+                      onZoom={cover === "error" ? undefined : () => setZoomTarget({ file, page: 0 })}
+                      cornerBadge={
+                        files.length > 1 ? <GripVertical size={14} className="text-ink-soft" aria-hidden="true" /> : undefined
+                      }
+                      footer={
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => reorderFiles(index, index - 1)}
+                            disabled={index === 0}
+                            aria-label={`Move ${file.name} earlier`}
+                            className="rounded-lg p-1.5 text-ink-soft transition-colors hover:bg-paper hover:text-ink disabled:opacity-30"
+                          >
+                            <ArrowLeft size={14} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => removeFile(index)}
+                            aria-label={`Remove ${file.name}`}
+                            className="rounded-lg p-1.5 text-ink-soft transition-colors hover:bg-paper hover:text-coral"
+                          >
+                            <X size={14} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => reorderFiles(index, index + 1)}
+                            disabled={index === files.length - 1}
+                            aria-label={`Move ${file.name} later`}
+                            className="rounded-lg p-1.5 text-ink-soft transition-colors hover:bg-paper hover:text-ink disabled:opacity-30"
+                          >
+                            <ArrowRight size={14} />
+                          </button>
+                        </>
+                      }
+                    />
+                  );
+                })}
+              </div>
+              {files.some((file) => covers.get(file) === "error") && (
+                <p className="mt-2 text-xs text-coral">
+                  A preview couldn&apos;t be created for one of the files. It may still merge fine, or it may be damaged or password-protected.
+                </p>
+              )}
+            </div>
+          )}
+
+          {pagePreviewMode !== "cover" && files.length > 0 && (
             <ul className="mt-4 space-y-2">
               {files.map((file, index) => (
                 <li
@@ -258,7 +365,7 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
               )}
               {!isReadingPages && pageCount !== null && (
                 <>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     <p className="text-sm font-semibold text-ink">
                       {pageSelectionMode === "delete"
                         ? "Tap the pages you want to remove"
@@ -268,7 +375,10 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
                       {selectedPages.size} of {pageCount} selected
                     </p>
                   </div>
-                  <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  <div className="mt-2">
+                    <PreviewSizeControl value={previewSize} onChange={setPreviewSize} activeClass={colors.solidBg} />
+                  </div>
+                  <div className={`mt-3 grid gap-3 ${PREVIEW_GRID_CLASSES[previewSize]}`}>
                     {pageThumbs.map((page) => {
                       const isSelected = selectedPages.has(page.pageIndex);
                       return (
@@ -279,6 +389,7 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
                           selected={isSelected}
                           accentClass={colors.border}
                           onClick={() => togglePage(page.pageIndex)}
+                          onZoom={() => files[0] && setZoomTarget({ file: files[0], page: page.pageIndex })}
                           ariaLabel={`${pageSelectionMode === "delete" ? "Delete" : "Extract"} page ${page.pageIndex + 1}`}
                           cornerBadge={isSelected ? <span className={`flex h-6 w-6 items-center justify-center rounded-full ${colors.solidBg} text-xs font-bold text-white`}>{pageSelectionMode === "delete" ? "−" : "✓"}</span> : null}
                         />
@@ -290,6 +401,35 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
                       At least one page has to remain — unselect one to continue.
                     </p>
                   )}
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Read-only page preview, for tools without a page picker (Split) */}
+          {pagePreviewMode === "pages" && files.length > 0 && (
+            <div className="mt-5">
+              {isReadingPages && <p className="text-sm text-ink-muted">Reading your PDF and building previews…</p>}
+              {!isReadingPages && pageCount !== null && (
+                <>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-sm font-semibold text-ink">
+                      Preview: {pageCount} {pageCount === 1 ? "page" : "pages"}, each becomes its own PDF
+                    </p>
+                    <PreviewSizeControl value={previewSize} onChange={setPreviewSize} activeClass={colors.solidBg} />
+                  </div>
+                  <div className={`mt-3 grid gap-3 ${PREVIEW_GRID_CLASSES[previewSize]}`}>
+                    {pageThumbs.map((page) => (
+                      <PdfPageThumb
+                        key={page.pageIndex}
+                        dataUrl={page.dataUrl}
+                        label={`Page ${page.pageIndex + 1}`}
+                        ariaLabel={`Page ${page.pageIndex + 1}`}
+                        accentClass={colors.border}
+                        onZoom={() => files[0] && setZoomTarget({ file: files[0], page: page.pageIndex })}
+                      />
+                    ))}
+                  </div>
                 </>
               )}
             </div>
@@ -408,6 +548,15 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
       <div className="mt-16 max-w-2xl border-t border-border pt-14 md:mt-20">
         <Faq items={pageFaq} />
       </div>
+
+      {zoomTarget && (
+        <PagePreviewModal
+          file={zoomTarget.file}
+          initialPage={zoomTarget.page}
+          title={zoomTarget.file.name}
+          onClose={() => setZoomTarget(null)}
+        />
+      )}
     </div>
   );
 }

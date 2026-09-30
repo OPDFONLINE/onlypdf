@@ -9,26 +9,35 @@ import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbna
 import { renderPdfPagesToImages, type ImageFormat } from "@/lib/pdf/renderPageImages";
 import { createZip, type ZipEntry } from "@/lib/pdf/zip";
 import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
-
-const tool = getToolBySlug("pdf-to-jpg")!;
-const colors = toolColorClasses[tool.color];
+import { PagePreviewModal } from "@/components/tools/preview/PagePreviewModal";
+import { PreviewSizeControl } from "@/components/tools/preview/PreviewSizeControl";
+import { PREVIEW_GRID_CLASSES, usePreviewSize } from "@/components/tools/preview/usePreviewSize";
 
 function baseNameOf(file: File): string {
   return file.name.replace(/\.pdf$/i, "").trim() || "document";
 }
 
-const FORMAT_OPTIONS: { value: ImageFormat; label: string }[] = [
-  { value: "jpg", label: "JPG" },
-  { value: "png", label: "PNG" },
-];
-
-export function PdfToImageTool() {
-  const { trackStart, trackComplete } = useToolAnalytics("pdf-to-jpg");
+/**
+ * One component powers both "PDF to JPG" and "PDF to PNG". The output format
+ * is fixed by the tool page, so each tool does exactly one thing.
+ */
+export function PdfToImageTool({
+  slug = "pdf-to-jpg",
+  format = "jpg",
+}: {
+  slug?: string;
+  format?: ImageFormat;
+}) {
+  const tool = getToolBySlug(slug)!;
+  const colors = toolColorClasses[tool.color];
+  const formatLabel = format === "png" ? "PNG" : "JPG";
+  const { trackStart, trackComplete } = useToolAnalytics(slug);
 
   const [file, setFile] = useState<File | null>(null);
   const [thumbnails, setThumbnails] = useState<PageThumbnail[]>([]);
   const [selected, setSelected] = useState<Set<number>>(new Set());
-  const [format, setFormat] = useState<ImageFormat>("jpg");
+  const [previewSize, setPreviewSize] = usePreviewSize();
+  const [zoomPage, setZoomPage] = useState<number | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isLoadingPages, setIsLoadingPages] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -205,37 +214,21 @@ export function PdfToImageTool() {
             </div>
           </div>
 
-          <div className="mt-3 flex flex-wrap items-center gap-3">
-            <span className="text-sm font-semibold text-ink">Save as:</span>
-            <div className="flex gap-2">
-              {FORMAT_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => setFormat(option.value)}
-                  aria-pressed={format === option.value}
-                  className={`rounded-pill border-2 px-4 py-2 text-sm font-semibold transition-colors ${
-                    format === option.value
-                      ? `${colors.solidBg} border-transparent text-white`
-                      : "border-border bg-surface text-ink-muted hover:border-ink-soft"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
             <span className="text-xs text-ink-soft">
-              {selected.size} of {thumbnails.length} selected
+              Output: <span className="font-semibold text-ink">{formatLabel}</span> · {selected.size} of {thumbnails.length} selected
             </span>
+            <PreviewSizeControl value={previewSize} onChange={setPreviewSize} activeClass={colors.solidBg} />
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <div className={`mt-4 grid gap-3 ${PREVIEW_GRID_CLASSES[previewSize]}`}>
             {thumbnails.map((page, index) => (
               <PdfPageThumb
                 key={page.pageIndex}
                 dataUrl={page.dataUrl}
                 label={`Page ${page.pageIndex + 1}`}
                 ariaLabel={`Select page ${page.pageIndex + 1} to convert`}
+                onZoom={() => setZoomPage(page.pageIndex)}
                 selected={selected.has(index)}
                 accentClass={colors.border}
                 onClick={() => toggleSelect(index)}
@@ -265,7 +258,7 @@ export function PdfToImageTool() {
               : "cursor-not-allowed bg-ink/30"
           }`}
         >
-          {isProcessing ? "Working\u2026" : "Convert"}
+          {isProcessing ? "Working\u2026" : `Convert to ${formatLabel}`}
         </button>
         {file && (
           <button
@@ -299,6 +292,9 @@ export function PdfToImageTool() {
         <Lock size={14} className={colors.text} aria-hidden="true" />
         Files you add here stay in your browser and are not uploaded to a server.
       </p>
+      {file && zoomPage !== null && (
+        <PagePreviewModal file={file} initialPage={zoomPage} title={file.name} onClose={() => setZoomPage(null)} />
+      )}
     </>
   );
 }

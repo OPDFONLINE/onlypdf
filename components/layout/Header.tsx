@@ -7,7 +7,7 @@ import { ChevronDown, Menu, Sparkles, X } from "lucide-react";
 import { tools } from "@/lib/tools";
 import { toolColorClasses } from "@/lib/toolColors";
 
-const convertTools = ["jpg-to-pdf", "pdf-to-jpg", "pdf-to-word", "word-to-pdf"];
+const convertTools = ["jpg-to-pdf", "png-to-pdf", "pdf-to-jpg", "pdf-to-png", "pdf-to-word", "word-to-pdf"];
 const topTools = ["merge-pdf", "split-pdf", "compress-pdf"];
 
 function NavDropdown({ label, tools: items, panelClassName }: { label: string; tools: typeof tools; panelClassName: string }) {
