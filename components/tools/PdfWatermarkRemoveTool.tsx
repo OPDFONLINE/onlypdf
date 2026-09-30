@@ -1,29 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CloudUpload, Loader2, ScanSearch, BoxSelect } from "lucide-react";
 import { useToolAnalytics } from "@/lib/analytics";
-import { Check, CloudUpload, Eraser, FileText, RotateCcw } from "lucide-react";
 import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
-import { removeWatermarkArea, type WatermarkRect } from "@/lib/pdf/removeWatermark";
+import { analyzeWatermarks, type WatermarkAnalysis } from "@/lib/pdf/watermarkDetect";
+import { SmartPanel } from "./watermark/SmartPanel";
+import { AreaPanel } from "./watermark/AreaPanel";
 
-function clamp(value: number) {
-  return Math.max(0, Math.min(1, value));
-}
+type Tab = "smart" | "area";
 
 export function PdfWatermarkRemoveTool() {
   const { trackStart, trackComplete } = useToolAnalytics("watermark-remove");
 
   const [file, setFile] = useState<File | null>(null);
   const [pages, setPages] = useState<PageThumbnail[]>([]);
-  const [rect, setRect] = useState<WatermarkRect | null>(null);
-  const [dragging, setDragging] = useState(false);
-  const [start, setStart] = useState<{ x: number; y: number } | null>(null);
-  const [selectedPage, setSelectedPage] = useState(0);
-  const [applyAll, setApplyAll] = useState(true);
-  const [working, setWorking] = useState(false);
+  const [analysis, setAnalysis] = useState<WatermarkAnalysis | null>(null);
+  const [tab, setTab] = useState<Tab>("area");
   const [error, setError] = useState<string | null>(null);
   const [isDraggingFile, setIsDraggingFile] = useState(false);
-  const previewRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   function pickFile(candidate: File | null | undefined) {
@@ -33,93 +28,40 @@ export function PdfWatermarkRemoveTool() {
       setError("Please select a PDF file.");
       return;
     }
-    setFile(candidate);
-    setRect(null);
-    setSelectedPage(0);
     setError(null);
+    setFile(candidate);
   }
 
+  // Thumbnails (for colour sampling) and the watermark scan run side by side.
   useEffect(() => {
     if (!file) return;
     let cancelled = false;
     setPages([]);
-    renderPdfThumbnails(file)
-      .then((items) => {
-        if (!cancelled) setPages(items);
+    setAnalysis(null);
+    setError(null);
+
+    Promise.all([renderPdfThumbnails(file), analyzeWatermarks(file)])
+      .then(([thumbs, result]) => {
+        if (cancelled) return;
+        setPages(thumbs);
+        setAnalysis(result);
+        setTab(result.candidates.length > 0 ? "smart" : "area");
       })
       .catch((err) => {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Couldn't preview this PDF.");
+        if (!cancelled) setError(err instanceof Error ? err.message : "Couldn't open this PDF.");
       });
     return () => {
       cancelled = true;
     };
   }, [file]);
 
-  const currentPage = pages[selectedPage];
+  const ready = file && analysis && pages.length > 0;
+  const found = analysis?.candidates.length ?? 0;
 
-  function pointFromEvent(event: PointerEvent) {
-    const box = previewRef.current?.getBoundingClientRect();
-    if (!box) return null;
-    return {
-      x: clamp((event.clientX - box.left) / box.width),
-      y: clamp((event.clientY - box.top) / box.height),
-    };
-  }
-
-  function startSelection(event: PointerEvent) {
-    if (!currentPage) return;
-    const point = pointFromEvent(event);
-    if (!point) return;
-    event.currentTarget.setPointerCapture(event.pointerId);
-    setStart(point);
-    setRect({ x: point.x, y: point.y, width: 0, height: 0 });
-    setDragging(true);
-  }
-
-  function moveSelection(event: PointerEvent) {
-    if (!dragging || !start) return;
-    const point = pointFromEvent(event);
-    if (!point) return;
-    setRect({
-      x: Math.min(start.x, point.x),
-      y: Math.min(start.y, point.y),
-      width: Math.abs(point.x - start.x),
-      height: Math.abs(point.y - start.y),
-    });
-  }
-
-  function finishSelection(event: PointerEvent) {
-    if (!dragging) return;
-    try {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    } catch {
-      // Pointer capture may already have been released.
-    }
-    setDragging(false);
-    setStart(null);
-  }
-
-  async function process() {
-    if (!file || !rect || rect.width < 0.01 || rect.height < 0.01) return;
-    trackStart();
-    setWorking(true);
-    setError(null);
-    try {
-      const pageIndexes = applyAll ? pages.map((page) => page.pageIndex) : [selectedPage];
-      const blob = await removeWatermarkArea(file, rect, pageIndexes);
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = file.name.replace(/\.pdf$/i, "") + "-watermark-removed.pdf";
-      link.click();
-      URL.revokeObjectURL(url);
-      trackComplete();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Couldn't remove the selected area.");
-    } finally {
-      setWorking(false);
-    }
-  }
+  const tabClass = (active: boolean) =>
+    `inline-flex items-center gap-2 rounded-pill border px-4 py-2 text-sm font-semibold transition-colors ${
+      active ? "border-teal bg-teal text-white" : "border-border bg-surface text-ink-muted hover:border-teal hover:text-teal"
+    }`;
 
   return (
     <div className="mt-8">
@@ -139,7 +81,7 @@ export function PdfWatermarkRemoveTool() {
         <CloudUpload size={28} className="mx-auto text-teal" aria-hidden="true" />
         <p className="mt-3 text-sm font-semibold text-ink">Drag and drop a PDF, or choose one</p>
         <button type="button" onClick={() => inputRef.current?.click()} className="mt-3 rounded-pill bg-teal px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
-          Choose PDF
+          {file ? "Choose another PDF" : "Choose PDF"}
         </button>
         <input
           ref={inputRef}
@@ -154,63 +96,59 @@ export function PdfWatermarkRemoveTool() {
         {file && <p className="mt-3 text-xs text-ink-soft">{file.name}</p>}
       </div>
 
-      {pages.length > 0 && currentPage && (
-        <>
-          <div className="mt-6 rounded-card border border-border bg-surface p-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-bold text-ink">Select the watermark area</p>
-                <p className="mt-1 text-xs text-ink-muted">Drag a box over the watermark in the preview. The same area can be applied to every page.</p>
-              </div>
-              <button type="button" onClick={() => setRect(null)} className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-muted hover:text-ink">
-                <RotateCcw size={14} /> Clear selection
-              </button>
-            </div>
+      {error && <p role="alert" className="mt-4 rounded-xl bg-coral-soft px-4 py-3 text-sm text-coral">{error}</p>}
 
-            <div className="mt-4 flex justify-center">
-              <div
-                ref={previewRef}
-                className="relative max-h-[620px] w-full max-w-xl touch-none select-none overflow-hidden rounded-xl border border-border bg-white"
-                onPointerDown={startSelection}
-                onPointerMove={moveSelection}
-                onPointerUp={finishSelection}
-                onPointerCancel={finishSelection}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={currentPage.dataUrl} alt={`PDF page ${selectedPage + 1}`} className="block h-auto max-h-[620px] w-full object-contain" draggable={false} />
-                {rect && rect.width > 0 && rect.height > 0 && (
-                  <div className="pointer-events-none absolute border-2 border-dashed border-teal bg-teal/20" style={{ left: `${rect.x * 100}%`, top: `${rect.y * 100}%`, width: `${rect.width * 100}%`, height: `${rect.height * 100}%` }}>
-                    <span className="absolute -top-6 left-0 rounded bg-teal px-1.5 py-1 text-[10px] font-bold text-white">Remove</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-              {pages.map((page) => (
-                <button key={page.pageIndex} type="button" onClick={() => setSelectedPage(page.pageIndex)} className={`rounded-lg border px-3 py-1.5 text-xs font-semibold ${selectedPage === page.pageIndex ? "border-teal bg-teal text-white" : "border-border bg-paper text-ink-muted hover:text-ink"}`}>
-                  Page {page.pageIndex + 1}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <label className="mt-4 flex items-center gap-2 text-sm text-ink">
-            <input type="checkbox" checked={applyAll} onChange={(e) => setApplyAll(e.target.checked)} />
-            Apply this watermark area to all pages
-          </label>
-
-          <button type="button" disabled={!rect || working} onClick={process} className={`mt-5 inline-flex items-center gap-2 rounded-pill px-5 py-2.5 text-sm font-semibold text-white ${rect && !working ? "bg-teal hover:opacity-90" : "cursor-not-allowed bg-ink/30"}`}>
-            <Eraser size={16} />
-            {working ? "Removing…" : "Remove watermark"}
-          </button>
-        </>
+      {file && !ready && !error && (
+        <p className="mt-4 flex items-center gap-2 text-sm text-ink-muted"><Loader2 size={16} className="animate-spin" /> Scanning for watermarks and preparing previews…</p>
       )}
 
-      {error && <p className="mt-4 rounded-xl bg-coral-soft px-4 py-3 text-sm text-coral">{error}</p>}
-      {file && pages.length === 0 && !error && <p className="mt-4 text-sm text-ink-muted">Preparing page previews…</p>}
-      {!file && <div className="mt-6 flex items-start gap-3 rounded-2xl bg-teal-soft p-4 text-sm text-ink-muted"><FileText size={18} className="mt-0.5 shrink-0 text-teal" /><p>This tool covers a selected watermark area with white. If the watermark overlaps real content, that content will also be covered.</p></div>}
-      {rect && <p className="mt-3 flex items-center gap-2 text-xs text-ink-soft"><Check size={14} className="text-teal" /> Area selected. Review the preview before processing.</p>}
+      {!file && (
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <div className="flex items-start gap-3 rounded-2xl bg-teal-soft p-4 text-sm text-ink-muted">
+            <ScanSearch size={18} className="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+            <p><strong className="font-semibold text-ink">Smart removal.</strong> Finds watermarks that are separate objects (tagged layers, semi-transparent text or logos, stamps) and deletes them cleanly.</p>
+          </div>
+          <div className="flex items-start gap-3 rounded-2xl bg-teal-soft p-4 text-sm text-ink-muted">
+            <BoxSelect size={18} className="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+            <p><strong className="font-semibold text-ink">Manual area.</strong> For watermarks baked into the page or a scan: draw boxes and cover them, with colour matching and page ranges.</p>
+          </div>
+        </div>
+      )}
+
+      {ready && (
+        <>
+          <div role="tablist" aria-label="Removal method" className="mt-6 flex flex-wrap gap-2">
+            <button role="tab" type="button" aria-selected={tab === "smart"} onClick={() => setTab("smart")} className={tabClass(tab === "smart")}>
+              <ScanSearch size={16} aria-hidden="true" /> Smart removal
+              <span className={`rounded-pill px-2 py-0.5 text-[11px] font-bold ${tab === "smart" ? "bg-white/25" : found ? "bg-teal-soft text-teal" : "bg-paper text-ink-soft"}`}>{found}</span>
+            </button>
+            <button role="tab" type="button" aria-selected={tab === "area"} onClick={() => setTab("area")} className={tabClass(tab === "area")}>
+              <BoxSelect size={16} aria-hidden="true" /> Manual area
+            </button>
+          </div>
+
+          {tab === "smart" &&
+            (found > 0 ? (
+              <SmartPanel key={file.name + file.size} file={file} analysis={analysis} onStart={trackStart} onDone={trackComplete} />
+            ) : (
+              <div className="mt-5 rounded-2xl border border-border bg-surface p-5 text-sm text-ink-muted">
+                <p className="font-semibold text-ink">No removable watermark objects found.</p>
+                <p className="mt-1">
+                  This usually means the watermark is part of the page image (common with scans) or is drawn in a way that can&apos;t be told apart from normal content.
+                  Try the manual area mode instead.
+                </p>
+                <button type="button" onClick={() => setTab("area")} className="mt-3 rounded-pill bg-teal px-4 py-2 text-sm font-semibold text-white hover:opacity-90">Use manual area</button>
+              </div>
+            ))}
+
+          {tab === "area" && found === 0 && (
+            <p className="mt-4 rounded-xl bg-paper px-4 py-3 text-xs leading-5 text-ink-muted">
+              Smart removal found no separate watermark objects in this PDF (common with scans or watermarks built into the page), so manual mode is shown.
+            </p>
+          )}
+          {tab === "area" && <AreaPanel key={file.name + file.size} file={file} pages={pages} onStart={trackStart} onDone={trackComplete} />}
+        </>
+      )}
     </div>
   );
 }

@@ -882,9 +882,9 @@ Once you know why formatting shifts, the cleanup becomes routine rather than fru
   {
     slug: "remove-watermark-from-pdf-selected-area",
     title: "How to Remove a Watermark From a PDF by Selecting the Area",
-    excerpt: "Preview your PDF, draw a box over the watermark, and clean the page. Here is when this works well and when it does not.",
+    excerpt: "When a watermark is part of the page image, you can cover it with a matching colour. Here is how it works and where it falls short.",
     seo_title: "How to Remove a Watermark From a PDF by Selecting the Area",
-    seo_description: "Remove a watermark from a PDF by drawing over it in a preview. Free and private, with honest limits on what area-based removal can do.",
+    seo_description: "Cover a watermark that is part of a scanned or flattened PDF by drawing over it. Auto colour match, undo, page ranges, and honest limits.",
     category: "Edit PDF",
     topic_cluster: "watermark-cleanup",
     author: "OnlyPDF Team",
@@ -892,90 +892,95 @@ Once you know why formatting shifts, the cleanup becomes routine rather than fru
     featuredImageQuery: "document stamp on paper",
     content: `# How to Remove a Watermark From a PDF by Selecting the Area
 
-Watermarks come in many forms: a faint "DRAFT" across the page, a company logo in a corner, a "Confidential" stamp at the top. If you own the document, or have permission to edit it, you may want a clean copy. The area-selection method is a simple approach, and it works well in the right situations.
+Sometimes a watermark cannot be found and deleted, because it is part of the page picture. Scanned documents, flattened exports and screenshots saved as PDF all work this way. For those files, the practical option is to cover the watermark area with a matching colour. This guide explains how the Manual mode of OnlyPDF's [watermark remove tool](/tools/watermark-remove) works, when it gives a clean result, and when it will not.
 
-Only remove watermarks from documents you have the right to modify. A watermark can carry copyright or ownership information, and stripping it from someone else's work may not be permitted.
+:::highlight orange
+Only remove watermarks from documents you have the right to edit. A watermark can carry copyright or ownership information.
+:::
 
-## How the tool works
+## Try Smart mode first
 
-The [PDF watermark remove tool](/tools/watermark-remove) shows a preview of your page. You drag a box over the watermark, and the tool covers that area with white in the copy you download. It does not reconstruct what lies underneath; it covers it.
+Before drawing anything, check whether the watermark is a separate object. When you upload a file, the tool scans it automatically. If it finds semi-transparent text, a logo layer, a stamp or a tagged watermark, the Smart tab opens and you can delete it outright, with a Before and After preview. Deleting is cleaner than covering, because nothing is painted over the page.
 
-That is a simple, honest mechanism, and it explains both its strengths and its limits.
+If the scan finds nothing, the tool opens the Manual tab and says so. That is your cue that the mark is part of the image.
 
 {{IMG:1}}
 
+## How Manual mode works
+
+Manual mode shows a preview of the page. You drag a box over the watermark, and in the downloaded copy that area is covered with a solid colour. It does not rebuild what was underneath. It hides it, which explains both its strengths and its limits.
+
 ## Step by step
 
-- Upload your PDF and wait for the previews.
-- Drag over the watermark area on the page.
-- Choose whether to apply the same area to every page or only the current one.
-- Remove the selected area and download the cleaned PDF.
+- Upload your PDF and wait for the page preview.
+- Drag over the watermark to draw a box. Move it by dragging, and resize it from the corners.
+- Add more boxes if the watermark appears in several places.
+- Choose which pages each box applies to: all pages, this page, odd or even pages, or a range.
+- Check the cover colour, turn on the cover preview, and adjust if needed.
+- Download the cleaned PDF.
+
+If you slip, use Undo and Redo, or press Delete to remove the selected box.
+
+## Choosing the cover colour
+
+The default is Match background, which samples the colour in a thin ring around each box. On white paper that gives white, and on a light blue or cream page it gives a matching tint, so the patch does not stand out. You can also pick white, choose a custom colour, or use Pick from page and tap the exact shade you want.
 
 ## When it works well
 
 - The watermark sits in a predictable spot, such as a corner logo or a footer stamp.
-- The background behind it is plain white.
-- The area you cover contains no text you need.
+- The background around it is plain or a single even colour.
+- The area you cover contains no text or image you need.
 
 ## When it will not work well
 
-- Diagonal watermarks across the middle of the page. Covering them would also cover the text and images beneath.
-- Watermarks over photos or coloured backgrounds. A white box on a coloured page is visible as a white patch.
-- Watermarks baked into the page image. In scanned or flattened pages, the watermark and the content are one picture.
+- Diagonal watermarks across the middle of a text page. Covering them also covers the words underneath.
+- Watermarks over photos, gradients or patterned backgrounds. A flat cover is visible there.
+- Watermarks that overlap a signature, stamp or figure you need to keep.
 
 :::highlight red
-Always review the result. Because the tool covers an area rather than separating layers, check that no needed content has been hidden along with the watermark.
+Always review the result. A cover hides everything in its area, so check that no needed content disappeared along with the watermark.
 :::
 
-## Getting the best result
+## Getting the best result on a phone
 
-- Draw the box as tightly as possible around the watermark.
-- Use the same-area-on-every-page option only when the watermark is truly in the same spot each time.
-- For a watermark that appears on some pages only, work page by page.
+The page preview supports zoom and a Pan mode, so you can zoom in, place the box precisely, then switch to Pan to move around without drawing by accident. The box corners have large touch handles for resizing with a finger.
 
 {{IMG:2}}
 
-## Alternatives worth considering
+## Getting the best result in general
 
-- Ask for a clean copy. The document's author or sender can often supply one without the watermark.
-- Use the source file. If you have the original Word or design file, export a fresh PDF without the watermark.
-- Remove whole pages. If a watermarked page is not needed, [delete it](/tools/delete-pdf-pages) instead.
-
-## Privacy
-
-The tool runs in your browser, so the file stays on your device while it is processed.
-
-## Practical examples
-
-A footer stamp reading "Draft" appears in the same bottom margin on each of forty pages. Drawing one box over it and applying it to every page fixes the whole document in one step.
-
-A company logo sits in the top corner of only the first page. Draw the box on that page and apply it to the current page only, so the other pages are untouched.
-
-A large diagonal "Sample" runs across the middle of every page. Here, a box would cover the text as well, so this is a case where asking for a clean copy from the source is the better route.
+- Draw the box close to the watermark, with a small margin so no faint edge is left.
+- Use the same box on every page only when the watermark really is in the same place each time.
+- For a watermark that appears on some pages only, use a page range or work box by box.
+- Zoom in on the finished file at the edges of each covered area.
 
 ## Reviewing the result
 
-Open the cleaned file and check three things: that the watermark is gone, that no white patch is visible against a coloured background, and that no text next to the watermark was hidden. If something looks wrong, go back to your original and draw a tighter box.
+Open the cleaned file and check that the watermark is gone, that no visible patch stands out against a coloured background, and that no nearby text was hidden. If something looks wrong, go back to your original and draw a tighter box or choose a different cover colour.
 
-## Being realistic about what a box can do
+## Alternatives worth considering
 
-Area removal is a covering technique, not an editing miracle. It works when the surroundings are plain and the watermark is contained. It struggles when the watermark overlaps content you need. Deciding this in advance, by looking at the page and asking whether anything important lies under the watermark, saves you from a result you will not be happy with and points you toward asking for a clean copy instead.
+- Ask for a clean copy. The author or sender can often supply one without the watermark.
+- Recreate the page from the source file if you have it, and export a fresh PDF.
+- For scanned pages you will reuse, retake or rescan the page without the mark.
 
 ## Frequently asked questions
 
 ### Does this remove every type of watermark?
 
-No. It covers a selected area with white, which suits watermarks in predictable places but cannot cleanly separate a watermark from content beneath it.
+No. Smart mode deletes watermarks that are separate objects, and Manual mode covers a chosen area. A watermark placed over important content cannot be cleanly separated from it.
 
-### Can I preview what will be removed?
+### Can I preview the result before downloading?
 
-Yes. You draw the area directly on the page preview before anything is processed.
+Yes. Smart mode has a Before and After preview, and Manual mode can show the cover on the page before you download.
+
+### Is the covered content really removed?
+
+No. A manual cover hides the area, and the original content may still be in the file. Do not use it to hide sensitive information.
 
 ### Is my original file changed?
 
-No. You download a cleaned copy and your original stays as it was.
-
-Used with realistic expectations, area selection is a quick way to tidy documents where the watermark sits in the margins.`,
+No. The tool creates a new cleaned copy for download and leaves your original where it is.`,
     images: [
       { marker: 1, query: "reviewing document on computer screen" },
       { marker: 2, query: "clean white paper document" },

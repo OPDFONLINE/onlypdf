@@ -4,6 +4,9 @@ import { getPublishedPosts } from "@/lib/blog/posts";
 
 const BASE_URL = "https://onlypdf.online";
 
+// Re-generate hourly so newly published articles appear without a redeploy.
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [tools, posts] = await Promise.all([getEffectiveTools(), getPublishedPosts()]);
   const now = new Date();

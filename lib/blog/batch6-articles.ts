@@ -86,7 +86,7 @@ Use the [PDF to JPG tool](/tools/pdf-to-jpg). Choose the pages, pick JPG or PNG,
 
 ### "There is a watermark I have the right to remove"
 
-Use the [watermark remove tool](/tools/watermark-remove). You draw over the watermark in a preview, and the tool covers that area with white in the copy you download. It works best for watermarks in predictable spots on plain backgrounds, and it cannot cleanly separate a watermark from content underneath it. Only use it on documents you have the right to modify.
+Use the [watermark remove tool](/tools/watermark-remove). Its Smart mode scans the PDF for watermark objects, such as semi-transparent text, logos and stamps, and deletes the ones you tick after a before-and-after preview. If the watermark is part of a scan or page image, Manual mode lets you draw a box and cover the area with a matching colour, which hides the content rather than erasing it. Only use it on documents you have the right to modify. See the full guide on [how to remove a watermark from a PDF](/blog/how-to-remove-watermark-from-pdf).
 
 {{IMG:2}}
 
@@ -273,7 +273,7 @@ Ask whether you really need one. If the original exists digitally, share that. I
 
 ## Watermarks and scans
 
-Watermarks behave differently on the two kinds. In a digital PDF, a watermark may sit as a separate element, but in a scan or flattened page the watermark and the content are one picture. The [watermark remove tool](/tools/watermark-remove) covers a selected area with white rather than separating layers, so results on scans depend on how much lies under the watermark. See our guide on [removing a watermark by selecting the area](/blog/remove-watermark-from-pdf-selected-area).
+Watermarks behave differently on the two kinds. In a digital PDF, a watermark is often a separate element, and the [watermark remove tool](/tools/watermark-remove) can find and delete it in Smart mode. In a scan or flattened page the watermark and the content are one picture, so Smart mode finds nothing and Manual mode covers a selected area with a matching colour instead of separating layers. Results on scans depend on how much lies under the watermark. See our guide on [removing a watermark by selecting the area](/blog/remove-watermark-from-pdf-selected-area).
 
 ## Common misunderstandings
 

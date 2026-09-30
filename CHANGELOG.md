@@ -18,3 +18,10 @@
 - Added blog batch 5 (5 pillar guides, 1470-1770 words).
 - Removed public image credit line; hid duplicate in-body H1 title; added blog batch 6 (5 guides).
 - Removed visible publish dates from the blog index, hero, cards, similar-articles sidebar and article page (JSON-LD dates kept).
+
+# Watermark remover upgrade
+- Smart mode: scans pages for tagged watermarks, semi-transparent text/images/shapes, stamp layers (Form XObjects added by pdftk, qpdf, pypdf and similar) and Watermark/Stamp annotations, and deletes the chosen ones for real, with Before/After preview and page scope.
+- Manual mode: multiple boxes, move/resize, undo/redo, per-box page scope, zoom and pan, auto/white/custom/picked cover colour, cover preview, larger touch handles.
+- Rotated (/Rotate) and offset-CropBox pages are handled correctly.
+- Updated tool copy (lib/tools.ts, homepage SEO text), rewrote the two watermark articles, refreshed the watermark wording in the tool-chooser and scanned-vs-digital guides.
+- Sitemap now revalidates hourly so newly published articles appear without a redeploy.

@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   const title = settings.homepage_title || "OnlyPDF — Simple PDF Tools. Right in Your Browser.";
   const description = settings.homepage_description ||
-    "Free PDF tools that run in your browser. Merge, split, compress, edit, convert PDF and Word files, and remove selected watermark areas in your browser, with no sign-up and no file uploads.";
+    "Free PDF tools that run in your browser. Merge, split, compress, edit, convert PDF and Word files, and remove watermarks in your browser, with no sign-up and no file uploads.";
 
   // "Other" verification tags are stored as one "meta-name=content" pair per
   // line (e.g. Bing's msvalidate.01, Pinterest's p:domain_verify, Ezoic's

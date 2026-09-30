@@ -524,9 +524,9 @@ Whether the goal is getting back to an editable document or pulling individual p
   {
     slug: "how-to-remove-watermark-from-pdf",
     title: "How to Remove a Watermark from a PDF",
-    excerpt: "Cover a watermark, stamp, or logo on a PDF page without Adobe Acrobat, by selecting the area directly in your browser.",
+    excerpt: "Find and delete a PDF watermark, or cover one that is part of a scan, right in your browser. Learn when each method works.",
     seo_title: "How to Remove a Watermark from a PDF",
-    seo_description: "Cover a watermark, stamp, or logo on a PDF page for free, right in your browser. Preview the area before applying the change.",
+    seo_description: "Remove a watermark from a PDF for free. Smart mode finds and deletes watermark objects, and Manual mode covers scanned ones. Preview before you download.",
     category: "Edit PDF",
     topic_cluster: "watermark-cleanup",
     author: "OnlyPDF Team",
@@ -534,79 +534,107 @@ Whether the goal is getting back to an editable document or pulling individual p
     featuredImageQuery: "clean blank document paper minimal",
     content: `# How to Remove a Watermark from a PDF
 
-Watermarks almost always occupy a predictable, consistent spot on a page, whether that is a diagonal stripe running across the middle or a small logo tucked into a corner. A browser-based watermark tool works with that predictability directly: rather than trying to automatically detect and erase every possible kind of watermark, it lets you draw a box over the specific area and cover it, which turns out to be a far more reliable approach across the wide variety of ways watermarks actually appear in real documents.
+A watermark on a PDF can be one of two very different things, and knowing which one you have decides how easy the job is. Some watermarks are separate objects that a program placed on top of the page, such as a semi-transparent "DRAFT" or a logo layer. Others are baked into the page picture itself, as in a scan or a flattened export. The first kind can be found and deleted. The second kind can only be covered. OnlyPDF's [watermark remove tool](/tools/watermark-remove) handles both, with a Smart mode for the first kind and a Manual mode for the second.
 
-## How the removal process works, step by step
+:::highlight orange
+Only remove watermarks from documents you own or have permission to edit. A watermark can carry ownership, copyright or confidentiality information, and stripping it from someone else's work may not be allowed where you live or work.
+:::
 
-Using OnlyPDF's [watermark removal tool](/tools/watermark-remove), the workflow looks like this:
+## Smart mode: find the watermark and delete it
 
-- Upload the PDF and wait briefly for page previews to render.
-- Drag a box directly over the watermark you want covered, adjusting its edges until it closely matches the shape of the mark underneath.
-- Decide whether that same area should be applied across every page, useful when a watermark repeats in an identical spot throughout a longer document, or only to the page currently being viewed.
-- Apply the change and download the cleaned file.
+When you upload a PDF, the tool scans every page for watermark objects. It looks for:
+
+- Content that the creating program tagged as a watermark, including watermark layers.
+- Semi-transparent text, logos and shapes that sit in their own block on the page.
+- Stamp layers that were added on top of a finished page by other PDF programs.
+- Watermark and Stamp annotations.
+
+If it finds anything, the Smart tab opens with a list. Each item shows what it is, such as "Semi-transparent text DRAFT", and how many pages it appears on. You tick the ones you want gone, compare the Before and After preview, choose the pages, and download.
 
 {{IMG:1}}
 
-## Situations where this approach works reliably
+Because the watermark is a separate object, removing it does not touch the text or images underneath. Nothing is painted over the page, so there is no white patch on tinted paper and no hidden gap where the mark used to be.
 
-This method is most effective when a watermark sits in a clearly separate area of the page, away from the main body text or images that need to be preserved. That describes the large majority of watermarks encountered in practice: a company logo stamped diagonally across a report, a "confidential" label running along one edge, or a repeated brand mark tiled subtly across a document background. In each of these cases, the watermark occupies its own visual space, distinct from the content underneath it, so covering that specific area removes the mark cleanly while leaving everything else untouched.
+## Choosing which pages to clean
 
-## Situations where results will be less clean
+Both modes let you choose where a change applies: every page, only the current page, odd pages, even pages, or a range such as 1-3, 5, 8-10. That helps with documents where a cover page carries a logo you want to keep, or where a stamp only appears on the first few pages.
 
-Not every watermark can be separated perfectly from the page around it. If a watermark happens to overlap directly on top of important text, a signature, or a critical part of an image, covering that exact area will also obscure whatever sits underneath it, since a cover-based approach cannot distinguish between "watermark pixels" and "content pixels" occupying the same space. Documents where the mark was deliberately placed across important details, specifically to discourage exactly this kind of removal, will show visible gaps or covered sections rather than a seamless result.
+## Manual mode: cover any area
+
+If Smart mode finds nothing, the watermark is most likely part of the page image. A scanned page is one picture, so the mark and the content cannot be separated. For that case, the Manual tab lets you drag a box over the watermark and cover it.
+
+- Draw as many boxes as you need on the same page.
+- Move a box by dragging it, and resize it from the corners.
+- Give each box its own page scope.
+- Zoom in and use Pan mode for precise placement, including on a phone.
+- Undo and redo with the buttons or Ctrl or Cmd plus Z.
+
+The cover colour defaults to a match sampled from the area around the box, so on a cream or light blue page the patch blends in. You can also choose white, pick a custom colour, or click "Pick from page" to sample any spot. Turning on the cover preview shows the result on the page before you download.
 
 {{IMG:2}}
 
-## A practical example: cleaning up a repeated stamp
+## Which mode fits your file
 
-Picture a multi-page report where every page carries the same "draft" stamp diagonally across the middle, added before the document was finalized. Rather than manually covering the stamp on each page one at a time, selecting the area once and applying it across every page in a single pass produces a consistent, clean result throughout the entire document in one step, rather than dozens of repetitive individual edits.
+| Situation | Best choice |
+|---|---|
+| Semi-transparent "DRAFT" or "CONFIDENTIAL" text added by software | Smart |
+| Logo or stamp layer added on top of a finished PDF | Smart |
+| Scanned pages with a mark printed on the paper | Manual |
+| Watermark flattened into the page image | Manual |
+| Solid or very light text with no transparency | Manual |
+| Watermark over a photo | Manual, with realistic expectations |
 
-## Reviewing the result before sharing it further
+## What to expect when it does not work perfectly
 
-Because a covering approach works visually rather than through automatic detection, a quick review of the finished document is worth the extra minute before it gets sent anywhere. Scrolling through every page, particularly on a longer document, confirms that the selected area lined up correctly on each one, especially in cases where a watermark's exact position shifts slightly from page to page rather than sitting in perfectly identical coordinates throughout.
+Smart detection is a best guess. It recognises common patterns, so it can occasionally list something that is not a watermark, for example a semi-transparent chart shape. That is why every item has a checkbox and a preview. If the After preview shows something missing that should be there, untick it.
 
-This review step matters more for documents heading somewhere formal, like a client deliverable or a printed handout, where a visibly misaligned cover box would be more noticeable and harder to explain away than in an internal draft only a few people will glance at. Building this quick check into the workflow, rather than downloading and immediately forwarding the file, catches the rare page where the watermark's position did not quite match the rest of the document.
+Manual covers have limits too. A cover hides what is underneath rather than recovering it. If a watermark sits across important text or a photograph, the cover hides that content as well, and no tool can reconstruct it. In that case, asking the sender for a clean copy is usually the better route.
 
-## Watermarks on scanned versus digitally created pages
+The tool also cannot open password-protected PDFs and does not perform OCR. If a file is protected, remove the password in the program that created it first.
 
-The same covering technique works regardless of how the watermark was originally added to the page. On a page that started as a scanned image, the watermark is simply part of that image, and covering the relevant area works exactly the same way as it would on a page created directly in word-processing or design software with a watermark layered on top digitally. Because the tool works visually, based on where the mark actually appears rather than how it was technically constructed, the underlying creation method does not change the removal process.
+:::highlight red
+Manual covers are not redaction. The original content may still exist under the cover. Never use this tool to hide confidential information before sharing a file.
+:::
+
+## Check the result before sending it
+
+Scroll through the finished PDF and look for three things: the watermark is gone on every page you selected, no patch is visible against a coloured background, and no needed text was hidden. This takes a minute and catches the rare page where the mark sat a little differently from the others.
 
 {{IMG:3}}
 
-## An important note on appropriate use
-
-Whether removing a watermark from a particular document is appropriate depends entirely on ownership and permission, not on whether the technical process is possible. Removing a watermark from a document you created yourself, or one you have clear permission to modify, is a routine editing task, no different from correcting a typo or resizing an image. Using the same technique to strip ownership or confidentiality marks from someone else's copyrighted or sensitive material, in order to misrepresent it as your own or bypass restrictions the original owner intentionally placed, is a different matter entirely, and is not the intended purpose of a tool like this.
-
 ## Common mistakes worth avoiding
 
-- Drawing the cover area too tightly around the watermark, leaving faint edges visible in the final result.
-- Applying a single-page selection across an entire document when the watermark's position actually shifts slightly from page to page.
-- Assuming a watermark that overlaps important text can be removed without any visible trace, when covering that area will inevitably affect what sits beneath it too.
-- Skipping the final page-by-page review on a long document, only to discover one misaligned page after the file has already been sent.
+- Skipping Smart mode and covering a watermark that could have been deleted cleanly.
+- Ticking a detected item without looking at the After preview.
+- Applying one box to every page when the watermark moves from page to page.
+- Drawing the box so tightly that faint edges of the mark remain visible.
+- Assuming a cover has erased what is beneath it.
 
 ## Frequently asked questions
 
 ### Is removing a watermark from a PDF legal?
 
-It depends entirely on who owns the document and the purpose behind the removal. Removing a mark from your own material, or material you have explicit permission to edit, is generally fine. Using the same process to misrepresent someone else's protected or confidential work as your own raises separate legal and ethical concerns that have nothing to do with the technical steps involved.
+It depends on who owns the document and why you are removing the mark. Removing a watermark from your own material, or from a file you have clear permission to edit, is a normal editing task. Removing it from someone else's protected or confidential work is a different matter, and rules vary by country and organisation, so check the ones that apply to you first.
 
-### Does this work on a watermark that came from a scanned page?
+### Does it work on scanned PDFs?
 
-Yes. Since the tool works by covering a selected visual area of the page rather than detecting a particular watermark format, it handles a watermark baked into a scanned image the same way it handles one layered digitally onto a document.
+Smart mode will find nothing on a true scan, because there is no separate watermark object. Manual mode works, and it works best on plain or evenly coloured backgrounds.
 
-### Can both text watermarks and image-based watermarks be removed the same way?
+### Can it remove text and image watermarks?
 
-Yes. Because the process covers whatever occupies a chosen area of the page, it treats text-based marks and image-based marks identically, as long as the selected area is drawn accurately around the mark.
+Yes, in Smart mode when they are separate semi-transparent objects or tagged watermark layers. In Manual mode, a cover treats text and images alike because it works on an area of the page.
 
-### What happens if the same document also needs pages combined or reordered afterward?
+### Will the cover look like a visible box?
 
-Removing a watermark first, then [merging or reordering the pages](/blog/how-to-merge-reorder-organize-pdf-files) afterward, works well as a two-step process, since each tool focuses on one specific change without interfering with the other.
+Not usually. The default colour is sampled from the surroundings, so on plain or evenly tinted pages it blends in. On photos or gradients a cover will be noticeable, and Smart mode or a clean original copy is the better choice.
 
-### Will the covered area be visible as an obvious box in the final PDF?
+### Does my PDF get uploaded?
 
-Done carefully, no. A well-drawn cover blends into the page as a solid area matching the surrounding background, rather than appearing as an obviously pasted rectangle, as long as the selected area closely matches the actual size and position of the watermark rather than extending noticeably beyond it into the surrounding white space or content.
+Watermark detection and removal run in your browser, so the PDF itself is not sent to a server for this tool. Some other conversions on the site may work differently, so read the [privacy policy](/privacy) for the details.
 
-OnlyPDF's watermark removal tool shows the exact area that will be affected before any change is applied, so the result can be confirmed as clean before the file is downloaded, all without the document ever being uploaded to an outside server.`,
+### What if I also need to reorder or merge pages?
+
+Clean the watermark first, then [merge or reorder the pages](/blog/how-to-merge-reorder-organize-pdf-files). Each step is independent, so neither undoes the other.`,
     images: [
       { marker: 1, query: "diagonal stamp watermark paper document" },
       { marker: 2, query: "editing tool selecting area screen" },

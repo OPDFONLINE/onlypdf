@@ -170,11 +170,11 @@ export function SeoContent() {
               How to remove a watermark from a PDF
             </h3>
             <p className="mt-2">
-              If a watermark appears in a predictable area, the{" "}
+              The{" "}
               <Link href="/tools/watermark-remove" className="text-accent underline underline-offset-2">
                 PDF Watermark Remove tool
               </Link>{" "}
-              lets you preview the page and drag over the area you want covered. You can apply that same area to every page or only the page you are viewing. Because many watermarks are baked into page content, this method intentionally shows the exact area before you process it.
+              first scans your PDF for watermark objects, such as semi-transparent text, logos and stamps, and lets you delete the ones you choose after a before-and-after preview. If the watermark is part of a scan or the page image, switch to Manual mode, drag over the area, and cover it on the pages you pick. Manual covers hide the area rather than erase it, so only use the tool on documents you have the right to edit.
             </p>
           </div>
 
