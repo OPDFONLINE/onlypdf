@@ -166,6 +166,10 @@ Merging PDFs on a phone works exactly the same way it does on a desktop computer
 
 ## Where phone-based merging comes up most
 
+:::highlight blue
+Related guide: [How to use PDF tools on your phone](/blog/use-pdf-tools-on-phone-complete-guide) covers picking files, ordering with touch, and finding your downloads.
+:::
+
 Combining files on a phone is especially common right after documents are created there in the first place: a scanning app produces several separate PDFs, a downloads folder fills up with email attachments, or a form gets signed using a phone screen. In each of these cases, moving everything to a computer just to combine them adds an unnecessary extra step.
 
 :::chart bar
@@ -262,6 +266,10 @@ Each resulting page becomes a fully standard, standalone PDF, indistinguishable 
 
 ## A practical example: signature pages
 
+:::highlight blue
+Related guide: if you only need some of the pages instead of all of them, read [how to extract pages from a PDF](/blog/extract-pages-from-pdf-complete-guide).
+:::
+
 Contracts with multiple signature pages are a common real-world case for this exact operation. Rather than asking each signer to scroll through an entire lengthy agreement to find their specific page, splitting the document into individual pages and sending just the relevant one to each person removes any ambiguity about which page needs a signature, and avoids sending unrelated content to people who do not need to see it.
 
 ## What happens to page numbering after splitting
@@ -335,6 +343,10 @@ Application processes often ask for a copy of an identification document, but th
 {{IMG:1}}
 
 ## What if the page needs to go straight into a new document?
+
+:::highlight blue
+Related guide: [How to extract pages from a PDF: the complete guide](/blog/extract-pages-from-pdf-complete-guide) covers keeping several pages, page ranges, and non-consecutive pages.
+:::
 
 Once extracted, a single page is a completely standard PDF on its own, ready to be shared directly or [merged with other files](/tools/merge-pdf) into a new combined document, exactly like any other PDF. There is no difference in how it behaves compared to a page that was part of a document from the start.
 
@@ -552,6 +564,10 @@ Leaving a little headroom below the exact limit, targeting 18MB for a 20MB cap, 
 {{IMG:1}}
 
 ## When splitting works better than compressing
+
+:::highlight blue
+Related guide: [How to split a large PDF into smaller files under 5MB](/blog/split-large-pdf-under-5mb) walks through splitting for a size limit.
+:::
 
 If the document is long rather than heavy per page, like a fifty-page report where each page is mostly text, splitting it into a couple of smaller parts and sending them as [separate attachments](/blog/split-large-pdf-under-5mb) can preserve full quality while still getting under the limit, since compression would only help marginally on a document that was never image-heavy to begin with.
 

@@ -91,6 +91,10 @@ If both answers are no, the choice is PDF. It is the safest default for anything
 
 ## Moving between formats
 
+:::highlight blue
+Related guide: [Which PDF tool do I need?](/blog/which-pdf-tool-do-i-need-cheat-sheet) matches common problems to the right tool.
+:::
+
 Real work rarely stays in one format. Here is how each conversion works and what to expect.
 
 ### Word to PDF
@@ -103,11 +107,11 @@ The [PDF to Word tool](/tools/pdf-to-word) extracts text and basic structure fro
 
 ### JPG to PDF
 
-The [JPG to PDF tool](/tools/jpg-to-pdf) puts JPG, JPEG, or PNG images into a single PDF, with page sizes of fit to image, A4, or US Letter. This is the tool to use when a portal wants a PDF and all you have is photos. See our [complete guide to JPG to PDF](/blog/jpg-to-pdf-complete-guide) for tips on order and quality.
+The [JPG to PDF tool](/tools/jpg-to-pdf) puts JPG or JPEG images into a single PDF, with page sizes of fit to image, A4, or US Letter. PNG images, such as screenshots, use the [PNG to PDF tool](/tools/png-to-pdf). This is the tool to use when a portal wants a PDF and all you have is photos. See our [complete guide to JPG to PDF](/blog/jpg-to-pdf-complete-guide) for tips on order and quality.
 
 ### PDF to JPG
 
-The [PDF to JPG tool](/tools/pdf-to-jpg) turns chosen pages into JPG or PNG images, bundled in a ZIP if there are several. Use it when you need a page as a picture. For help choosing between the two image formats, see [PDF to PNG or JPG: which format should you choose](/blog/pdf-to-png-or-jpg-which-format).
+The [PDF to JPG tool](/tools/pdf-to-jpg) turns chosen pages into JPG images, bundled in a ZIP if there are several, and the [PDF to PNG tool](/tools/pdf-to-png) does the same for PNG. Use it when you need a page as a picture. For help choosing between the two image formats, see [PDF to PNG or JPG: which format should you choose](/blog/pdf-to-png-or-jpg-which-format).
 
 {{IMG:2}}
 
@@ -127,7 +131,7 @@ Most portals want a PDF. If you only have a photo, convert it with the JPG to PD
 
 ### Sharing a page in a presentation
 
-Use a JPG or PNG of the page. Convert it from the PDF, and keep the original PDF in case you need the text later.
+Use a JPG or PNG of the page. Convert it from the PDF with the [PDF to JPG](/tools/pdf-to-jpg) or [PDF to PNG](/tools/pdf-to-png) tool, and keep the original PDF in case you need the text later.
 
 ### Sharing a scanned document
 
@@ -213,6 +217,10 @@ Write these into a short list. It becomes your checklist, and it stops you from 
 {{IMG:1}}
 
 ## Step 2: Gather the right documents
+
+:::highlight blue
+Related guide: applying as a student? [A PDF workflow for students](/blog/pdf-workflow-for-students-assignments-and-thesis) covers assignments, thesis chapters, and submissions.
+:::
 
 Make a list of every document requested, then find each one before you start converting. Missing a document late in the process forces you to redo ordering and merging. Typical items include identification, transcripts or certificates, a CV or résumé, reference letters, proof of address, and a statement or cover letter.
 
@@ -446,6 +454,10 @@ Keep one short document, stored safely, that lists where your most important pap
 
 ## A ten-minute starter plan
 
+:::highlight blue
+Related guides: [a PDF workflow for students](/blog/pdf-workflow-for-students-assignments-and-thesis) and [a PDF workflow for freelancers](/blog/pdf-workflow-for-freelancers-invoices-and-contracts) apply this system to two common situations.
+:::
+
 If you want to begin today without overhauling everything, do this.
 
 - Create the top-level folders listed above.
@@ -585,6 +597,10 @@ If you always check the first page, the last page, and one page from the middle,
 
 ## Situations that deserve extra care
 
+:::highlight blue
+Related guide: [A PDF workflow for freelancers](/blog/pdf-workflow-for-freelancers-invoices-and-contracts) covers invoices, contracts, and client packets in detail.
+:::
+
 ### Contracts and legal documents
 
 Confirm that every page is present, every signature and initial is in place, and the version is the correct one. Sending the wrong draft can cause real trouble, so check the date and any version marker.
@@ -610,6 +626,10 @@ Photos are the most common source of orientation, order, and size problems. Run 
 - Skipping the check when in a hurry, which is exactly when errors occur.
 
 ## Make it a habit
+
+:::highlight blue
+Related guide: [A simple system for organizing digital paperwork](/blog/digital-paperwork-organization-system) helps the checklist stick.
+:::
 
 The easiest way to keep the routine is to attach it to something you already do. Run it every time you are about to click attach or upload, the same way you glance at the recipient's address before pressing send. After a few weeks, the checks take less than a minute, and you will stop being the person whose file arrives sideways.
 
@@ -689,7 +709,7 @@ Note that the tool accepts DOCX files. If your document is in an older or differ
 
 ## Step 3: Convert images to PDF
 
-For photographs and scans, use the [JPG to PDF tool](/tools/jpg-to-pdf). It accepts JPG, JPEG, and PNG images, and each image becomes one page. The key choice is page size.
+For photographs and scans, use the [JPG to PDF tool](/tools/jpg-to-pdf). It accepts JPG and JPEG images, and each image becomes one page. For PNG images, use the [PNG to PDF tool](/tools/png-to-pdf). The key choice is page size.
 
 - Choose A4 or US Letter for anything that will be filed or printed as an official document. The image is centred on a standard page.
 - Choose fit to image when the picture is the content and you want it shown exactly, such as photographs of a site.

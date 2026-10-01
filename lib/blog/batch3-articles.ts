@@ -141,6 +141,10 @@ A page that is upside down needs a half turn, which is two 90-degree rotations i
 
 ## Fixing rotation and order at the same time
 
+:::highlight blue
+Related guide: [How to rearrange PDF pages online](/blog/rearrange-pdf-pages-online) explains the page-order half of this fix in more detail.
+:::
+
 Scans that are rotated are often also in the wrong order, particularly when pages were fed in several batches. The [rearrange PDF tool](/tools/rearrange-pdf) has a rotate button on every page thumbnail, so you can turn a page and move it into place in one pass.
 
 {{IMG:2}}
@@ -329,6 +333,10 @@ Deleting pages creates a new file. The PDF you uploaded is not changed, so if yo
 
 ## When to delete pages
 
+:::highlight blue
+Related guide: if you scanned a double-sided stack, [how to remove blank pages from a scanned PDF](/blog/remove-blank-pages-from-scanned-pdf) shows how to find and delete the empty ones.
+:::
+
 - Before sending a document externally. Remove internal cover notes, draft pages, or anything not meant for the recipient.
 - After scanning. Blank versos and stray pages from the feeder are easy to spot in the thumbnails.
 - To shrink a document. Fewer pages means a smaller file, which helps when there is an upload or email size limit. For more reduction, [compress the PDF](/tools/compress-pdf) afterward.
@@ -494,9 +502,9 @@ A minute of checking thumbnails is all it takes to turn an untidy scan into a cl
   {
     slug: "convert-pdf-to-jpg-pages",
     title: "How to Convert PDF Pages to JPG Images (One Page or All of Them)",
-    excerpt: "Turn any page of a PDF into a JPG or PNG you can post, embed, or send. Convert a single page or the whole document.",
+    excerpt: "Turn any page of a PDF into a JPG you can post, embed, or send. Convert a single page or the whole document.",
     seo_title: "How to Convert PDF Pages to JPG Images for Free",
-    seo_description: "Convert one page or every page of a PDF into JPG or PNG images in your browser. Multiple pages download as a single ZIP file.",
+    seo_description: "Convert one page or every page of a PDF into JPG images in your browser. Multiple pages download as a single ZIP file.",
     category: "Convert from PDF",
     topic_cluster: "convert-from-pdf",
     author: "OnlyPDF Team",
@@ -510,8 +518,7 @@ A PDF is great for sharing a document, but sometimes you need a picture instead:
 
 - Upload your PDF to the [PDF to JPG tool](/tools/pdf-to-jpg).
 - Choose the pages to convert. Every page is selected by default; tap a thumbnail to leave a page out, or use Select all and Clear selection.
-- Choose JPG or PNG as the output format.
-- Select Convert and download the result.
+- Select Convert to JPG and download the result. Need PNG instead? Use the [PDF to PNG tool](/tools/pdf-to-png).
 
 One page gives you a single image. Several pages are bundled into one ZIP file, so you do not have to download images one by one.
 
@@ -537,7 +544,7 @@ The image is a picture of the page. Text in it is no longer selectable or search
 A few habits keep the images crisp:
 
 - Start from the original PDF, not a screenshot of it.
-- Use PNG for pages with fine text or line art, since it keeps edges clean.
+- Use the [PDF to PNG tool](/tools/pdf-to-png) for pages with fine text or line art, since PNG keeps edges clean.
 - Use JPG for photo-heavy pages, since the files are smaller.
 
 ## Going the other way
@@ -606,7 +613,7 @@ When you convert a PDF page to an image, one of the first choices is the format.
 - Choose JPG for pages with photos, or when file size matters most.
 - Choose PNG for pages with fine text, charts, line art, or anything with transparency.
 
-If you are unsure, convert one page both ways and compare. The [PDF to JPG tool](/tools/pdf-to-jpg) offers both formats.
+If you are unsure, convert one page both ways and compare. Each format has its own tool: [PDF to JPG](/tools/pdf-to-jpg) and [PDF to PNG](/tools/pdf-to-png).
 
 {{IMG:1}}
 
@@ -629,7 +636,7 @@ Charts and diagrams. PNG, because thin lines and flat colours are where JPG show
 
 Photo pages and brochures. JPG, because photographs compress beautifully and the file stays small.
 
-Pages you plan to overlay on other graphics. PNG, if the page has transparency you want to preserve.
+Pages you plan to overlay on other graphics. PNG, if the page has transparency you want to preserve. PDF to PNG leaves any area the page does not paint transparent, while PDF to JPG fills the background with white, so choose PNG only if you want that transparency.
 
 :::highlight green
 Sending images by email or uploading to a form with a size limit? Start with JPG. Only switch to PNG if the result looks soft.
@@ -673,7 +680,7 @@ PNG holds up better for text-heavy pages. For photographic pages, a JPG at good 
 
 ### Can I convert back to a PDF?
 
-Yes. The [JPG to PDF tool](/tools/jpg-to-pdf) accepts JPG, JPEG, and PNG images and puts them into a single PDF.
+Yes. Use the [JPG to PDF tool](/tools/jpg-to-pdf) for JPG and JPEG images, or the [PNG to PDF tool](/tools/png-to-pdf) for PNG images. Each puts your images into a single PDF.
 
 ### Does PNG always look better?
 
@@ -711,6 +718,10 @@ The tool extracts the text and basic paragraph structure, then builds a Word fil
 {{IMG:1}}
 
 ## First, check that your PDF has real text
+
+:::highlight blue
+Related guide: [Scanned PDF vs digital PDF](/blog/scanned-pdf-vs-digital-pdf-how-to-tell) explains the ten-second test and what to do with each kind of file.
+:::
 
 Conversion works on text that is stored as text. To check, open the PDF and try to select a sentence with your cursor. If it highlights, you are in good shape. If the whole page selects as one block, or nothing highlights, the PDF is a scan: a picture of a page. Extracting text from pictures needs OCR (optical character recognition), which this browser tool does not perform. For a scan, you will need an OCR-capable program first.
 
@@ -856,6 +867,10 @@ Different problems point to different causes, which tells you where to spend you
 Perfect fidelity is the wrong target for PDF-to-Word conversion. A better target is a document where all the words are present and correct, and where the structure is easy to repair. Measured that way, most conversions succeed, and the ten minutes of cleanup is still faster than retyping the document from scratch.
 
 ## A note on expectations with scanned files
+
+:::highlight blue
+Related guide: [Scanned PDF vs digital PDF](/blog/scanned-pdf-vs-digital-pdf-how-to-tell) shows a ten-second test for telling which kind of file you have.
+:::
 
 Scans deserve a special mention because they cause the most disappointment. A scan is a photograph of paper, so a converter that only extracts text has nothing to work with. If your converted file is empty or contains only images, that is the reason, and the remedy is OCR software rather than a different PDF-to-Word tool. It is worth checking whether text can be selected in the PDF before you convert, since that one test predicts the outcome better than anything else.
 

@@ -42,6 +42,10 @@ Understanding which tool solves which problem saves time. Combining separate fil
 
 ## Combining multiple files into a single PDF
 
+:::highlight blue
+Need to add pages in the middle of a PDF rather than at the end? The [Insert PDF Pages tool](/tools/insert-pdf-pages) places pages from another PDF, images, or blank pages after any page you choose.
+:::
+
 When the goal is turning several separate PDFs into one document, the process usually looks like this:
 
 - Add every file you want included, in any order to start.
@@ -54,6 +58,10 @@ Because a good browser tool only stitches existing pages together, nothing about
 One habit worth building: always double-check the file order in the tool's preview before combining. It is far easier to fix an ordering mistake before merging than after the recipient has already opened a document with the pages in the wrong sequence.
 
 ## Reordering pages that already live inside one document
+
+:::highlight blue
+Related guide: [How to rearrange PDF pages online](/blog/rearrange-pdf-pages-online) walks through reordering step by step, including how to check the final order.
+:::
 
 Sometimes the problem is not across separate files but within a single one, where the pages themselves are out of sequence. This is where a page-rearranging tool is the better choice, since it lets you drag individual page thumbnails into whatever order makes sense, without touching anything else about the file.
 
@@ -161,6 +169,10 @@ Since splitting only separates pages that already exist, nothing about their con
 
 ## Splitting versus extracting: two related but different jobs
 
+:::highlight blue
+Related guide: [How to extract pages from a PDF: the complete guide](/blog/extract-pages-from-pdf-complete-guide) goes deeper on choosing between extract, delete, and split.
+:::
+
 It helps to be clear about the difference between splitting and extracting pages, since they solve slightly different problems. Splitting turns every single page into its own separate file, which is the right choice when the end goal really is one-page-per-file. Extracting, by contrast, lets you choose a specific subset of pages, like pages 3 through 7 of a longer report, and pulls just those into one new combined file. If the actual need is "give me only these particular pages together," an extraction tool is the more direct route than splitting the whole document and then re-merging a subset.
 
 {{IMG:2}}
@@ -178,6 +190,10 @@ A question that comes up often: once a document has been split into individual p
 This becomes particularly useful for systems that only accept one document per upload field. A signed agreement that arrives as one combined file with a signature page buried in the middle can be split apart, and just the relevant signature page uploaded on its own, without needing to recreate the page from scratch or manually screenshot it out of a viewer.
 
 ## Handling large files by splitting them down
+
+:::highlight blue
+Related guide: [How to split a large PDF into smaller files under 5MB](/blog/split-large-pdf-under-5mb) gives the full steps for meeting an upload limit.
+:::
 
 Splitting is also a practical answer to file-size limits. Rather than trying to shrink an entire document through compression alone, breaking a large PDF into several smaller parts can make each individual piece small enough to email or upload, particularly when the size limit is strict and every page inside is already close to its practical minimum size. In cases where the pages themselves are unusually large due to high-resolution scans, [compressing the PDF first](/blog/how-to-compress-pdf-without-losing-quality) and then splitting it, or the reverse order, both work depending on which limit you are trying to satisfy.
 
@@ -351,10 +367,12 @@ Because this kind of conversion focuses on extracting the document's text and pa
 
 Combining several images into a single PDF comes up constantly: admission forms that require a photo ID and a signature as one attachment, receipts that need to be filed together, or a set of whiteboard photos from a meeting.
 
-- Add every JPG, JPEG, or PNG image that should be included.
+- Add every JPG or JPEG image that should be included. PNG images, such as screenshots, use the [PNG to PDF tool](/tools/png-to-pdf) instead.
 - Arrange them into the order they should appear as pages, since the final document follows that exact sequence.
 - Choose a page size, either fitting each page exactly to its image with no extra margin, or placing the image centered on a standard size like A4 or US Letter.
 - Convert and download the combined file using an [image to PDF tool](/tools/jpg-to-pdf).
+
+If one batch mixes JPG and PNG files, make one PDF from each format and join them with the [merge PDF tool](/tools/merge-pdf).
 
 An important detail worth knowing: converting images into a PDF does not recompress or resize the underlying image data. Whatever resolution and quality the photos had going in is exactly what carries over into the resulting PDF pages.
 
@@ -452,11 +470,11 @@ Text and basic paragraph structure carry over reliably in most cases. More compl
 
 ## Exporting PDF pages as JPG or PNG images
 
-Sometimes the goal is not editing at all, just getting a picture of a page to drop into a presentation, a chat message, or a social post. A [PDF to image tool](/tools/pdf-to-jpg) handles this directly:
+Sometimes the goal is not editing at all, just getting a picture of a page to drop into a presentation, a chat message, or a social post. The [PDF to JPG tool](/tools/pdf-to-jpg) and the [PDF to PNG tool](/tools/pdf-to-png) handle this directly, one image format per tool. For a full walkthrough of the JPG route, see our guide to [converting PDF pages to JPG images](/blog/convert-pdf-to-jpg-pages):
 
 - Upload the PDF.
 - Choose which specific pages to convert, or select every page at once.
-- Pick JPG for a smaller file that works well for most ordinary documents, or PNG when a page contains fine text, line art, or transparency that benefits from being preserved exactly.
+- Use PDF to JPG for a smaller file that works well for most ordinary documents, or PDF to PNG when a page contains fine text, line art, or sharp edges that benefit from lossless output.
 - Convert and download either a single image, or a ZIP archive if more than one page was selected.
 
 ## Pulling an embedded picture out of a PDF
@@ -477,7 +495,7 @@ The single most common reason a PDF to Word conversion looks wrong traces back t
 
 ## Choosing JPG or PNG for a given page
 
-JPG works well for the overwhelming majority of ordinary document pages, since it produces a noticeably smaller file with barely perceptible quality loss for typical text and photo content. PNG becomes the better choice specifically when a page contains fine linework, sharp edges, or areas that need transparency preserved exactly, situations where JPG's compression approach can introduce visible artifacts around sharp boundaries.
+JPG works well for the overwhelming majority of ordinary document pages, since it produces a noticeably smaller file with barely perceptible quality loss for typical text and photo content. PNG becomes the better choice specifically when a page contains fine linework, sharp edges, or areas that need transparency preserved exactly, situations where JPG's compression approach can introduce visible artifacts around sharp boundaries. Because each format has its own tool, choose [PDF to JPG](/tools/pdf-to-jpg) or [PDF to PNG](/tools/pdf-to-png) before you upload.
 
 {{IMG:3}}
 
@@ -495,11 +513,11 @@ A DOCX file produced from a PDF conversion is ready to edit immediately in any s
 
 ### Why does my converted Word document look wrong or missing text?
 
-This almost always means the source PDF was a scanned image rather than a document with real selectable text. Try highlighting a word in a PDF viewer first; if nothing highlights, the page is an image, and optical character recognition, not a standard converter, would be needed to extract usable text.
+This almost always means the source PDF was a scanned image rather than a document with real selectable text. Try highlighting a word in a PDF viewer first; if nothing highlights, the page is an image, and optical character recognition, not a standard converter, would be needed to extract usable text. Our guide to [telling a scanned PDF from a digital one](/blog/scanned-pdf-vs-digital-pdf-how-to-tell) shows how to check in seconds.
 
 ### JPG or PNG: which is the better default for PDF pages?
 
-JPG for most ordinary documents, since it produces a meaningfully smaller file with minimal visible quality difference. PNG when a page has fine text, line drawings, or transparency that needs to stay exact.
+JPG for most ordinary documents, since it produces a meaningfully smaller file with minimal visible quality difference. PNG when a page has fine text, line drawings, or transparency that needs to stay exact. The two formats have separate tools, [PDF to JPG](/tools/pdf-to-jpg) and [PDF to PNG](/tools/pdf-to-png).
 
 ### Is it possible to convert only a few pages instead of an entire document?
 
@@ -560,6 +578,10 @@ Because the watermark is a separate object, removing it does not touch the text 
 Both modes let you choose where a change applies: every page, only the current page, odd pages, even pages, or a range such as 1-3, 5, 8-10. That helps with documents where a cover page carries a logo you want to keep, or where a stamp only appears on the first few pages.
 
 ## Manual mode: cover any area
+
+:::highlight blue
+Related guide: [How to remove a watermark from a PDF by selecting the area](/blog/remove-watermark-from-pdf-selected-area) covers Manual mode in detail.
+:::
 
 If Smart mode finds nothing, the watermark is most likely part of the page image. A scanned page is one picture, so the mark and the content cannot be separated. For that case, the Manual tab lets you drag a box over the watermark and cover it.
 

@@ -20,7 +20,7 @@ export const batch6Articles: Batch6Article[] = [
 
 Most people arrive at a PDF tool with a problem, not a tool name. The file is too big to email. One page is sideways. Two documents need to become one. Someone wants a Word version. The trouble is that similar-sounding tools do quite different things, and choosing the wrong one wastes time: splitting when you meant to extract, or compressing when you should have deleted pages.
 
-This cheat sheet works backwards from the problem. Find the sentence that sounds like yours, use the tool named next to it, and read the short note about what the tool does and does not do. All twelve tools on this site run in your browser, so your files are processed on your own device.
+This cheat sheet works backwards from the problem. Find the sentence that sounds like yours, use the tool named next to it, and read the short note about what the tool does and does not do. All fifteen tools on this site run in your browser, so your files are processed on your own device.
 
 {{IMG:1}}
 
@@ -32,13 +32,21 @@ Use the [merge PDF tool](/tools/merge-pdf). Add two or more PDFs, drag them into
 
 ### "I have photos and need a PDF"
 
-Use the [JPG to PDF tool](/tools/jpg-to-pdf). It accepts JPG, JPEG, and PNG images, turns each into a page, and lets you choose fit to image, A4, or US Letter. Choose A4 or US Letter for official documents.
+Use the [JPG to PDF tool](/tools/jpg-to-pdf). It accepts JPG and JPEG images, turns each into a page, and lets you choose fit to image, A4, or US Letter. Choose A4 or US Letter for official documents.
+
+### "My images are PNG files or screenshots"
+
+Use the [PNG to PDF tool](/tools/png-to-pdf). It works like JPG to PDF but takes PNG images. If a batch mixes JPG and PNG, make one PDF with each tool and join them with the [merge PDF tool](/tools/merge-pdf).
 
 ### "I have a Word document and need a PDF"
 
 Use the [Word to PDF tool](/tools/word-to-pdf). It converts a DOCX file into a simple PDF. It handles text and paragraph content well, but complex layouts, floating objects, and advanced tables may not match the original, so always check the result.
 
 ## If you have too many pages
+
+:::highlight blue
+Related guides: [how to extract pages from a PDF](/blog/extract-pages-from-pdf-complete-guide) and [how to remove blank pages from a scanned PDF](/blog/remove-blank-pages-from-scanned-pdf).
+:::
 
 ### "I want to remove a few pages"
 
@@ -56,6 +64,10 @@ A simple way to choose between the last three: count how many pages you are keep
 
 ## If your pages are in the wrong shape
 
+:::highlight blue
+Related guides: [how to rearrange PDF pages online](/blog/rearrange-pdf-pages-online) and [how to fix a sideways scanned PDF](/blog/fix-sideways-scanned-pdf).
+:::
+
 ### "A page is sideways or upside down"
 
 Use the [rotate PDF tool](/tools/rotate-pdf). Select the pages, choose a direction, and download. Unlike the rotate button in most viewers, this saves the rotation into the file so every reader shows the page upright.
@@ -63,6 +75,10 @@ Use the [rotate PDF tool](/tools/rotate-pdf). Select the pages, choose a directi
 ### "The pages are in the wrong order"
 
 Use the [rearrange PDF tool](/tools/rearrange-pdf). Drag page thumbnails into position or use the arrow buttons. There is also a rotate button on each page, so you can fix orientation and order in one pass.
+
+### "I need to add pages in the middle of a PDF"
+
+Use the [insert PDF pages tool](/tools/insert-pdf-pages). Choose the page to insert after, then add pages from another PDF, JPG or PNG images, or blank pages. It handles one position per run, so repeat it for a second spot. The merge tool only joins whole files end to end.
 
 ## If your file is too big
 
@@ -80,7 +96,7 @@ Use the [PDF to Word tool](/tools/pdf-to-word). It extracts the text and basic s
 
 ### "I need a page as an image"
 
-Use the [PDF to JPG tool](/tools/pdf-to-jpg). Choose the pages, pick JPG or PNG, and download. Several pages come as a ZIP. The result is a picture, so its text cannot be selected or searched.
+Use the [PDF to JPG tool](/tools/pdf-to-jpg) for a JPG, or the [PDF to PNG tool](/tools/pdf-to-png) for a PNG with crisp text edges. Choose the pages and download. Several pages come as a ZIP. The result is a picture, so its text cannot be selected or searched.
 
 ## If there is something you want gone
 
@@ -95,19 +111,26 @@ Use the [watermark remove tool](/tools/watermark-remove). Its Smart mode scans t
 | Your problem | Tool |
 | --- | --- |
 | Join PDFs | Merge PDF |
-| Photos to PDF | JPG to PDF |
+| JPG photos to PDF | JPG to PDF |
+| PNG images to PDF | PNG to PDF |
 | Word to PDF | Word to PDF |
 | Remove some pages | Delete PDF pages |
 | Keep some pages | Extract PDF pages |
 | Every page separate | Split PDF |
 | Sideways page | Rotate PDF |
 | Wrong page order | Rearrange PDF |
+| Add pages inside a PDF | Insert PDF pages |
 | File too large | Compress PDF |
 | Edit text | PDF to Word |
-| Page as picture | PDF to JPG |
+| Page as JPG picture | PDF to JPG |
+| Page as PNG picture | PDF to PNG |
 | Remove watermark | Watermark remove |
 
 ## Common combinations
+
+:::highlight blue
+Working mostly from a phone? Read [how to use PDF tools on your phone](/blog/use-pdf-tools-on-phone-complete-guide).
+:::
 
 Real jobs rarely need only one tool. These sequences come up again and again.
 
@@ -134,7 +157,7 @@ It helps to know the limits. These tools do not read text out of scanned images,
 
 ## Privacy
 
-All twelve tools process files in your browser, so documents are handled on your own device rather than being uploaded to a server first. For how to verify that for yourself, read [are online PDF tools safe](/blog/are-online-pdf-tools-safe).
+All fifteen tools process files in your browser, so documents are handled on your own device rather than being uploaded to a server first. For how to verify that for yourself, read [are online PDF tools safe](/blog/are-online-pdf-tools-safe).
 
 ## Before you send anything
 
@@ -734,7 +757,7 @@ Use the [compress PDF tool](/tools/compress-pdf). Choose an automatic level or a
 
 ### Convert a page to an image
 
-Use the [PDF to JPG tool](/tools/pdf-to-jpg), choose your pages, pick JPG or PNG, and download.
+Use the [PDF to JPG tool](/tools/pdf-to-jpg), or the [PDF to PNG tool](/tools/pdf-to-png) if you need PNG, choose your pages, and download.
 
 {{IMG:2}}
 

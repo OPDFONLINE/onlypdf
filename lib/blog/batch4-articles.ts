@@ -10,7 +10,7 @@ export const batch4Articles: Batch4Article[] = [
     title: "JPG to PDF: The Complete Guide to Turning Images Into One Clean Document",
     excerpt: "Combine photos, scans, and screenshots into a single PDF with the right page size and order. Everything you need to know, step by step.",
     seo_title: "JPG to PDF: Complete Guide to Converting Images",
-    seo_description: "Convert JPG, JPEG, and PNG images into one PDF for free. Learn page sizes, ordering, quality, and file size tips. No software, no account.",
+    seo_description: "Convert JPG and JPEG images into one PDF for free (PNG has its own tool). Learn page sizes, ordering, quality, and file size tips. No software, no account.",
     category: "Convert to PDF",
     topic_cluster: "convert-to-pdf",
     author: "OnlyPDF Team",
@@ -35,7 +35,7 @@ There are four practical reasons people make the switch.
 
 ## What the tool accepts
 
-The tool takes JPG, JPEG, and PNG images. You can add just one or as many as you need. Each image becomes one page of the PDF, in the sequence you choose. If your pictures are in another format, such as HEIC from a recent iPhone or WebP saved from a website, convert or re-save them as JPG or PNG first; most phones and photo apps can export in a compatible format.
+The tool takes JPG and JPEG images. PNG images, which is what most screenshots are, have their own [PNG to PDF tool](/tools/png-to-pdf) that works the same way. Each run handles one format, so if you have both, make one PDF from each and join them with the [merge PDF tool](/tools/merge-pdf). You can add just one or as many as you need. Each image becomes one page of the PDF, in the sequence you choose. If your pictures are in another format, such as HEIC from a recent iPhone or WebP saved from a website, convert or re-save them as JPG or PNG first; most phones and photo apps can export in a compatible format.
 
 ## Step by step
 
@@ -116,7 +116,7 @@ Photograph each page or board section, use fit to image, and you have a shareabl
 
 ### Combining images with existing PDFs
 
-Sometimes you need a photographed page to sit inside a longer PDF. Convert the images into their own PDF first, then use the [merge PDF tool](/tools/merge-pdf) to combine the two documents in the order you want. Our guide to [merging PDFs on a phone](/blog/merge-pdf-files-in-order-on-phone) covers the mobile workflow.
+Sometimes you need a photographed page to sit inside a longer PDF. Convert the images into their own PDF first, then use the [merge PDF tool](/tools/merge-pdf) to combine the two documents in the order you want. Our guide to [merging PDFs on a phone](/blog/merge-pdf-files-in-order-on-phone) covers the mobile workflow. To place images at an exact spot inside a longer PDF, such as after page 7, the [Insert PDF Pages tool](/tools/insert-pdf-pages) accepts JPG and PNG images directly, with each image becoming one A4 page.
 
 ## Common mistakes to avoid
 
@@ -128,7 +128,7 @@ Sometimes you need a photographed page to sit inside a longer PDF. Convert the i
 
 ## Can the PDF be turned back into images?
 
-Yes. The [PDF to JPG tool](/tools/pdf-to-jpg) converts pages back into JPG or PNG images, so the process works in both directions. That is useful if you built a PDF and later need one of its pages as a picture for a presentation or website.
+Yes. The [PDF to JPG tool](/tools/pdf-to-jpg) converts pages back into JPG images, and the [PDF to PNG tool](/tools/pdf-to-png) does the same for PNG images, so the process works in both directions. That is useful if you built a PDF and later need one of its pages as a picture for a presentation or website.
 
 ## Privacy
 
@@ -669,6 +669,10 @@ Before sending, do a last read-through.
 - Size. Is it under any limit that applies?
 
 ## Special cases
+
+:::highlight blue
+Related guides: [how to remove blank pages from a scanned PDF](/blog/remove-blank-pages-from-scanned-pdf) and [how to use PDF tools on your phone](/blog/use-pdf-tools-on-phone-complete-guide).
+:::
 
 ### Multi-page forms with signatures
 
