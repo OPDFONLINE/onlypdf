@@ -1,3 +1,4 @@
+import { configurePdfjsWorker } from "@/lib/pdf/pdfjsWorker";
 /**
  * Browser-only helpers for on-screen PDF previews: a cached "cover" (first
  * page + page count) per file, and an open-document handle used by the
@@ -15,7 +16,7 @@ export type PdfPreviewHandle = {
 
 async function loadPdfjs() {
   const pdfjsLib = await import("pdfjs-dist");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+  configurePdfjsWorker(pdfjsLib);
   return pdfjsLib;
 }
 

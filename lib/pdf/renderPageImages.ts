@@ -1,3 +1,4 @@
+import { configurePdfjsWorker } from "@/lib/pdf/pdfjsWorker";
 /**
  * Renders selected PDF pages to full-resolution image files (JPG or PNG),
  * entirely in the browser. Unlike renderThumbnails.ts (small previews for
@@ -27,7 +28,7 @@ export async function renderPdfPagesToImages(
   }
 
   const pdfjsLib = await import("pdfjs-dist");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+  configurePdfjsWorker(pdfjsLib);
 
   let bytes: ArrayBuffer;
   try {

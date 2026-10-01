@@ -1,3 +1,4 @@
+import { configurePdfjsWorker } from "@/lib/pdf/pdfjsWorker";
 /**
  * Renders a single PDF page to an image at a chosen width, in the browser.
  * Used for the large, accurate previews in the watermark tool.
@@ -11,7 +12,7 @@ export type RenderedPage = {
 
 export async function renderPdfPage(source: Blob, pageIndex: number, targetWidth = 1000): Promise<RenderedPage> {
   const pdfjsLib = await import("pdfjs-dist");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+  configurePdfjsWorker(pdfjsLib);
 
   let data: ArrayBuffer;
   try {

@@ -1,3 +1,4 @@
+import { configurePdfjsWorker } from "@/lib/pdf/pdfjsWorker";
 /**
  * Renders every page of a PDF to a small preview image, entirely in the
  * browser. Used by tools that show page thumbnails (Rearrange, Rotate).
@@ -22,7 +23,7 @@ const THUMBNAIL_WIDTH = 360;
 
 export async function renderPdfThumbnails(file: File): Promise<PageThumbnail[]> {
   const pdfjsLib = await import("pdfjs-dist");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+  configurePdfjsWorker(pdfjsLib);
 
   let bytes: ArrayBuffer;
   try {

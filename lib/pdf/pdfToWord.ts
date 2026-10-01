@@ -1,9 +1,10 @@
 import type { Paragraph as ParagraphType } from "docx";
+import { configurePdfjsWorker } from "@/lib/pdf/pdfjsWorker";
 
 export async function pdfToWord(file: File): Promise<Blob> {
   const { Document, HeadingLevel, Packer, Paragraph, TextRun } = await import("docx");
   const pdfjsLib = await import("pdfjs-dist");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+  configurePdfjsWorker(pdfjsLib);
   const bytes = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
   const paragraphs: ParagraphType[] = [];

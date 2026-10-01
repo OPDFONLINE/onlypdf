@@ -1,3 +1,4 @@
+import { configurePdfjsWorker } from "@/lib/pdf/pdfjsWorker";
 /**
  * Browser-side PDF compression by rasterizing each page to JPEG and rebuilding
  * the document. This is intentionally client-side so source files never need
@@ -57,8 +58,7 @@ async function fileBytes(file: File): Promise<ArrayBuffer> {
 
 async function loadPdf(file: File) {
   const pdfjsLib = await import("pdfjs-dist");
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+  configurePdfjsWorker(pdfjsLib);
 
   try {
     return await pdfjsLib.getDocument({ data: await fileBytes(file) }).promise;
