@@ -57,6 +57,10 @@ The weakness of Word is consistency. Open the same file on a computer without yo
 
 ## JPG: the format for pictures
 
+:::highlight blue
+Related guide: [PNG or JPG to PDF: which image type should you use?](/blog/png-vs-jpg-to-pdf-which-to-use) helps when you can choose the image format.
+:::
+
 A JPG is a picture. It shows how something looks, but it has no text you can select, no pages, and no structure. It is compact and opens everywhere, which makes it ideal for photos and quick previews.
 
 Choose JPG when:

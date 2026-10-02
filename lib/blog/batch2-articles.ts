@@ -44,6 +44,10 @@ Job applications are one of the most frequent reasons someone needs to merge exa
 
 ## When two files should stay separate instead
 
+:::highlight blue
+Related guides: [how to insert pages from one PDF into another at a specific position](/blog/insert-pages-from-another-pdf-at-specific-position) and [insert vs merge: which tool to use](/blog/insert-vs-merge-pdf-which-tool).
+:::
+
 Not every pair of related documents benefits from merging. If a recipient specifically asked for a resume and a portfolio as two separate attachments, for instance, combining them into one file works against what was requested. Merging is the right move when a system or person expects a single file; it is the wrong move when separate attachments were explicitly asked for, since undoing a merge to get back to separate files is more work than leaving them apart in the first place.
 
 {{IMG:2}}
@@ -782,6 +786,10 @@ Naming image files with a clear numeric prefix, like 01-cover.jpg and 02-page-tw
 A batch of ten separate JPGs sent as ten separate attachments is awkward for a recipient to open in order, and easy to mix up. One combined PDF, with each image already placed as its own page in the correct sequence, opens as a single coherent document, in a format that behaves consistently across every device and PDF viewer, rather than depending on how a particular email client happens to display a pile of individual image attachments.
 
 ## Handling images of different sizes and orientations
+
+:::highlight blue
+Related guide: for screenshots and other PNG files, see [how to convert screenshots and PNG images to PDF](/blog/convert-screenshots-png-to-pdf).
+:::
 
 Photos captured under different conditions rarely share identical dimensions or orientation, a landscape shot mixed in with several portrait ones being especially common. Most image-to-PDF tools handle this automatically, placing each image on its own appropriately sized page rather than forcing every page into one fixed shape. If a completely uniform look across every page matters more than preserving each image's original proportions, choosing a fixed standard page size for all of them, rather than "fit to image," produces a more visually consistent result throughout the document.
 

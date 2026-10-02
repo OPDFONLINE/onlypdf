@@ -153,6 +153,10 @@ A good rule for order of operations: fix content first (delete, extract, rotate,
 
 ## What none of these tools do
 
+:::highlight blue
+Related guide: [Password-protected PDF? What to do first](/blog/password-protected-pdf-what-to-do-first) covers locked files.
+:::
+
 It helps to know the limits. These tools do not read text out of scanned images, so there is no OCR. They do not fill in or sign forms. They do not password-protect files. If your task needs one of those, you will need different software. Being clear about this saves you from hunting for a feature that is not there.
 
 ## Privacy
@@ -801,6 +805,10 @@ Phones have less memory than computers. If a tool is slow or a page freezes on a
 If your file is truly huge, a laptop is simply the better tool. There is no shame in switching devices.
 
 ## Privacy on a phone
+
+:::highlight blue
+Related guide: [What "processed in your browser" really means](/blog/what-processed-in-your-browser-really-means).
+:::
 
 Phones carry a lot of personal documents, and they are shared more often than computers: with family, at work, in cafes. A few habits help.
 

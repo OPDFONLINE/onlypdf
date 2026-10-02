@@ -35,6 +35,10 @@ There are four practical reasons people make the switch.
 
 ## What the tool accepts
 
+:::highlight blue
+Related guide: [How to convert screenshots and PNG images to PDF](/blog/convert-screenshots-png-to-pdf) covers the PNG side, including page size choices for screenshots.
+:::
+
 The tool takes JPG and JPEG images. PNG images, which is what most screenshots are, have their own [PNG to PDF tool](/tools/png-to-pdf) that works the same way. Each run handles one format, so if you have both, make one PDF from each and join them with the [merge PDF tool](/tools/merge-pdf). You can add just one or as many as you need. Each image becomes one page of the PDF, in the sequence you choose. If your pictures are in another format, such as HEIC from a recent iPhone or WebP saved from a website, convert or re-save them as JPG or PNG first; most phones and photo apps can export in a compatible format.
 
 ## Step by step
@@ -78,6 +82,10 @@ Order mistakes are the most common problem with image-to-PDF conversions, and th
 If you get it wrong anyway, you do not need to start over. Use the [rearrange PDF tool](/tools/rearrange-pdf) to drag the pages into the correct sequence, and rotate any that came out sideways.
 
 ## Quality: what really happens to your images
+
+:::highlight blue
+Related guide: [PNG or JPG to PDF: which image type should you use?](/blog/png-vs-jpg-to-pdf-which-to-use) compares sharpness and file size.
+:::
 
 A common worry is that converting to PDF will make pictures blurry. In this tool, the image data is placed into the PDF as it is; the conversion does not recompress or resize the picture itself. That means the PDF looks exactly as good as the original image did, and no better. If a photo was blurry or dark before conversion, it will still be blurry or dark afterward.
 
@@ -242,6 +250,10 @@ Extracting is a handy way to limit what you share, but a few habits keep it safe
 - Think about what is on each page. Headers and footers sometimes reveal file names, case numbers, or client details.
 
 ## Combining extraction with other tools
+
+:::highlight blue
+Related guide: [How to insert pages from one PDF into another at a specific position](/blog/insert-pages-from-another-pdf-at-specific-position) shows how to place extracted pages inside a different document.
+:::
 
 Real tasks often use more than one tool.
 
@@ -528,6 +540,10 @@ A frequent misunderstanding is that editing a PDF makes hidden information disap
 
 ## Sensitive documents and what to do with them
 
+:::highlight blue
+Related guides: [cover vs redact](/blog/cover-vs-redact-pdf-hide-sensitive-information) and [what to do with a password-protected PDF](/blog/password-protected-pdf-what-to-do-first).
+:::
+
 ### Identity documents
 
 Passports, driving licences, and national ID cards should be shared only when required, and only in the form requested. If a form asks for a PDF of your ID, prepare it from a clear photo with the [JPG to PDF tool](/tools/jpg-to-pdf), send only the pages needed, and avoid emailing it to personal accounts when a secure upload portal is offered.
@@ -541,6 +557,10 @@ These are best processed locally and shared through official channels wherever p
 Contracts often involve several parties. Merge and reorder pages on your own device, check the final copy carefully, and confirm the recipient before sending. The [merge PDF tool](/tools/merge-pdf) can assemble signed pages into one document without sending them anywhere first.
 
 ## Is anything ever uploaded?
+
+:::highlight blue
+Related guide: [What "processed in your browser" really means](/blog/what-processed-in-your-browser-really-means) explains what stays on your device and what does not.
+:::
 
 It is worth being precise. Some operations, in some tools, genuinely need a server, for example certain complex conversions that cannot run inside a browser. A responsible service tells you when that is the case. Read the privacy policy and the notes on each tool page so you know how a specific feature behaves, rather than assuming that everything on any site works the same way.
 
@@ -641,6 +661,10 @@ Tip: check the first and last pages carefully. They are the ones most often skip
 :::
 
 ## Step 5: Fix page order
+
+:::highlight blue
+Related guide: if one photo turned out badly, [how to replace a page in a PDF](/blog/replace-a-page-in-a-pdf) swaps in a retake without rebuilding the whole file.
+:::
 
 If you photographed in order, this step may be unnecessary, but it is worth a quick look. Open the [rearrange PDF tool](/tools/rearrange-pdf) if any page is out of place. Drag thumbnails into position, or use the arrow buttons on each page, which are often more precise on a small touchscreen. There is also a rotate button on each thumbnail, so you can fix a sideways page and reposition it in one pass.
 

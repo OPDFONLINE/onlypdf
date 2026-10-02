@@ -470,6 +470,10 @@ Text and basic paragraph structure carry over reliably in most cases. More compl
 
 ## Exporting PDF pages as JPG or PNG images
 
+:::highlight blue
+Related guide: [How to convert PDF to PNG for slides, docs, and sharp text](/blog/pdf-to-png-for-slides-docs-and-sharp-text).
+:::
+
 Sometimes the goal is not editing at all, just getting a picture of a page to drop into a presentation, a chat message, or a social post. The [PDF to JPG tool](/tools/pdf-to-jpg) and the [PDF to PNG tool](/tools/pdf-to-png) handle this directly, one image format per tool. For a full walkthrough of the JPG route, see our guide to [converting PDF pages to JPG images](/blog/convert-pdf-to-jpg-pages):
 
 - Upload the PDF.
@@ -625,6 +629,10 @@ Scroll through the finished PDF and look for three things: the watermark is gone
 {{IMG:3}}
 
 ## Common mistakes worth avoiding
+
+:::highlight blue
+Related guide: [Is it OK to remove a watermark from a PDF?](/blog/is-it-ok-to-remove-a-pdf-watermark) explains when you need permission first.
+:::
 
 - Skipping Smart mode and covering a watermark that could have been deleted cleanly.
 - Ticking a detected item without looking at the After preview.

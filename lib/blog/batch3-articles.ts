@@ -246,6 +246,10 @@ Page numbers printed on the pages themselves do not change when you reorder. Onl
 
 ## Rearranging versus other tools
 
+:::highlight blue
+Related guides: to add new pages rather than move existing ones, read [how to insert pages into a PDF](/blog/insert-pages-into-pdf-complete-guide) and [how to add a blank page to a PDF](/blog/add-blank-page-to-pdf).
+:::
+
 Different problems need different tools:
 
 - Pages in the wrong order: rearrange.
@@ -343,6 +347,10 @@ Related guide: if you scanned a double-sided stack, [how to remove blank pages f
 
 ## Delete or extract?
 
+:::highlight blue
+Related guide: swapping an outdated page for a new one? [How to replace a page in a PDF](/blog/replace-a-page-in-a-pdf) combines insert and delete.
+:::
+
 The two tools are mirror images:
 
 | Situation | Best tool |
@@ -356,6 +364,10 @@ Pick whichever needs fewer taps. Removing two pages from a hundred-page file is 
 {{IMG:2}}
 
 ## A note on sensitive information
+
+:::highlight blue
+Related guide: [Cover vs redact](/blog/cover-vs-redact-pdf-hide-sensitive-information) explains why a box drawn over text does not remove it, and how to remove information properly.
+:::
 
 Deleting a page removes it from the new file you download, which is what you want when sharing a copy. Keep in mind that the original file still contains that page, so do not send the original by mistake. Check the pages of the new file before sharing anything confidential.
 
@@ -477,6 +489,10 @@ Blank pages are more than a cosmetic nuisance. They waste paper when the documen
 
 ## Keep a clean master
 
+:::highlight blue
+Related guide: need the opposite? [How to add a blank page to a PDF](/blog/add-blank-page-to-pdf) shows how to insert one exactly where you want it.
+:::
+
 After cleaning, save the tidy version as your master copy and archive the raw scan separately if you need to keep it. Working from one clean file means the next person to print, share, or convert the document never has to repeat the cleanup, and there is no risk of the blank-filled version being sent by mistake. A clear file name makes the difference obvious at a glance.
 
 ## Frequently asked questions
@@ -540,6 +556,10 @@ The image is a picture of the page. Text in it is no longer selectable or search
 :::
 
 ## Getting a sharp result
+
+:::highlight blue
+Related guide: [How to convert PDF to PNG for slides, docs, and sharp text](/blog/pdf-to-png-for-slides-docs-and-sharp-text) covers when PNG is the better choice and what size the images come out.
+:::
 
 A few habits keep the images crisp:
 
@@ -665,6 +685,10 @@ If you are still undecided, use this quick test. Zoom into the page on screen un
 - Converting a page that is already a photograph of a document. The quality ceiling is set by that photograph, not by the format.
 
 ## Final recommendation
+
+:::highlight blue
+Related guide: [How to convert PDF to PNG for slides, docs, and sharp text](/blog/pdf-to-png-for-slides-docs-and-sharp-text) walks through the PNG route step by step.
+:::
 
 For everyday use, start with JPG. It produces smaller files that upload and load quickly, and for most pages the difference from PNG is invisible. Switch to PNG only when you see fuzzy text or ragged lines, or when you specifically need transparency. Because you can always re-convert from the original PDF, there is no cost to trying the other format if the first result disappoints you.
 
@@ -974,6 +998,10 @@ The page preview supports zoom and a Pan mode, so you can zoom in, place the box
 Open the cleaned file and check that the watermark is gone, that no visible patch stands out against a coloured background, and that no nearby text was hidden. If something looks wrong, go back to your original and draw a tighter box or choose a different cover colour.
 
 ## Alternatives worth considering
+
+:::highlight blue
+Related guide: [Is it OK to remove a watermark from a PDF?](/blog/is-it-ok-to-remove-a-pdf-watermark) covers permission, rights, and cleaner alternatives.
+:::
 
 - Ask for a clean copy. The author or sender can often supply one without the watermark.
 - Recreate the page from the source file if you have it, and export a fresh PDF.
