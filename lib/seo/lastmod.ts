@@ -37,3 +37,21 @@ export function latestDate(values: Array<Date | string | null | undefined>, fall
   }
   return best ?? new Date(fallback);
 }
+
+/**
+ * Machine-readable article dates (JSON-LD and Open Graph). The site does not
+ * show dates to readers on purpose, so these are the only date signals.
+ * dateModified is never earlier than datePublished and never in the future.
+ */
+export function articleDates(
+  publishedAt: string | null | undefined,
+  updatedAt: string | null | undefined,
+  now = new Date(),
+): { datePublished?: string; dateModified?: string } {
+  const published = parseDate(publishedAt);
+  let modified: Date | null = null;
+  for (const date of [parseDate(updatedAt), published]) {
+    if (date && date.getTime() <= now.getTime() && (!modified || date.getTime() > modified.getTime())) modified = date;
+  }
+  return { datePublished: published?.toISOString(), dateModified: modified?.toISOString() };
+}

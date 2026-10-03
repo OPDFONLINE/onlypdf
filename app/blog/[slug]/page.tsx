@@ -9,6 +9,7 @@ import { AdSlot } from "@/components/ads/AdSlot";
 import { isValidAdsensePublisherId, isValidAdsenseSlotId } from "@/lib/ads/validate";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { articleDates } from "@/lib/seo/lastmod";
 
 // Moderate ISR instead of the previous unbounded default caching: this page
 // reads via the public (cookie-free) Supabase client, so nothing here forces
@@ -26,8 +27,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     description: post.seo_description || post.excerpt || undefined,
     path: `/blog/${post.slug}`,
     type: "article",
-    publishedTime: post.published_at,
-    modifiedTime: post.updated_at,
+    publishedTime: articleDates(post.published_at, post.updated_at).datePublished,
+    modifiedTime: articleDates(post.published_at, post.updated_at).dateModified,
     authors: post.author ? [post.author] : undefined,
     section: post.category,
     // Featured images are re-encoded JPEGs (up to 1600px wide), which every
@@ -61,8 +62,7 @@ export default async function BlogArticle({ params }: { params: { slug: string }
               "@type": "Article",
               headline: post.title,
               description: post.seo_description || post.excerpt || undefined,
-              datePublished: post.published_at || undefined,
-              dateModified: post.updated_at || undefined,
+              ...articleDates(post.published_at, post.updated_at),
               author: post.author ? { "@type": "Person", name: post.author } : { "@type": "Organization", name: "OnlyPDF" },
               mainEntityOfPage: { "@type": "WebPage", "@id": `https://onlypdf.online/blog/${post.slug}` },
             }}

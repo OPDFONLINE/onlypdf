@@ -58,7 +58,7 @@ export default async function RootLayout({
 }) {
   const settings = await getSiteSettings();
   return (
-    <html lang="en" className={jakarta.variable}>
+    <html lang="en-US" className={jakarta.variable}>
       <body className="flex min-h-screen flex-col">
         <JsonLd
           data={{
