@@ -10,6 +10,8 @@ import { isValidAdsensePublisherId, isValidAdsenseSlotId } from "@/lib/ads/valid
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { articleDates } from "@/lib/seo/lastmod";
+import { articleCrumbs, breadcrumbSchema } from "@/lib/seo/schema";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 // Moderate ISR instead of the previous unbounded default caching: this page
 // reads via the public (cookie-free) Supabase client, so nothing here forces
@@ -67,6 +69,8 @@ export default async function BlogArticle({ params }: { params: { slug: string }
               mainEntityOfPage: { "@type": "WebPage", "@id": `https://onlypdf.online/blog/${post.slug}` },
             }}
           />
+          <JsonLd data={breadcrumbSchema(articleCrumbs(post))} />
+          <Breadcrumbs crumbs={articleCrumbs(post)} className="mb-6" />
           <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{post.category || "PDF guide"}</p>
           <h1 className="mt-3 text-3xl sm:text-5xl">{post.title}</h1>
           {post.excerpt && <p className="mt-5 text-lg leading-8 text-ink-muted">{post.excerpt}</p>}

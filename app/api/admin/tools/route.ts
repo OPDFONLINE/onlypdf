@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { revalidateTag, revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { tools as toolCatalog } from "@/lib/tools";
+import { submitToIndexNow } from "@/lib/seo/indexnow";
 
 export async function PATCH(request: Request) {
   const supabase = await createSupabaseServerClient();
@@ -79,6 +81,10 @@ export async function PATCH(request: Request) {
   revalidateTag("tools");
   revalidatePath("/");
   revalidatePath("/tools");
+
+  // Tell IndexNow the tool page changed (only for slugs that really exist).
+  const slug = body.slug.trim();
+  if (toolCatalog.some((tool) => tool.slug === slug)) await submitToIndexNow([`/tools/${slug}`, "/tools"]);
 
   return NextResponse.json({ ok: true });
 }

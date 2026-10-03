@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { postIsLive, submitToIndexNow } from "@/lib/seo/indexnow";
 
 type ImageSource = {
   provider?: unknown;
@@ -85,12 +86,15 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") return NextResponse.json({ error: "Invalid request." }, { status: 400 });
 
-  const { data, error } = await db.from("blog_posts").insert(postBody(body as Record<string, unknown>)).select("id,slug").single();
+  const row = postBody(body as Record<string, unknown>);
+  const { data, error } = await db.from("blog_posts").insert(row).select("id,slug").single();
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
   await recordImageUsage(db, body as Record<string, unknown>, data.id);
   revalidatePath("/blog");
   if (data.slug) revalidatePath(`/blog/${data.slug}`);
+  // Tell IndexNow only when the article is publicly visible right now.
+  if (postIsLive(row)) await submitToIndexNow([`/blog/${row.slug}`, "/blog"]);
   return NextResponse.json({ id: data.id });
 }
 
@@ -104,7 +108,7 @@ export async function PATCH(request: Request) {
   }
 
   const post = postBody(body as Record<string, unknown>);
-  const { data: previous } = await db.from("blog_posts").select("slug").eq("id", body.id).maybeSingle();
+  const { data: previous } = await db.from("blog_posts").select("slug,status,published_at").eq("id", body.id).maybeSingle();
   const { error } = await db.from("blog_posts").update(post).eq("id", body.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
@@ -112,6 +116,15 @@ export async function PATCH(request: Request) {
   revalidatePath("/blog");
   if (previous?.slug) revalidatePath(`/blog/${previous.slug}`);
   revalidatePath(`/blog/${post.slug}`);
+
+  // New or edited live article -> its URL. Old URL that no longer serves the article
+  // (renamed slug or unpublished) -> also sent, so engines see the 404/redirect.
+  const wasLive = Boolean(previous && postIsLive(previous));
+  const isLive = postIsLive(post);
+  const urls: string[] = [];
+  if (isLive) urls.push(`/blog/${post.slug}`);
+  if (wasLive && previous && (!isLive || previous.slug !== post.slug)) urls.push(`/blog/${previous.slug}`);
+  if (urls.length > 0) await submitToIndexNow([...urls, "/blog"]);
   return NextResponse.json({ ok: true });
 }
 
@@ -124,8 +137,10 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Article id is required." }, { status: 400 });
   }
 
+  const { data: removed } = await db.from("blog_posts").select("slug,status,published_at").eq("id", body.id).maybeSingle();
   const { error } = await db.from("blog_posts").delete().eq("id", body.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   revalidatePath("/blog");
+  if (removed && postIsLive(removed)) await submitToIndexNow([`/blog/${removed.slug}`, "/blog"]);
   return NextResponse.json({ ok: true });
 }

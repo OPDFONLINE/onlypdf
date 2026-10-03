@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getAdminContext } from "@/lib/supabase/admin";
 import { SettingsManager } from "@/components/admin/SettingsManager";
+import { IndexNowPanel } from "@/components/admin/IndexNowPanel";
 
 type SettingRow = { key: string; value: string | null };
 
@@ -30,6 +31,7 @@ export default async function AdminSettingsPage() {
       <h1 className="text-2xl font-bold text-ink">Site settings</h1>
       <p className="mt-1 max-w-2xl text-sm text-ink-muted">Routine site identity and editorial defaults that should not require a code change.</p>
       <SettingsManager initialSettings={settings} />
+      <IndexNowPanel />
     </div>
   );
 }

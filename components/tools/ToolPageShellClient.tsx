@@ -8,6 +8,7 @@ import { toolColorClasses } from "@/lib/toolColors";
 import { toolProcessors } from "@/lib/toolProcessors";
 import { getPdfPageCount } from "@/lib/pdf/getPageCount";
 import { Faq } from "@/components/ui/Faq";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PdfPageThumb } from "@/components/tools/PdfPageThumb";
 import { renderPdfThumbnails, type PageThumbnail } from "@/lib/pdf/renderThumbnails";
 import { getPdfCover, type PdfCover } from "@/lib/pdf/pdfPreview";
@@ -197,6 +198,14 @@ export function ToolPageShellClient({ slug, content }: { slug: string; content?:
     <div className="container-page py-14 md:py-16">
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
+          <Breadcrumbs
+            crumbs={[
+              { name: "Home", path: "/" },
+              { name: "Tools", path: "/tools" },
+              { name: pageName, path: `/tools/${slug}` },
+            ]}
+            className="mb-5"
+          />
           <span
             className={`flex h-12 w-12 items-center justify-center rounded-2xl ${colors.badgeBg} ${colors.badgeText}`}
           >
