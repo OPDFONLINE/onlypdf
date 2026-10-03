@@ -13,6 +13,7 @@ export type ToolOverrideRow = {
   sort_order: number | null;
   featured: boolean;
   homepage_visible: boolean;
+  updated_at?: string | null;
   one_liner: string | null;
   instructions: unknown;
   faq: unknown;
@@ -30,6 +31,8 @@ export type EffectiveTool = Tool & {
   featured: boolean;
   homepageVisible: boolean;
   sortOrder: number;
+  /** Last admin edit of this tool's content (ISO string), if it has an override row. */
+  updatedAt?: string | null;
   oneLiner: string;
   instructions: string[];
   faq: { question: string; answer: string }[];
@@ -77,6 +80,7 @@ function mergeTool(base: Tool, index: number, override: ToolOverrideRow | undefi
     featured: override?.featured ?? false,
     homepageVisible: override?.homepage_visible ?? true,
     sortOrder: override?.sort_order ?? index,
+    updatedAt: override?.updated_at ?? null,
   };
 }
 
