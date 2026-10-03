@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServiceClient } from "@/lib/supabase/service";
 import { isSupabaseServiceConfigured } from "@/lib/supabase/env";
+import { getClientIp, hashIp, memoryRateLimit } from "@/lib/rate-limit-core";
 
 const EVENT_NAMES = new Set(["page_view", "tool_start", "tool_complete"]);
 const TOOL_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -40,14 +41,31 @@ function getDeviceCategory(userAgent: string | null): string {
   return "desktop";
 }
 
+// analytics_events.session_id is a uuid column, and the browser creates it with
+// crypto.randomUUID(), so only accept that exact shape.
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 function validSessionId(value: unknown): string | null {
-  if (typeof value !== "string" || value.length > 80) return null;
-  return /^[0-9a-f-]{20,80}$/i.test(value) ? value : null;
+  return typeof value === "string" && UUID.test(value) ? value.toLowerCase() : null;
 }
+
+const MAX_BODY_BYTES = 4_000;
+// Per visitor, per server instance. Normal browsing sends a handful of events a
+// minute, but many people can share one mobile or office IP, so the ceiling is
+// generous: it only stops floods, not busy networks.
+const EVENTS_PER_MINUTE = 300;
 
 export async function POST(request: Request) {
   if (!isSupabaseServiceConfigured) {
     return new NextResponse(null, { status: 204 });
+  }
+
+  if (Number(request.headers.get("content-length") || 0) > MAX_BODY_BYTES) return new NextResponse(null, { status: 204 });
+
+  const ip = getClientIp(request.headers);
+  if (ip) {
+    const salt = process.env.RATE_LIMIT_SALT || "onlypdf";
+    const limit = memoryRateLimit(`analytics:${hashIp(ip, salt)}`, EVENTS_PER_MINUTE, 60_000);
+    if (!limit.allowed) return new NextResponse(null, { status: 429, headers: { "Retry-After": String(limit.retryAfter) } });
   }
 
   const body = await request.json().catch(() => null);

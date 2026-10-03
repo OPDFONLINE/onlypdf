@@ -99,6 +99,12 @@ export default function PrivacyPage() {
             support requests. We won&apos;t add you to a marketing list
             without your separate consent.
           </p>
+          <p className="mt-2">
+            To stop spam, the contact form keeps a short-lived counter tied to
+            a one-way hash of your IP address. We don&apos;t store the IP
+            address itself, and these counters are deleted automatically
+            after a couple of days.
+          </p>
         </section>
 
         <section>
