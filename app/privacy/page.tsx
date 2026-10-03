@@ -14,8 +14,7 @@ export default function PrivacyPage() {
     <div className="container-page max-w-prose py-16 md:py-20">
       <h1 className="text-3xl sm:text-4xl">Privacy Policy</h1>
       <p className="mt-3 text-sm text-ink-soft">
-        Last updated: this page is a working draft and should be reviewed by
-        a legal professional before launch.
+        Last updated: <time dateTime="2026-10-03">October 3, 2026</time>
       </p>
 
       <div className="mt-8 space-y-8 text-[15px] leading-relaxed text-ink-muted">
@@ -82,9 +81,10 @@ export default function PrivacyPage() {
             completions. The analytics record may include the page path, the
             referring site&apos;s hostname, a broad device category, and a
             country code supplied by our hosting platform. We also use a
-            randomly generated browser session identifier stored in local
-            browser storage so repeated events from the same browser session
-            can be counted more meaningfully. We do not send the contents,
+            randomly generated session identifier stored in your browser&apos;s
+            session storage (it is cleared when you close the tab) so
+            repeated events from the same browser session can be counted
+            more meaningfully. We do not send the contents,
             names, or bytes of files you process to analytics. Admin pages
             are excluded from public page-view tracking.
           </p>

@@ -13,8 +13,7 @@ export default function TermsPage() {
     <div className="container-page max-w-prose py-16 md:py-20">
       <h1 className="text-3xl sm:text-4xl">Terms of Service</h1>
       <p className="mt-3 text-sm text-ink-soft">
-        Last updated: this page is a working draft and should be reviewed by
-        a legal professional before launch.
+        Last updated: <time dateTime="2026-10-03">October 3, 2026</time>
       </p>
 
       <div className="mt-8 space-y-8 text-[15px] leading-relaxed text-ink-muted">
@@ -109,8 +108,8 @@ export default function TermsPage() {
             Advertising and third-party links
           </h2>
           <p className="mt-2">
-            OnlyPDF may show advertising from third-party networks in the
-            future, and blog articles may link to other websites for
+            OnlyPDF may show advertising from third-party networks, and blog
+            articles may link to other websites for
             reference. We don&apos;t control and aren&apos;t responsible for
             the content, accuracy, or practices of third-party sites you
             reach through a link or ad on OnlyPDF.
@@ -145,8 +144,7 @@ export default function TermsPage() {
           <p className="mt-2">
             These terms will be governed by applicable law in the
             jurisdiction where OnlyPDF operates, without regard to conflict
-            of law principles. This section should be finalized with a legal
-            professional before launch.
+            of law principles.
           </p>
         </section>
 
