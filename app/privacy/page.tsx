@@ -113,6 +113,44 @@ export default function PrivacyPage() {
         </section>
 
         <section>
+          <h2 className="text-lg font-medium text-ink">Advertising</h2>
+          <p className="mt-2">
+            Some pages, mainly blog articles, may show ads served by Google
+            AdSense. Google and its advertising partners may use cookies or
+            similar technologies to show and measure ads and, depending on
+            where you live and the choices you make, to personalize them. We
+            don&apos;t place ads inside the file upload or processing
+            controls of the PDF tools, and your PDF files are never shared
+            with advertisers or with Google, because the tools process them
+            in your browser.
+          </p>
+          <p className="mt-2">
+            Where the law requires it, we ask for your consent before ads
+            that use cookies or personal data are shown. You can manage
+            personalized advertising in{" "}
+            <a
+              href="https://adssettings.google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline underline-offset-2"
+            >
+              Google&apos;s Ads Settings
+            </a>
+            , and read how Google uses information from sites that use its
+            services on its{" "}
+            <a
+              href="https://policies.google.com/technologies/partner-sites"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline underline-offset-2"
+            >
+              partner sites page
+            </a>
+            .
+          </p>
+        </section>
+
+        <section>
           <h2 className="text-lg font-medium text-ink">
             Children&apos;s privacy
           </h2>

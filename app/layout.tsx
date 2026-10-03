@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageAnalytics } from "@/components/analytics/PageAnalytics";
 import { getSiteSettings } from "@/lib/supabase/settings";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { isValidAdsensePublisherId } from "@/lib/ads/validate";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -33,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const content = line.slice(separatorIndex + 1).trim();
     if (name && content) other[name] = content;
   }
-  if (settings.google_adsense_publisher_id) {
+  if (isValidAdsensePublisherId(settings.google_adsense_publisher_id)) {
     other["google-adsense-account"] = settings.google_adsense_publisher_id;
   }
 
@@ -68,7 +69,7 @@ export default async function RootLayout({
             description: "Fast, privacy-friendly PDF tools that work in your browser.",
           }}
         />
-        {settings.google_adsense_publisher_id ? (
+        {isValidAdsensePublisherId(settings.google_adsense_publisher_id) ? (
           <Script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.google_adsense_publisher_id}`}

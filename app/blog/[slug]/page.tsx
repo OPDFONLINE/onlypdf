@@ -6,6 +6,7 @@ import { renderBlogContent, extractTableOfContents, TableOfContents, RelatedLink
 import { getSiteSettings } from "@/lib/supabase/settings";
 import { getAdPlacement } from "@/lib/supabase/ads";
 import { AdSlot } from "@/components/ads/AdSlot";
+import { isValidAdsensePublisherId, isValidAdsenseSlotId } from "@/lib/ads/validate";
 import { JsonLd } from "@/components/seo/JsonLd";
 
 // Moderate ISR instead of the previous unbounded default caching: this page
@@ -37,7 +38,7 @@ export default async function BlogArticle({ params }: { params: { slug: string }
   ]);
   const toc = extractTableOfContents(post.content);
 
-  const showAd = Boolean(sidebarAd?.enabled && sidebarAd.provider === "adsense" && sidebarAd.slot_id && settings.google_adsense_publisher_id);
+  const showAd = Boolean(sidebarAd?.enabled && sidebarAd.provider === "adsense" && isValidAdsenseSlotId(sidebarAd.slot_id) && isValidAdsensePublisherId(settings.google_adsense_publisher_id));
 
   return (
     <div className="container-page max-w-6xl py-14 md:py-20">

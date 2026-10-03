@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { isValidAdsensePublisherId, isValidAdsenseSlotId } from "@/lib/ads/validate";
 
 declare global {
   interface Window {
@@ -19,18 +20,19 @@ export function AdSlot({
 }) {
   const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
+  const valid = isValidAdsensePublisherId(publisherId) && isValidAdsenseSlotId(slotId);
 
   useEffect(() => {
-    if (!publisherId || !slotId || pushed.current) return;
+    if (!valid || pushed.current) return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       pushed.current = true;
     } catch {
       // AdSense script not ready yet or blocked by an ad blocker; safe to ignore.
     }
-  }, [publisherId, slotId]);
+  }, [valid]);
 
-  if (!publisherId || !slotId) return null;
+  if (!valid) return null;
 
   return (
     <div className={className}>
