@@ -5,7 +5,9 @@ Cumulative SEO patch (safe to apply over any earlier patch from this series):
   P0-5         privacy/terms: draft notes removed, real "Last updated" date, 3 small accuracy fixes (app/privacy, app/terms)
   P0-6         machine-readable-only article dates (articleDates helper -> JSON-LD + Open Graph); no visible dates, by decision
   P0-7         <html lang="en-US">   P0-8  X-Robots-Tag noindex on /admin and /api (next.config.mjs)
+  P1-5         IndexNow, no cron: key file, helper (lib/seo/indexnow.ts), pings on save in the admin blog/tools APIs, and two admin buttons (components/admin/IndexNowPanel.tsx, app/api/admin/indexnow/route.ts)
+IF YOU APPLIED AN EARLIER VERSION OF THIS PATCH: delete the folder app/api/cron (the cron job was removed). vercel.json in this patch has no crons; no CRON_SECRET is needed.
 Unzip over the repository root (paths are relative to it), then run: npm run typecheck && npm run build
-Note: next.config.mjs and app/layout.tsx are full files; if you changed them since the zip you uploaded, merge by hand.
+Note: next.config.mjs, app/layout.tsx, vercel.json, .env.example and the admin API route files are full files; if you changed them since the zip you uploaded, merge by hand.
 New files: lib/seo/metadata.ts, lib/seo/lastmod.ts, public/og-default.png, app/apple-icon.png, app/favicon.ico, scripts/generate-brand-images.mjs.
 Maintenance: when you edit the visible content of /about, /contact, /privacy, /terms (or tool text in code), bump the matching date in lib/seo/lastmod.ts and the "Last updated" line on the page.
