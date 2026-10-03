@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import { tools } from "@/lib/tools";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Privacy Policy",
   description: "How OnlyPDF handles your files, your data, and your privacy.",
-};
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

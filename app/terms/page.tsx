@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Terms of Service",
   description: "The terms for using OnlyPDF's PDF tools and website.",
-};
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

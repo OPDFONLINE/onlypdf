@@ -8,6 +8,7 @@ import { getAdPlacement } from "@/lib/supabase/ads";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { isValidAdsensePublisherId, isValidAdsenseSlotId } from "@/lib/ads/validate";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 // Moderate ISR instead of the previous unbounded default caching: this page
 // reads via the public (cookie-free) Supabase client, so nothing here forces
@@ -20,11 +21,16 @@ export const revalidate = 60;
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPublishedPost(params.slug);
   if (!post) return {};
-  return {
+  return buildPageMetadata({
     title: post.seo_title || post.title,
     description: post.seo_description || post.excerpt || undefined,
-    alternates: { canonical: `/blog/${post.slug}` },
-  };
+    path: `/blog/${post.slug}`,
+    type: "article",
+    publishedTime: post.published_at,
+    modifiedTime: post.updated_at,
+    authors: post.author ? [post.author] : undefined,
+    section: post.category,
+  });
 }
 
 export default async function BlogArticle({ params }: { params: { slug: string } }) {

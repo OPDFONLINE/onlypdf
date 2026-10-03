@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { buildPageMetadata, HOME_DEFAULT_TITLE, HOME_DEFAULT_DESCRIPTION } from "@/lib/seo/metadata";
 import { Hero } from "@/components/home/Hero";
 import { ToolGrid } from "@/components/home/ToolGrid";
 import { PrivacySection } from "@/components/home/PrivacySection";
@@ -33,6 +35,16 @@ const homeFaq = [
       "OnlyPDF works in current versions of Chrome, Firefox, Safari, and Edge, on both desktop and mobile.",
   },
 ];
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return buildPageMetadata({
+    title: settings.homepage_title || HOME_DEFAULT_TITLE,
+    description: settings.homepage_description || HOME_DEFAULT_DESCRIPTION,
+    path: "/",
+    siteName: settings.site_name || undefined,
+  });
+}
 
 export default async function HomePage() {
   const settings = await getSiteSettings();

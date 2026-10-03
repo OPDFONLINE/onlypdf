@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getPublishedSummaries, type PostSummary } from "@/lib/blog/posts";
 import { Pagination } from "@/components/ui/Pagination";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export const revalidate = 60;
 
@@ -14,13 +15,13 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
   const page = Math.max(parseInt(searchParams.page || "1", 10) || 1, 1);
   const category = searchParams.category?.trim();
   const title = category ? `${category} articles` : "Blog";
-  return {
+  return buildPageMetadata({
     title: page > 1 ? `${title} - Page ${page}` : title,
     description: "PDF tips, guides, workflows, and practical document advice from OnlyPDF.",
     // Filtered/paginated views point search engines back to the main listing.
-    alternates: { canonical: "/blog" },
+    path: "/blog",
     robots: category || page > 1 ? { index: false, follow: true } : undefined,
-  };
+  });
 }
 
 export default async function BlogPage({ searchParams }: { searchParams: SearchParams }) {

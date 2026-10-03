@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import { Mail, Bug, Lightbulb, Building2, ShieldQuestion } from "lucide-react";
 import { Faq } from "@/components/ui/Faq";
 import { ContactForm } from "@/components/contact/ContactForm";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Contact",
   description: "Get in touch with the OnlyPDF team about a bug, a tool request, or anything else.",
-};
+  path: "/contact",
+});
 
 const reasons = [
   {

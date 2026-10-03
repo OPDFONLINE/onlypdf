@@ -8,6 +8,7 @@ import { PageAnalytics } from "@/components/analytics/PageAnalytics";
 import { getSiteSettings } from "@/lib/supabase/settings";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { isValidAdsensePublisherId } from "@/lib/ads/validate";
+import { HOME_DEFAULT_TITLE, HOME_DEFAULT_DESCRIPTION } from "@/lib/seo/metadata";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -18,9 +19,8 @@ const jakarta = Plus_Jakarta_Sans({
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
-  const title = settings.homepage_title || "OnlyPDF — Simple PDF Tools. Right in Your Browser.";
-  const description = settings.homepage_description ||
-    "Free PDF tools that run in your browser. Merge, split, compress, edit, convert PDF and Word files, and remove watermarks in your browser, with no sign-up and no file uploads.";
+  const title = settings.homepage_title || HOME_DEFAULT_TITLE;
+  const description = settings.homepage_description || HOME_DEFAULT_DESCRIPTION;
 
   // "Other" verification tags are stored as one "meta-name=content" pair per
   // line (e.g. Bing's msvalidate.01, Pinterest's p:domain_verify, Ezoic's
@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL("https://onlypdf.online"),
     title: { default: title, template: "%s — OnlyPDF" },
     description,
-    openGraph: { title, description, url: "https://onlypdf.online", siteName: settings.site_name || "OnlyPDF", locale: "en_US", type: "website" },
+    openGraph: { title, description, siteName: settings.site_name || "OnlyPDF", locale: "en_US", type: "website" },
     twitter: { card: "summary_large_image", title, description },
     verification: {
       google: settings.google_site_verification || undefined,

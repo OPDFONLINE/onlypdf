@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import { getEffectiveTools } from "@/lib/supabase/tools";
 import { ToolCard } from "@/components/tools/ToolCard";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "PDF Tools",
-  description:
-    "Free PDF tools that run in your browser: merge, split, compress, delete, extract, rearrange, rotate, remove watermarks, and convert PDF and Word files.",
-};
+  description: "Free PDF tools that run in your browser: merge, split, compress, delete, extract, rearrange, rotate, remove watermarks, and convert PDF and Word files.",
+  path: "/tools",
+});
 
 export default async function ToolsPage() {
   const tools = await getEffectiveTools();

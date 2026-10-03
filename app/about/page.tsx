@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import Link from "next/link";
 import { ShieldCheck, Zap, Gift, Wrench } from "lucide-react";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "About",
   description: "Why OnlyPDF exists and how it approaches PDF tools.",
-};
+  path: "/about",
+});
 
 const principles = [
   {
