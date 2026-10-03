@@ -4,6 +4,14 @@ export const SITE_URL = "https://onlypdf.online";
 export const SITE_NAME = "OnlyPDF";
 export const SITE_LOCALE = "en_US";
 
+/** Shared social preview image (1200x630) in /public, used when a page has no image of its own. */
+export const DEFAULT_OG_IMAGE = {
+  url: `${SITE_URL}/og-default.png`,
+  width: 1200,
+  height: 630,
+  alt: "OnlyPDF: simple PDF tools that work in your browser",
+};
+
 /** Fallbacks for the homepage; Admin > Settings values take priority. */
 export const HOME_DEFAULT_TITLE = "OnlyPDF — Simple PDF Tools. Right in Your Browser.";
 export const HOME_DEFAULT_DESCRIPTION =
@@ -19,6 +27,20 @@ function normalizePath(path: string): string {
   return withSlash.length > 1 ? withSlash.replace(/\/+$/, "") : withSlash;
 }
 
+export type SeoImage = string | { url: string; width?: number; height?: number; alt?: string };
+
+function absoluteUrl(url: string): string {
+  if (/^https?:\/\//i.test(url)) return url;
+  return `${SITE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+}
+
+function resolveImages(images: SeoImage[] | undefined) {
+  const list = images && images.length > 0 ? images : [DEFAULT_OG_IMAGE];
+  return list.map((image) =>
+    typeof image === "string" ? { url: absoluteUrl(image) } : { ...image, url: absoluteUrl(image.url) }
+  );
+}
+
 export type PageMetadataInput = {
   /** Page title without the brand suffix; it is added automatically. */
   title: string;
@@ -31,8 +53,8 @@ export type PageMetadataInput = {
   modifiedTime?: string | null;
   authors?: string[];
   section?: string | null;
-  /** Absolute or root-relative image URLs for Open Graph and Twitter. */
-  images?: string[];
+  /** Open Graph / Twitter images. Falls back to the shared default image when omitted. */
+  images?: SeoImage[];
   robots?: Metadata["robots"];
 };
 
@@ -48,7 +70,7 @@ export function buildPageMetadata(input: PageMetadataInput): Metadata {
   const title = withBrand(input.title);
   const description = input.description || undefined;
   const siteName = input.siteName || SITE_NAME;
-  const images = input.images && input.images.length > 0 ? input.images : undefined;
+  const images = resolveImages(input.images);
 
   const openGraph: Metadata["openGraph"] =
     input.type === "article"

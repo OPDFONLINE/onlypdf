@@ -30,6 +30,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     modifiedTime: post.updated_at,
     authors: post.author ? [post.author] : undefined,
     section: post.category,
+    // Featured images are re-encoded JPEGs (up to 1600px wide), which every
+    // social crawler accepts. Articles without one fall back to the default.
+    images: post.featured_image_url
+      ? [{ url: post.featured_image_url, alt: post.featured_image_title || post.title }]
+      : undefined,
   });
 }
 
