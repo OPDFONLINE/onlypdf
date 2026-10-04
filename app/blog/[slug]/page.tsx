@@ -10,7 +10,8 @@ import { isValidAdsensePublisherId, isValidAdsenseSlotId } from "@/lib/ads/valid
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 import { articleDates } from "@/lib/seo/lastmod";
-import { articleCrumbs, breadcrumbSchema } from "@/lib/seo/schema";
+import { articleCrumbs, articleSchema, breadcrumbSchema } from "@/lib/seo/schema";
+import { authorProfileUrl, resolveAuthorName } from "@/lib/seo/entity";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 // Moderate ISR instead of the previous unbounded default caching: this page
@@ -31,7 +32,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     type: "article",
     publishedTime: articleDates(post.published_at, post.updated_at).datePublished,
     modifiedTime: articleDates(post.published_at, post.updated_at).dateModified,
-    authors: post.author ? [post.author] : undefined,
+    authors: authorProfileUrl(resolveAuthorName(post.author)) ? [authorProfileUrl(resolveAuthorName(post.author)) as string] : undefined,
+    author: { name: resolveAuthorName(post.author), url: authorProfileUrl(resolveAuthorName(post.author)) },
     section: post.category,
     // Featured images are re-encoded JPEGs (up to 1600px wide), which every
     // social crawler accepts. Articles without one fall back to the default.
@@ -58,23 +60,13 @@ export default async function BlogArticle({ params }: { params: { slug: string }
     <div className="container-page max-w-6xl py-14 md:py-20">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
         <article className="max-w-3xl">
-          <JsonLd
-            data={{
-              "@context": "https://schema.org",
-              "@type": "Article",
-              headline: post.title,
-              description: post.seo_description || post.excerpt || undefined,
-              ...articleDates(post.published_at, post.updated_at),
-              author: post.author ? { "@type": "Person", name: post.author } : { "@type": "Organization", name: "OnlyPDF" },
-              mainEntityOfPage: { "@type": "WebPage", "@id": `https://onlypdf.online/blog/${post.slug}` },
-            }}
-          />
+          <JsonLd data={articleSchema(post)} />
           <JsonLd data={breadcrumbSchema(articleCrumbs(post))} />
           <Breadcrumbs crumbs={articleCrumbs(post)} className="mb-6" />
           <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{post.category || "PDF guide"}</p>
           <h1 className="mt-3 text-3xl sm:text-5xl">{post.title}</h1>
           {post.excerpt && <p className="mt-5 text-lg leading-8 text-ink-muted">{post.excerpt}</p>}
-          {post.author && <p className="mt-8 text-xs text-ink-soft">By {post.author}</p>}
+          <p className="mt-8 text-xs text-ink-soft">By {resolveAuthorName(post.author)}</p>
           {post.featured_image_url && (
             <div className="mt-8">
               <img

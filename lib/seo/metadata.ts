@@ -52,6 +52,8 @@ export type PageMetadataInput = {
   publishedTime?: string | null;
   modifiedTime?: string | null;
   authors?: string[];
+  /** Person shown in <meta name="author"> (article pages). */
+  author?: { name: string; url?: string };
   section?: string | null;
   /** Open Graph / Twitter images. Falls back to the shared default image when omitted. */
   images?: SeoImage[];
@@ -95,6 +97,7 @@ export function buildPageMetadata(input: PageMetadataInput): Metadata {
     alternates: { canonical: path },
     openGraph,
     twitter: { card: "summary_large_image", title, description, images },
+    authors: input.author ? [{ name: input.author.name, url: input.author.url }] : undefined,
     robots: input.robots,
   };
 }

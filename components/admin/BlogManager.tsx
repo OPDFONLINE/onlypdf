@@ -488,7 +488,7 @@ function EditorScreen({ initial }: { initial: Draft }) {
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Category"><input value={form.category || ""} onChange={(e) => update("category", e.target.value)} placeholder="e.g. Organize PDF" /></Field>
             <Field label="Topic cluster"><input value={form.topic_cluster || ""} onChange={(e) => update("topic_cluster", e.target.value)} placeholder="e.g. merge-organize" /></Field>
-            <Field label="Author"><input value={form.author || ""} onChange={(e) => update("author", e.target.value)} placeholder="OnlyPDF Team" /></Field>
+            <Field label="Author"><input value={form.author || ""} onChange={(e) => update("author", e.target.value)} placeholder="David Valle" /></Field>
             <Field label="Scheduled at">
               <input type="datetime-local" value={form.scheduled_at ? form.scheduled_at.slice(0, 16) : ""} onChange={(e) => update("scheduled_at", e.target.value ? new Date(e.target.value).toISOString() : null)} />
             </Field>

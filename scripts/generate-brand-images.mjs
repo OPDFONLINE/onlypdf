@@ -52,4 +52,6 @@ hdr.writeUInt16LE(0,0); hdr.writeUInt16LE(1,2); hdr.writeUInt16LE(1,4);
 hdr.writeUInt8(48,6); hdr.writeUInt8(48,7); hdr.writeUInt8(0,8); hdr.writeUInt8(0,9);
 hdr.writeUInt16LE(1,10); hdr.writeUInt16LE(32,12); hdr.writeUInt32LE(png48.length,14); hdr.writeUInt32LE(22,18);
 fs.writeFileSync("app/favicon.ico", Buffer.concat([hdr, png48]));
+// Organization logo for structured data (Google wants a square image of at least 112x112).
+await sharp(Buffer.from(tile(512, 112))).png({ compressionLevel: 9 }).toFile("public/logo.png");
 console.log("done");

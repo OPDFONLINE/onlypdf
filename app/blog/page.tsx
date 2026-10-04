@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { getPublishedSummaries, type PostSummary } from "@/lib/blog/posts";
 import { Pagination } from "@/components/ui/Pagination";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { resolveAuthorName } from "@/lib/seo/entity";
 
 export const revalidate = 60;
 
@@ -98,7 +99,7 @@ export default async function BlogPage({ searchParams }: { searchParams: SearchP
               <Link href={`/blog/${hero.slug}`} className="hover:text-accent-dark">{hero.title}</Link>
             </h2>
             {hero.excerpt && <p className="mt-4 leading-7 text-ink-muted">{hero.excerpt}</p>}
-            {hero.author && <p className="mt-5 text-xs text-ink-soft">By {hero.author}</p>}
+            <p className="mt-5 text-xs text-ink-soft">By {resolveAuthorName(hero.author)}</p>
             <Link href={`/blog/${hero.slug}`} className="mt-6 inline-flex w-fit items-center gap-2 rounded-pill bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-dark">
               Read article <ArrowRight size={16} aria-hidden="true" />
             </Link>

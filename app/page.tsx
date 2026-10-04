@@ -7,6 +7,8 @@ import { SeoContent } from "@/components/home/SeoContent";
 import { CtaBand } from "@/components/home/CtaBand";
 import { Faq } from "@/components/ui/Faq";
 import { getSiteSettings } from "@/lib/supabase/settings";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { organizationSchema } from "@/lib/seo/entity";
 
 const homeFaq = [
   {
@@ -50,6 +52,7 @@ export default async function HomePage() {
   const settings = await getSiteSettings();
   return (
     <>
+      <JsonLd data={organizationSchema(settings.homepage_description || HOME_DEFAULT_DESCRIPTION)} />
       <Hero tagline={settings.site_tagline} />
       <ToolGrid />
       <PrivacySection />

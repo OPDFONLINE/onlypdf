@@ -1,4 +1,6 @@
-import { SITE_NAME, SITE_URL } from "@/lib/seo/metadata";
+import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/seo/metadata";
+import { articleDates } from "@/lib/seo/lastmod";
+import { authorSchema, publisherSchema, resolveAuthorName } from "@/lib/seo/entity";
 
 export type Crumb = { name: string; path: string };
 
@@ -46,7 +48,7 @@ export function toolSchema(tool: { slug: string; name: string; description: stri
     isAccessibleForFree: true,
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     featureList: ["Processes files in your browser", "No file uploads", "No sign-up required"],
-    publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    publisher: publisherSchema(),
   };
 }
 
@@ -66,4 +68,43 @@ export function articleCrumbs(post: { slug: string; title: string }): Crumb[] {
     { name: "Blog", path: "/blog" },
     { name: post.title, path: `/blog/${post.slug}` },
   ];
+}
+
+/** Google asks for headlines of at most 110 characters; longer titles are cut at a word boundary. */
+export function clipHeadline(title: string, max = 110): string {
+  const clean = title.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > 40 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.\-–—]+$/, "")}…`;
+}
+
+type ArticleForSchema = {
+  slug: string;
+  title: string;
+  seo_description?: string | null;
+  excerpt?: string | null;
+  category?: string | null;
+  author?: string | null;
+  featured_image_url?: string | null;
+  published_at: string | null;
+  updated_at: string | null;
+};
+
+/** Article markup. Dates are machine-readable only (the site shows no dates to readers, by decision). */
+export function articleSchema(post: ArticleForSchema) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: clipHeadline(post.title),
+    description: post.seo_description || post.excerpt || undefined,
+    image: [post.featured_image_url ? absolute(post.featured_image_url) : DEFAULT_OG_IMAGE.url],
+    ...articleDates(post.published_at, post.updated_at),
+    author: authorSchema(resolveAuthorName(post.author)),
+    publisher: publisherSchema(),
+    mainEntityOfPage: { "@type": "WebPage", "@id": absolute(`/blog/${post.slug}`) },
+    articleSection: post.category || undefined,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+  };
 }
